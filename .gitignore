@@ -6,6 +6,7 @@
 # Claude Code local files
 CLAUDE.local.md
 .claude/settings.local.json
+.claude/memory/
 
 # Node Modules
 node_modules/
@@ -22,6 +23,10 @@ dist/
 # logs
 npm-debug.log
 yarn-error.log
+logs/deploy.log
+
+# Playwright MCP runtime logs
+.playwright-mcp/
 
 # ----------------------------------------------------
 # Compendium Packs

@@ -36,7 +36,7 @@
 		data-button-variant="basic"
 		onclick={() =>
 			dialog.submitRoll({
-				rollMode: selectedRollMode[0],
+				rollMode: selectedRollMode,
 				rollFormula,
 				visibilityMode: shouldRollBeHidden ? 'blindroll' : 'publicroll',
 			})}

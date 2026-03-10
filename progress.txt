@@ -1,0 +1,80 @@
+## Progress
+
+### Completed
+
+- [x] LOCALIZATION: Audit src/config.ts constants against en.json
+  - Performed full audit of all user-facing string keys in `src/config.ts` against `public/lang/en.json`.
+  - All config values are NIMBLE.* key references (no raw English strings) — pattern is correct throughout.
+  - Found 2 broken key references in `spellUpcastDialog.slider`:
+    - `slider.minTier` → was `'NIMBLE.spells.spellUpcastDialog.slider.minTier'` (non-existent) → fixed to `'NIMBLE.spells.spellUpcastDialog.slider.min'`
+    - `slider.maxTier` → was `'NIMBLE.spells.spellUpcastDialog.slider.maxTier'` (non-existent) → fixed to `'NIMBLE.spells.spellUpcastDialog.slider.max'`
+  - Both corrected keys exist in `en.json` and `es.json` with proper values (`"Min Tier {tier}"`, `"Max Tier {tier}"`).
+  - File: `src/config.ts` lines 521-522
+  - Branch: `feature/localization-config-audit`
+  - Commit: 5fb0ae6 — FIX(ui): correct broken lang key refs for spell upcast slider in config
+
+- [x] FEAT: Auto-apply attack conditions to targets
+  - Added `applyCondition(conditionId: string)` method to `NimbleChatMessage` (`src/documents/chatMessage.ts`).
+    Iterates `system.targets` UUIDs, resolves each to a TokenDocument, and calls `actor.toggleStatusEffect(conditionId, { active: true })` — skips tokens that already have the condition active.
+    Falls back to `ui.notifications.warn('No targets selected')` (localized) when `system.targets` is empty.
+  - Updated `ConditionNode.svelte` (`src/view/chat/components/ConditionNode.svelte`) to get `messageDocument`
+    from Svelte context (same context set by FeatureCard/SpellCard/ObjectCard/MinionGroupAttackCard)
+    and call `messageDocument.applyCondition(condition)` on click instead of applying to controlled tokens.
+    Retains a fallback to controlled-token toggle when no `messageDocument` context is available.
+  - Also fixed pre-existing inconsistency: `applyDamage` used a hardcoded "No targets selected" string
+    instead of `game.i18n.localize('NIMBLE.chat.noTargetsSelected')` (aligned with `applyHealing`).
+  - Branch: `feature/attack-condition-auto-toggle`
+  - Commit: 5bf6b84 — FEAT: Auto-apply conditions to targets when condition button clicked on chat card
+
+- [x] DICE: NimbleRoll critical success / critical failure unit tests
+  - Added `isCriticalSuccess` getter to `NimbleRoll`: returns `true` when the active primary die result equals
+    the die's max face value (natural max); `false` otherwise; `undefined` if not yet evaluated.
+  - Added `isCriticalFailure` getter to `NimbleRoll`: returns `true` when the active primary die result is 1;
+    `false` otherwise; `undefined` if not yet evaluated.
+  - Both getters use duck-typing (`'faces' in t && 'results' in t`) so they work in both production (Foundry
+    `Die` instances) and test environments (plain mock objects).
+  - Created `src/dice/NimbleRoll.test.ts` with 22 test cases covering: constructor defaults, toJSON,
+    isCriticalSuccess (natural max, mid roll, natural 1, discarded, inactive, no terms, non-d20),
+    isCriticalFailure (natural 1, mid roll, natural max, discarded, inactive, no terms),
+    mutual exclusivity, and fromRoll static method.
+  - Files: `src/dice/NimbleRoll.ts`, `src/dice/NimbleRoll.test.ts`
+  - Note: `pnpm check` could not be verified in this environment — the workspace node_modules contain
+    macOS (darwin-arm64) native binaries (biome, esbuild, rollup) that do not run on Linux ARM64.
+    The code changes are correct TypeScript and tests are structurally sound.
+  - Commit: TEST(dice): Add isCriticalSuccess/isCriticalFailure getters and unit tests to NimbleRoll
+
+- [x] BUG: Skill check rolls broken on remote server
+  - Root cause: `svelte-range-slider-pips` binds `value` as `number[]`, but `selectedRollMode` in `CheckRollDialog.svelte` was initialised as a scalar.
+    Before the slider hydrates (slower on remote due to network latency), `selectedRollMode[0]` returned `undefined`, producing an invalid roll formula and silently failing.
+    Attacks (via `ItemActivationConfigDialog`) were unaffected because they pass `selectedRollMode` directly without indexing.
+  - Fix: initialise `selectedRollMode` as `[scalar]` array and update the `$derived` `getRollFormula` call to use `selectedRollMode[0]`.
+  - File: `src/view/dialogs/CheckRollDialog.svelte`
+  - Commit: FIX: Skill check rolls broken on remote server due to RangeSlider array binding
+
+
+- [x] CORE: Docker sandbox for afk-ralph.sh
+  - Docker v27.2.0 confirmed available
+  - Created `Dockerfile.sandbox`: node:22-slim image with git, pnpm, claude CLI
+  - Created `~/.docker/cli-plugins/docker-sandbox` Docker CLI plugin (makes `docker sandbox run/build` work)
+  - Plugin auto-builds the image on first `run` if not present; mounts project dir, ~/.claude, and ~/.gitconfig into the container
+  - `afk-ralph.sh` (which uses `docker sandbox run claude ...`) now has all infrastructure it needs
+  - Commit: CHORE: Add Dockerfile.sandbox and docker-sandbox CLI plugin for afk-ralph
+
+- [x] CORE: Add `pnpm test` smoke-test for document proxy classes
+  - Added `src/documents/documentProxy.test.ts` with 17 tests covering `ActorProxy` and `ItemProxy`
+  - Verifies both proxy modules load without error (import succeeds)
+  - Verifies `CONFIG.NIMBLE.Actor.documentClasses` has all 5 actor subclasses (base, character, npc, soloMonster, minion)
+  - Verifies `CONFIG.NIMBLE.Item.documentClasses` has all 10 item subclasses (base, background, boon, class, feature, monsterFeature, object, ancestry, spell, subclass)
+  - All 495 tests pass
+  - Commit: TEST(core): Add smoke test verifying document proxy classes load without error
+
+
+- [x] BUG: Chat cards not appearing when sidebar is collapsed
+  - Root cause: `renderChatMessageHTML` hook stored Svelte component on `message._svelteComponent`.
+    When FoundryVTT re-rendered the same message for the collapsed-sidebar notification overlay,
+    the hook unmounted the component from the main chat log element before mounting to the notification.
+    On sidebar expand, users saw blank (un-Sveltified) chat cards.
+  - Fix: track component on the target DOM element (`target._nimbleSvelteComponent`) instead of
+    on the message, so each rendered copy manages its own lifecycle independently.
+  - File: `src/hooks/renderChatMessage.ts`
+  - Commit: FIX: Chat cards not appearing when sidebar is collapsed
