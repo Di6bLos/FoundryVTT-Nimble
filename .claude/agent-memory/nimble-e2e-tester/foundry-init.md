@@ -2,14 +2,11 @@
 
 ## Login
 - Join page: http://localhost:30000/join — world is "Midgard"
-- Gamemaster user ID: `ZMf5oAvCQaqwHcKE` (select[name="userid"])
-- The Gamemaster option is disabled if already connected elsewhere; force-enable via:
-  ```js
-  const opt = document.querySelector('select[name="userid"] option[value="ZMf5oAvCQaqwHcKE"]');
-  opt.disabled = false;
-  document.querySelector('select[name="userid"]').value = opt.value;
-  ```
-- Then click "Join Game Session" button.
+- Gamemaster user ID: `mzVwkppCl1104sdm` (combobox, select by label "Gamemaster")
+- GM password: stored in `/Users/carlosprieto/foundryVTT/FoundryVTT-Nimble/.env.local` as `FOUNDRY_GM_PASSWORD`
+- Player "Evan" has no password, user role 2 (PLAYER). Can create actors but not delete them.
+- To run as GM: open a second tab, navigate to /join, select Gamemaster, enter password from .env.local.
+- The Gamemaster option is disabled if already connected elsewhere in same session. Open a new tab instead.
 
 ## Initialization Wait
 - After login, FoundryVTT loads asynchronously. Wait ~5 seconds with:
