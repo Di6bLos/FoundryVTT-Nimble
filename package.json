@@ -45,7 +45,8 @@
 		"prepare": "lefthook install",
 		"release": "node build/release.mjs",
 		"lang:reconcile": "node scripts/reconcile-languages.mjs",
-		"lang:detect-untranslated": "node scripts/detect-untranslated.mjs"
+		"lang:detect-untranslated": "node scripts/detect-untranslated.mjs",
+		"validate:animations": "node scripts/validateAnimations.mjs"
 	},
 	"imports": {
 		"#documents/*": "./src/documents/*",
@@ -125,6 +126,8 @@
 		"@typescript-eslint/eslint-plugin": "^8.46.2",
 		"@typescript-eslint/parser": "^8.46.2",
 		"@vitest/ui": "^4.0.8",
+		"ajv": "^8.18.0",
+		"ajv-errors": "^3.0.0",
 		"classic-level": "^1.4.1",
 		"dependency-cruiser": "^16.10.0",
 		"eslint": "^9.38.0",

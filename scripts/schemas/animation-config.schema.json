@@ -1,0 +1,63 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"title": "Automated Animations Configuration",
+	"description": "Schema for validating animation configuration entries",
+	"type": "object",
+	"properties": {
+		"melee": {
+			"type": "array",
+			"items": {
+				"$ref": "#/definitions/meleeEntry"
+			}
+		}
+	},
+	"required": ["melee"],
+	"definitions": {
+		"meleeEntry": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"type": "string",
+					"pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+					"description": "UUID identifier for the entry"
+				},
+				"label": {
+					"type": "string",
+					"description": "Display name (spell or weapon name)"
+				},
+				"menu": {
+					"type": "string",
+					"enum": ["melee"],
+					"description": "Menu category"
+				},
+				"meleeSwitch": {
+					"type": "object",
+					"description": "REQUIRED: Configuration for when used as a melee attack"
+				},
+				"primary": {
+					"type": "object",
+					"description": "Primary animation configuration"
+				},
+				"secondary": {
+					"type": "object"
+				},
+				"source": {
+					"type": "object"
+				},
+				"target": {
+					"type": "object"
+				},
+				"macro": {
+					"type": "object"
+				},
+				"soundOnly": {
+					"type": "object"
+				},
+				"metaData": {
+					"type": "object"
+				}
+			},
+			"required": ["id", "label", "menu", "meleeSwitch", "primary"]
+		}
+	}
+}
