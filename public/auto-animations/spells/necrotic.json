@@ -1,6 +1,61 @@
 {
 	"version": "4.0.0",
-	"melee": [],
+	"melee": [
+		{
+			"id": "90623652-00a6-4923-a5a9-e8d47a5f3730",
+			"label": "Withering Touch",
+			"menu": "melee",
+			"metaData": {},
+			"primary": {
+				"video": {
+					"dbSection": "melee",
+					"menuType": "spell",
+					"animation": "tollthedead",
+					"variant": "01",
+					"color": "purple",
+					"enableCustom": false,
+					"customPath": ""
+				},
+				"sound": {
+					"enable": false,
+					"delay": 0,
+					"startTime": 0,
+					"volume": 0.75
+				},
+				"options": {
+					"contrast": 0,
+					"delay": 0,
+					"elevation": 1000,
+					"isWait": false,
+					"opacity": 1,
+					"repeat": 1,
+					"repeatDelay": 500,
+					"saturate": 0,
+					"size": 1,
+					"tint": false,
+					"tintColor": "#FFFFFF",
+					"zIndex": 1
+				}
+			},
+			"secondary": {
+				"enable": false
+			},
+			"source": {
+				"enable": false
+			},
+			"target": {
+				"enable": false
+			},
+			"macro": {
+				"enable": false
+			},
+			"soundOnly": {
+				"sound": {
+					"enable": false
+				}
+			}
+		}
+	],
 	"range": [
 		{
 			"id": "ea4f0b12-1692-478f-b64a-6b906b1be6bd",
@@ -167,60 +222,6 @@
 		{
 			"id": "06508b60-3f3a-4048-a379-a5479fb2fae9",
 			"label": "Unspeakable Word",
-			"menu": "range",
-			"metaData": {},
-			"primary": {
-				"video": {
-					"dbSection": "range",
-					"menuType": "spell",
-					"animation": "tollthedead",
-					"variant": "01",
-					"color": "purple",
-					"enableCustom": false,
-					"customPath": ""
-				},
-				"sound": {
-					"enable": false,
-					"delay": 0,
-					"startTime": 0,
-					"volume": 0.75
-				},
-				"options": {
-					"contrast": 0,
-					"delay": 0,
-					"elevation": 1000,
-					"isWait": false,
-					"opacity": 1,
-					"repeat": 1,
-					"repeatDelay": 500,
-					"saturate": 0,
-					"size": 1,
-					"tint": false,
-					"tintColor": "#FFFFFF",
-					"zIndex": 1
-				}
-			},
-			"secondary": {
-				"enable": false
-			},
-			"source": {
-				"enable": false
-			},
-			"target": {
-				"enable": false
-			},
-			"macro": {
-				"enable": false
-			},
-			"soundOnly": {
-				"sound": {
-					"enable": false
-				}
-			}
-		},
-		{
-			"id": "90623652-00a6-4923-a5a9-e8d47a5f3730",
-			"label": "Withering Touch",
 			"menu": "range",
 			"metaData": {},
 			"primary": {

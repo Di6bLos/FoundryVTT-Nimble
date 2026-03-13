@@ -1,6 +1,61 @@
 {
 	"version": "4.0.0",
-	"melee": [],
+	"melee": [
+		{
+			"id": "6a45097e-eb5e-4afe-9f6d-c61315414ea7",
+			"label": "Vengeance",
+			"menu": "melee",
+			"metaData": {},
+			"primary": {
+				"video": {
+					"dbSection": "melee",
+					"menuType": "spell",
+					"animation": "divinesmite",
+					"variant": "01",
+					"color": "yellow",
+					"enableCustom": false,
+					"customPath": ""
+				},
+				"sound": {
+					"enable": false,
+					"delay": 0,
+					"startTime": 0,
+					"volume": 0.75
+				},
+				"options": {
+					"contrast": 0,
+					"delay": 0,
+					"elevation": 1000,
+					"isWait": false,
+					"opacity": 1,
+					"repeat": 1,
+					"repeatDelay": 500,
+					"saturate": 0,
+					"size": 1,
+					"tint": false,
+					"tintColor": "#FFFFFF",
+					"zIndex": 1
+				}
+			},
+			"secondary": {
+				"enable": false
+			},
+			"source": {
+				"enable": false
+			},
+			"target": {
+				"enable": false
+			},
+			"macro": {
+				"enable": false
+			},
+			"soundOnly": {
+				"sound": {
+					"enable": false
+				}
+			}
+		}
+	],
 	"range": [
 		{
 			"id": "c1584cce-9795-48de-9a79-04e640dad109",
@@ -120,60 +175,6 @@
 					"dbSection": "range",
 					"menuType": "spell",
 					"animation": "sacredflame",
-					"variant": "01",
-					"color": "yellow",
-					"enableCustom": false,
-					"customPath": ""
-				},
-				"sound": {
-					"enable": false,
-					"delay": 0,
-					"startTime": 0,
-					"volume": 0.75
-				},
-				"options": {
-					"contrast": 0,
-					"delay": 0,
-					"elevation": 1000,
-					"isWait": false,
-					"opacity": 1,
-					"repeat": 1,
-					"repeatDelay": 500,
-					"saturate": 0,
-					"size": 1,
-					"tint": false,
-					"tintColor": "#FFFFFF",
-					"zIndex": 1
-				}
-			},
-			"secondary": {
-				"enable": false
-			},
-			"source": {
-				"enable": false
-			},
-			"target": {
-				"enable": false
-			},
-			"macro": {
-				"enable": false
-			},
-			"soundOnly": {
-				"sound": {
-					"enable": false
-				}
-			}
-		},
-		{
-			"id": "6a45097e-eb5e-4afe-9f6d-c61315414ea7",
-			"label": "Vengeance",
-			"menu": "range",
-			"metaData": {},
-			"primary": {
-				"video": {
-					"dbSection": "range",
-					"menuType": "spell",
-					"animation": "divinesmite",
 					"variant": "01",
 					"color": "yellow",
 					"enableCustom": false,

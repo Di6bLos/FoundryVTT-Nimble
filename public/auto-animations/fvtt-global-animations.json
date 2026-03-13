@@ -2964,6 +2964,168 @@
 					"zIndex": 1
 				}
 			}
+		},
+		{
+			"id": "b1b4c6f5-9573-4aca-925e-99acabf12ec5",
+			"label": "Snowblind",
+			"menu": "melee",
+			"metaData": {},
+			"primary": {
+				"video": {
+					"dbSection": "melee",
+					"menuType": "spell",
+					"animation": "coneofcold",
+					"variant": "01",
+					"color": "blue",
+					"enableCustom": false,
+					"customPath": ""
+				},
+				"sound": {
+					"enable": true,
+					"delay": 0,
+					"startTime": 0,
+					"volume": 0.75
+				},
+				"options": {
+					"contrast": 0,
+					"delay": 0,
+					"elevation": 1000,
+					"isWait": false,
+					"opacity": 1,
+					"repeat": 1,
+					"repeatDelay": 500,
+					"saturate": 0,
+					"size": 1,
+					"tint": false,
+					"tintColor": "#FFFFFF",
+					"zIndex": 1
+				}
+			},
+			"secondary": {
+				"enable": false
+			},
+			"source": {
+				"enable": false
+			},
+			"target": {
+				"enable": false
+			},
+			"macro": {
+				"enable": false
+			},
+			"soundOnly": {
+				"sound": {
+					"enable": false
+				}
+			}
+		},
+		{
+			"id": "90623652-00a6-4923-a5a9-e8d47a5f3730",
+			"label": "Withering Touch",
+			"menu": "melee",
+			"metaData": {},
+			"primary": {
+				"video": {
+					"dbSection": "melee",
+					"menuType": "spell",
+					"animation": "tollthedead",
+					"variant": "01",
+					"color": "purple",
+					"enableCustom": false,
+					"customPath": ""
+				},
+				"sound": {
+					"enable": true,
+					"delay": 0,
+					"startTime": 0,
+					"volume": 0.75
+				},
+				"options": {
+					"contrast": 0,
+					"delay": 0,
+					"elevation": 1000,
+					"isWait": false,
+					"opacity": 1,
+					"repeat": 1,
+					"repeatDelay": 500,
+					"saturate": 0,
+					"size": 1,
+					"tint": false,
+					"tintColor": "#FFFFFF",
+					"zIndex": 1
+				}
+			},
+			"secondary": {
+				"enable": false
+			},
+			"source": {
+				"enable": false
+			},
+			"target": {
+				"enable": false
+			},
+			"macro": {
+				"enable": false
+			},
+			"soundOnly": {
+				"sound": {
+					"enable": false
+				}
+			}
+		},
+		{
+			"id": "6a45097e-eb5e-4afe-9f6d-c61315414ea7",
+			"label": "Vengeance",
+			"menu": "melee",
+			"metaData": {},
+			"primary": {
+				"video": {
+					"dbSection": "melee",
+					"menuType": "spell",
+					"animation": "divinesmite",
+					"variant": "01",
+					"color": "yellow",
+					"enableCustom": false,
+					"customPath": ""
+				},
+				"sound": {
+					"enable": true,
+					"delay": 0,
+					"startTime": 0,
+					"volume": 0.75
+				},
+				"options": {
+					"contrast": 0,
+					"delay": 0,
+					"elevation": 1000,
+					"isWait": false,
+					"opacity": 1,
+					"repeat": 1,
+					"repeatDelay": 500,
+					"saturate": 0,
+					"size": 1,
+					"tint": false,
+					"tintColor": "#FFFFFF",
+					"zIndex": 1
+				}
+			},
+			"secondary": {
+				"enable": false
+			},
+			"source": {
+				"enable": false
+			},
+			"target": {
+				"enable": false
+			},
+			"macro": {
+				"enable": false
+			},
+			"soundOnly": {
+				"sound": {
+					"enable": false
+				}
+			}
 		}
 	],
 	"range": [
@@ -5037,201 +5199,6 @@
 			}
 		},
 		{
-			"id": "e5ca33ef-86ae-46bd-babe-2bbc7d14fa72",
-			"label": "Flame Dart",
-			"levels3d": {
-				"type": "explosion",
-				"data": {
-					"color01": "#FFFFFF",
-					"color02": "#FFFFFF",
-					"spritePath": "modules/levels-3d-preview/assets/particles/dust.png"
-				},
-				"sound": {
-					"enable": true
-				},
-				"secondary": {
-					"enable": false,
-					"data": {
-						"color01": "#FFFFFF",
-						"color02": "#FFFFFF",
-						"spritePath": "modules/levels-3d-preview/assets/particles/dust.png"
-					}
-				}
-			},
-			"macro": {
-				"enable": false,
-				"playWhen": "0"
-			},
-			"menu": "range",
-			"primary": {
-				"video": {
-					"dbSection": "range",
-					"menuType": "spell",
-					"animation": "firebolt",
-					"variant": "01",
-					"color": "orange",
-					"enableCustom": false,
-					"customPath": ""
-				},
-				"sound": {
-					"enable": true,
-					"delay": 0,
-					"repeat": 1,
-					"repeatDelay": 250,
-					"startTime": 0,
-					"volume": 0.75
-				},
-				"options": {
-					"contrast": 0,
-					"delay": 0,
-					"elevation": 1000,
-					"isReturning": false,
-					"isWait": false,
-					"onlyX": false,
-					"opacity": 1,
-					"playbackRate": 1,
-					"repeat": 1,
-					"repeatDelay": 250,
-					"saturate": 0,
-					"tint": false,
-					"tintColor": "#FFFFFF",
-					"zIndex": 1
-				}
-			},
-			"secondary": {
-				"enable": false,
-				"video": {
-					"dbSection": "static",
-					"menuType": "spell",
-					"animation": "curewounds",
-					"variant": "01",
-					"color": "blue",
-					"enableCustom": false,
-					"customPath": ""
-				},
-				"sound": {
-					"enable": true,
-					"delay": 0,
-					"repeat": 1,
-					"repeatDelay": 250,
-					"startTime": 0,
-					"volume": 0.75
-				},
-				"options": {
-					"addTokenWidth": false,
-					"anchor": "0.5",
-					"contrast": 0,
-					"delay": 0,
-					"elevation": 1000,
-					"fadeIn": 250,
-					"fadeOut": 500,
-					"isMasked": false,
-					"isRadius": true,
-					"isWait": false,
-					"opacity": 1,
-					"repeat": 1,
-					"repeatDelay": 250,
-					"saturate": 0,
-					"size": 1.5,
-					"tint": false,
-					"tintColor": "#FFFFFF",
-					"zIndex": 1
-				}
-			},
-			"soundOnly": {
-				"sound": {
-					"enable": true,
-					"delay": 0,
-					"repeat": 1,
-					"repeatDelay": 250,
-					"startTime": 0,
-					"volume": 0.75
-				}
-			},
-			"source": {
-				"enable": false,
-				"video": {
-					"dbSection": "static",
-					"menuType": "spell",
-					"animation": "curewounds",
-					"variant": "01",
-					"color": "blue",
-					"enableCustom": false,
-					"customPath": ""
-				},
-				"sound": {
-					"enable": true,
-					"delay": 0,
-					"repeat": 1,
-					"repeatDelay": 250,
-					"startTime": 0,
-					"volume": 0.75
-				},
-				"options": {
-					"addTokenWidth": false,
-					"anchor": "0.5",
-					"contrast": 0,
-					"delay": 0,
-					"elevation": 1000,
-					"fadeIn": 250,
-					"fadeOut": 500,
-					"isMasked": false,
-					"isRadius": false,
-					"isWait": true,
-					"opacity": 1,
-					"repeat": 1,
-					"repeatDelay": 250,
-					"saturate": 0,
-					"size": 1,
-					"tint": false,
-					"tintColor": "#FFFFFF",
-					"zIndex": 1
-				}
-			},
-			"target": {
-				"enable": false,
-				"video": {
-					"dbSection": "static",
-					"menuType": "spell",
-					"animation": "curewounds",
-					"variant": "01",
-					"color": "blue",
-					"enableCustom": false,
-					"customPath": ""
-				},
-				"sound": {
-					"enable": true,
-					"delay": 0,
-					"repeat": 1,
-					"repeatDelay": 250,
-					"startTime": 0,
-					"volume": 0.75
-				},
-				"options": {
-					"addTokenWidth": false,
-					"anchor": "0.5",
-					"contrast": 0,
-					"delay": 0,
-					"elevation": 1000,
-					"fadeIn": 250,
-					"fadeOut": 500,
-					"isMasked": false,
-					"isRadius": false,
-					"opacity": 1,
-					"persistent": false,
-					"repeat": 1,
-					"repeatDelay": 250,
-					"saturate": 0,
-					"size": 1,
-					"tint": false,
-					"tintColor": "#FFFFFF",
-					"unbindAlpha": false,
-					"unbindVisibility": false,
-					"zIndex": 1
-				}
-			}
-		},
-		{
 			"id": "70969b53-dc60-4a62-b674-08053ced83b9",
 			"label": "Shoot",
 			"soundOnly": {
@@ -5485,7 +5452,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -5539,7 +5506,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -5593,7 +5560,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -5647,61 +5614,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
-				}
-			}
-		},
-		{
-			"id": "b1b4c6f5-9573-4aca-925e-99acabf12ec5",
-			"label": "Snowblind",
-			"menu": "range",
-			"metaData": {},
-			"primary": {
-				"video": {
-					"dbSection": "range",
-					"menuType": "spell",
-					"animation": "coneofcold",
-					"variant": "01",
-					"color": "blue",
-					"enableCustom": false,
-					"customPath": ""
-				},
-				"sound": {
-					"enable": true,
-					"delay": 0,
-					"startTime": 0,
-					"volume": 0.75
-				},
-				"options": {
-					"contrast": 0,
-					"delay": 0,
-					"elevation": 1000,
-					"isWait": false,
-					"opacity": 1,
-					"repeat": 1,
-					"repeatDelay": 500,
-					"saturate": 0,
-					"size": 1,
-					"tint": false,
-					"tintColor": "#FFFFFF",
-					"zIndex": 1
-				}
-			},
-			"secondary": {
-				"enable": false
-			},
-			"source": {
-				"enable": false
-			},
-			"target": {
-				"enable": false
-			},
-			"macro": {
-				"enable": false
-			},
-			"soundOnly": {
-				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -5755,7 +5668,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -5809,7 +5722,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -5863,7 +5776,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -5917,7 +5830,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -5971,7 +5884,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -6025,7 +5938,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -6079,7 +5992,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -6133,7 +6046,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -6187,7 +6100,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -6241,7 +6154,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -6295,7 +6208,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -6349,7 +6262,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -6403,7 +6316,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -6457,7 +6370,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -6511,7 +6424,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -6565,7 +6478,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -6619,61 +6532,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
-				}
-			}
-		},
-		{
-			"id": "90623652-00a6-4923-a5a9-e8d47a5f3730",
-			"label": "Withering Touch",
-			"menu": "range",
-			"metaData": {},
-			"primary": {
-				"video": {
-					"dbSection": "range",
-					"menuType": "spell",
-					"animation": "tollthedead",
-					"variant": "01",
-					"color": "purple",
-					"enableCustom": false,
-					"customPath": ""
-				},
-				"sound": {
-					"enable": true,
-					"delay": 0,
-					"startTime": 0,
-					"volume": 0.75
-				},
-				"options": {
-					"contrast": 0,
-					"delay": 0,
-					"elevation": 1000,
-					"isWait": false,
-					"opacity": 1,
-					"repeat": 1,
-					"repeatDelay": 500,
-					"saturate": 0,
-					"size": 1,
-					"tint": false,
-					"tintColor": "#FFFFFF",
-					"zIndex": 1
-				}
-			},
-			"secondary": {
-				"enable": false
-			},
-			"source": {
-				"enable": false
-			},
-			"target": {
-				"enable": false
-			},
-			"macro": {
-				"enable": false
-			},
-			"soundOnly": {
-				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -6727,7 +6586,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -6781,7 +6640,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -6835,7 +6694,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -6889,7 +6748,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -6943,7 +6802,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -6997,7 +6856,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -7051,61 +6910,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
-				}
-			}
-		},
-		{
-			"id": "6a45097e-eb5e-4afe-9f6d-c61315414ea7",
-			"label": "Vengeance",
-			"menu": "range",
-			"metaData": {},
-			"primary": {
-				"video": {
-					"dbSection": "range",
-					"menuType": "spell",
-					"animation": "divinesmite",
-					"variant": "01",
-					"color": "yellow",
-					"enableCustom": false,
-					"customPath": ""
-				},
-				"sound": {
-					"enable": true,
-					"delay": 0,
-					"startTime": 0,
-					"volume": 0.75
-				},
-				"options": {
-					"contrast": 0,
-					"delay": 0,
-					"elevation": 1000,
-					"isWait": false,
-					"opacity": 1,
-					"repeat": 1,
-					"repeatDelay": 500,
-					"saturate": 0,
-					"size": 1,
-					"tint": false,
-					"tintColor": "#FFFFFF",
-					"zIndex": 1
-				}
-			},
-			"secondary": {
-				"enable": false
-			},
-			"source": {
-				"enable": false
-			},
-			"target": {
-				"enable": false
-			},
-			"macro": {
-				"enable": false
-			},
-			"soundOnly": {
-				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -7159,7 +6964,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -7213,7 +7018,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -7267,7 +7072,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -7321,7 +7126,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -7375,7 +7180,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -7429,7 +7234,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -7483,7 +7288,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -7537,7 +7342,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -7591,7 +7396,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		}
@@ -8730,7 +8535,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -8784,7 +8589,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -8838,7 +8643,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -8892,7 +8697,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -8946,7 +8751,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -9000,7 +8805,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -9054,7 +8859,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -9108,7 +8913,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -9162,7 +8967,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -9216,7 +9021,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -9270,7 +9075,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -9324,7 +9129,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -9378,7 +9183,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -9432,7 +9237,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -9486,7 +9291,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -9540,7 +9345,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -9594,7 +9399,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -9648,7 +9453,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -9702,7 +9507,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -9756,7 +9561,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -9810,7 +9615,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -9864,7 +9669,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -9918,7 +9723,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -9972,7 +9777,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -10026,7 +9831,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -10080,7 +9885,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -10134,7 +9939,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		},
@@ -10188,7 +9993,7 @@
 			},
 			"soundOnly": {
 				"sound": {
-					"enable": true
+					"enable": false
 				}
 			}
 		}

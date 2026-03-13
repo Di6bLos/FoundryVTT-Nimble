@@ -1,15 +1,14 @@
 {
 	"version": "4.0.0",
-	"melee": [],
-	"range": [
+	"melee": [
 		{
 			"id": "b1b4c6f5-9573-4aca-925e-99acabf12ec5",
 			"label": "Snowblind",
-			"menu": "range",
+			"menu": "melee",
 			"metaData": {},
 			"primary": {
 				"video": {
-					"dbSection": "range",
+					"dbSection": "melee",
 					"menuType": "spell",
 					"animation": "coneofcold",
 					"variant": "01",
@@ -55,7 +54,9 @@
 					"enable": false
 				}
 			}
-		},
+		}
+	],
+	"range": [
 		{
 			"id": "bae0feb2-18c5-4624-9266-ce0007dac754",
 			"label": "Ice Lance",
