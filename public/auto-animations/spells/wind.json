@@ -1,18 +1,17 @@
 {
 	"version": "4.0.0",
 	"melee": [],
-	"range": [],
-	"ontoken": [
+	"range": [
 		{
-			"id": "3374815c-e6bb-4572-8661-0bdeee696096",
-			"label": "Barrier of Wind",
-			"menu": "ontoken",
+			"id": "d1632183-2f7e-458f-b091-4fe9861fb532",
+			"label": "Razor Wind",
+			"menu": "range",
 			"metaData": {},
 			"primary": {
 				"video": {
-					"dbSection": "static",
+					"dbSection": "range",
 					"menuType": "spell",
-					"animation": "wind_wall",
+					"animation": "windwall",
 					"variant": "01",
 					"color": "white",
 					"enableCustom": false,
@@ -58,15 +57,287 @@
 			}
 		},
 		{
-			"id": "d1632183-2f7e-458f-b091-4fe9861fb532",
-			"label": "Razor Wind",
+			"id": "165872e7-2abf-409a-9b36-8edc251d26e6",
+			"label": "Blustery Gale",
+			"menu": "range",
+			"metaData": {},
+			"primary": {
+				"video": {
+					"dbSection": "range",
+					"menuType": "spell",
+					"animation": "gustofwind",
+					"variant": "01",
+					"color": "white",
+					"enableCustom": false,
+					"customPath": ""
+				},
+				"sound": {
+					"enable": false,
+					"delay": 0,
+					"startTime": 0,
+					"volume": 0.75
+				},
+				"options": {
+					"contrast": 0,
+					"delay": 0,
+					"elevation": 1000,
+					"isWait": false,
+					"opacity": 1,
+					"repeat": 1,
+					"repeatDelay": 500,
+					"saturate": 0,
+					"size": 1,
+					"tint": false,
+					"tintColor": "#FFFFFF",
+					"zIndex": 1
+				}
+			},
+			"secondary": {
+				"enable": false
+			},
+			"source": {
+				"enable": false
+			},
+			"target": {
+				"enable": false
+			},
+			"macro": {
+				"enable": false
+			},
+			"soundOnly": {
+				"sound": {
+					"enable": false
+				}
+			}
+		},
+		{
+			"id": "36757b0a-2145-4abd-ad62-25dd31b970c9",
+			"label": "Boisterous Winds",
+			"menu": "range",
+			"metaData": {},
+			"primary": {
+				"video": {
+					"dbSection": "range",
+					"menuType": "spell",
+					"animation": "gustofwind",
+					"variant": "01",
+					"color": "white",
+					"enableCustom": false,
+					"customPath": ""
+				},
+				"sound": {
+					"enable": false,
+					"delay": 0,
+					"startTime": 0,
+					"volume": 0.75
+				},
+				"options": {
+					"contrast": 0,
+					"delay": 0,
+					"elevation": 1000,
+					"isWait": false,
+					"opacity": 1,
+					"repeat": 1,
+					"repeatDelay": 500,
+					"saturate": 0,
+					"size": 1,
+					"tint": false,
+					"tintColor": "#FFFFFF",
+					"zIndex": 1
+				}
+			},
+			"secondary": {
+				"enable": false
+			},
+			"source": {
+				"enable": false
+			},
+			"target": {
+				"enable": false
+			},
+			"macro": {
+				"enable": false
+			},
+			"soundOnly": {
+				"sound": {
+					"enable": false
+				}
+			}
+		},
+		{
+			"id": "2444caf5-7f0a-4394-aba9-916b8a53ed3d",
+			"label": "Eye of the Storm",
+			"menu": "range",
+			"metaData": {},
+			"primary": {
+				"video": {
+					"dbSection": "range",
+					"menuType": "spell",
+					"animation": "calllightning",
+					"variant": "01",
+					"color": "white",
+					"enableCustom": false,
+					"customPath": ""
+				},
+				"sound": {
+					"enable": false,
+					"delay": 0,
+					"startTime": 0,
+					"volume": 0.75
+				},
+				"options": {
+					"contrast": 0,
+					"delay": 0,
+					"elevation": 1000,
+					"isWait": false,
+					"opacity": 1,
+					"repeat": 1,
+					"repeatDelay": 500,
+					"saturate": 0,
+					"size": 1,
+					"tint": false,
+					"tintColor": "#FFFFFF",
+					"zIndex": 1
+				}
+			},
+			"secondary": {
+				"enable": false
+			},
+			"source": {
+				"enable": false
+			},
+			"target": {
+				"enable": false
+			},
+			"macro": {
+				"enable": false
+			},
+			"soundOnly": {
+				"sound": {
+					"enable": false
+				}
+			}
+		},
+		{
+			"id": "c8074567-ffbe-4be8-8230-7b17607d72ef",
+			"label": "Thousand Cuts",
+			"menu": "range",
+			"metaData": {},
+			"primary": {
+				"video": {
+					"dbSection": "range",
+					"menuType": "spell",
+					"animation": "cloudofdaggers",
+					"variant": "01",
+					"color": "white",
+					"enableCustom": false,
+					"customPath": ""
+				},
+				"sound": {
+					"enable": false,
+					"delay": 0,
+					"startTime": 0,
+					"volume": 0.75
+				},
+				"options": {
+					"contrast": 0,
+					"delay": 0,
+					"elevation": 1000,
+					"isWait": false,
+					"opacity": 1,
+					"repeat": 1,
+					"repeatDelay": 500,
+					"saturate": 0,
+					"size": 1,
+					"tint": false,
+					"tintColor": "#FFFFFF",
+					"zIndex": 1
+				}
+			},
+			"secondary": {
+				"enable": false
+			},
+			"source": {
+				"enable": false
+			},
+			"target": {
+				"enable": false
+			},
+			"macro": {
+				"enable": false
+			},
+			"soundOnly": {
+				"sound": {
+					"enable": false
+				}
+			}
+		},
+		{
+			"id": "4005a8a7-f230-4c4d-a4d6-76ae99b8ae64",
+			"label": "Vicious Mockery",
+			"menu": "range",
+			"metaData": {},
+			"primary": {
+				"video": {
+					"dbSection": "range",
+					"menuType": "spell",
+					"animation": "magicmissile",
+					"variant": "01",
+					"color": "white",
+					"enableCustom": false,
+					"customPath": ""
+				},
+				"sound": {
+					"enable": false,
+					"delay": 0,
+					"startTime": 0,
+					"volume": 0.75
+				},
+				"options": {
+					"contrast": 0,
+					"delay": 0,
+					"elevation": 1000,
+					"isWait": false,
+					"opacity": 1,
+					"repeat": 1,
+					"repeatDelay": 500,
+					"saturate": 0,
+					"size": 1,
+					"tint": false,
+					"tintColor": "#FFFFFF",
+					"zIndex": 1
+				}
+			},
+			"secondary": {
+				"enable": false
+			},
+			"source": {
+				"enable": false
+			},
+			"target": {
+				"enable": false
+			},
+			"macro": {
+				"enable": false
+			},
+			"soundOnly": {
+				"sound": {
+					"enable": false
+				}
+			}
+		}
+	],
+	"ontoken": [
+		{
+			"id": "3374815c-e6bb-4572-8661-0bdeee696096",
+			"label": "Barrier of Wind",
 			"menu": "ontoken",
 			"metaData": {},
 			"primary": {
 				"video": {
 					"dbSection": "static",
 					"menuType": "spell",
-					"animation": "wind_wall",
+					"animation": "windwall",
 					"variant": "01",
 					"color": "white",
 					"enableCustom": false,
@@ -120,115 +391,7 @@
 				"video": {
 					"dbSection": "static",
 					"menuType": "spell",
-					"animation": "gust_of_wind",
-					"variant": "01",
-					"color": "white",
-					"enableCustom": false,
-					"customPath": ""
-				},
-				"sound": {
-					"enable": false,
-					"delay": 0,
-					"startTime": 0,
-					"volume": 0.75
-				},
-				"options": {
-					"contrast": 0,
-					"delay": 0,
-					"elevation": 1000,
-					"isWait": false,
-					"opacity": 1,
-					"repeat": 1,
-					"repeatDelay": 500,
-					"saturate": 0,
-					"size": 1,
-					"tint": false,
-					"tintColor": "#FFFFFF",
-					"zIndex": 1
-				}
-			},
-			"secondary": {
-				"enable": false
-			},
-			"source": {
-				"enable": false
-			},
-			"target": {
-				"enable": false
-			},
-			"macro": {
-				"enable": false
-			},
-			"soundOnly": {
-				"sound": {
-					"enable": false
-				}
-			}
-		},
-		{
-			"id": "165872e7-2abf-409a-9b36-8edc251d26e6",
-			"label": "Blustery Gale",
-			"menu": "ontoken",
-			"metaData": {},
-			"primary": {
-				"video": {
-					"dbSection": "static",
-					"menuType": "spell",
-					"animation": "gust_of_wind",
-					"variant": "01",
-					"color": "white",
-					"enableCustom": false,
-					"customPath": ""
-				},
-				"sound": {
-					"enable": false,
-					"delay": 0,
-					"startTime": 0,
-					"volume": 0.75
-				},
-				"options": {
-					"contrast": 0,
-					"delay": 0,
-					"elevation": 1000,
-					"isWait": false,
-					"opacity": 1,
-					"repeat": 1,
-					"repeatDelay": 500,
-					"saturate": 0,
-					"size": 1,
-					"tint": false,
-					"tintColor": "#FFFFFF",
-					"zIndex": 1
-				}
-			},
-			"secondary": {
-				"enable": false
-			},
-			"source": {
-				"enable": false
-			},
-			"target": {
-				"enable": false
-			},
-			"macro": {
-				"enable": false
-			},
-			"soundOnly": {
-				"sound": {
-					"enable": false
-				}
-			}
-		},
-		{
-			"id": "36757b0a-2145-4abd-ad62-25dd31b970c9",
-			"label": "Boisterous Winds",
-			"menu": "ontoken",
-			"metaData": {},
-			"primary": {
-				"video": {
-					"dbSection": "static",
-					"menuType": "spell",
-					"animation": "gust_of_wind",
+					"animation": "gustofwind",
 					"variant": "01",
 					"color": "white",
 					"enableCustom": false,
@@ -282,115 +445,7 @@
 				"video": {
 					"dbSection": "static",
 					"menuType": "spell",
-					"animation": "gust_of_wind",
-					"variant": "01",
-					"color": "white",
-					"enableCustom": false,
-					"customPath": ""
-				},
-				"sound": {
-					"enable": false,
-					"delay": 0,
-					"startTime": 0,
-					"volume": 0.75
-				},
-				"options": {
-					"contrast": 0,
-					"delay": 0,
-					"elevation": 1000,
-					"isWait": false,
-					"opacity": 1,
-					"repeat": 1,
-					"repeatDelay": 500,
-					"saturate": 0,
-					"size": 1,
-					"tint": false,
-					"tintColor": "#FFFFFF",
-					"zIndex": 1
-				}
-			},
-			"secondary": {
-				"enable": false
-			},
-			"source": {
-				"enable": false
-			},
-			"target": {
-				"enable": false
-			},
-			"macro": {
-				"enable": false
-			},
-			"soundOnly": {
-				"sound": {
-					"enable": false
-				}
-			}
-		},
-		{
-			"id": "2444caf5-7f0a-4394-aba9-916b8a53ed3d",
-			"label": "Eye of the Storm",
-			"menu": "ontoken",
-			"metaData": {},
-			"primary": {
-				"video": {
-					"dbSection": "static",
-					"menuType": "spell",
-					"animation": "call_lightning",
-					"variant": "01",
-					"color": "white",
-					"enableCustom": false,
-					"customPath": ""
-				},
-				"sound": {
-					"enable": false,
-					"delay": 0,
-					"startTime": 0,
-					"volume": 0.75
-				},
-				"options": {
-					"contrast": 0,
-					"delay": 0,
-					"elevation": 1000,
-					"isWait": false,
-					"opacity": 1,
-					"repeat": 1,
-					"repeatDelay": 500,
-					"saturate": 0,
-					"size": 1,
-					"tint": false,
-					"tintColor": "#FFFFFF",
-					"zIndex": 1
-				}
-			},
-			"secondary": {
-				"enable": false
-			},
-			"source": {
-				"enable": false
-			},
-			"target": {
-				"enable": false
-			},
-			"macro": {
-				"enable": false
-			},
-			"soundOnly": {
-				"sound": {
-					"enable": false
-				}
-			}
-		},
-		{
-			"id": "c8074567-ffbe-4be8-8230-7b17607d72ef",
-			"label": "Thousand Cuts",
-			"menu": "ontoken",
-			"metaData": {},
-			"primary": {
-				"video": {
-					"dbSection": "static",
-					"menuType": "spell",
-					"animation": "cloud_of_daggers",
+					"animation": "gustofwind",
 					"variant": "01",
 					"color": "white",
 					"enableCustom": false,
@@ -444,61 +499,7 @@
 				"video": {
 					"dbSection": "static",
 					"menuType": "spell",
-					"animation": "cure_wounds",
-					"variant": "01",
-					"color": "white",
-					"enableCustom": false,
-					"customPath": ""
-				},
-				"sound": {
-					"enable": false,
-					"delay": 0,
-					"startTime": 0,
-					"volume": 0.75
-				},
-				"options": {
-					"contrast": 0,
-					"delay": 0,
-					"elevation": 1000,
-					"isWait": false,
-					"opacity": 1,
-					"repeat": 1,
-					"repeatDelay": 500,
-					"saturate": 0,
-					"size": 1,
-					"tint": false,
-					"tintColor": "#FFFFFF",
-					"zIndex": 1
-				}
-			},
-			"secondary": {
-				"enable": false
-			},
-			"source": {
-				"enable": false
-			},
-			"target": {
-				"enable": false
-			},
-			"macro": {
-				"enable": false
-			},
-			"soundOnly": {
-				"sound": {
-					"enable": false
-				}
-			}
-		},
-		{
-			"id": "4005a8a7-f230-4c4d-a4d6-76ae99b8ae64",
-			"label": "Vicious Mockery",
-			"menu": "ontoken",
-			"metaData": {},
-			"primary": {
-				"video": {
-					"dbSection": "static",
-					"menuType": "spell",
-					"animation": "magic_missile",
+					"animation": "curewounds",
 					"variant": "01",
 					"color": "white",
 					"enableCustom": false,

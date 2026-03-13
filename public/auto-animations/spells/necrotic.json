@@ -1,18 +1,17 @@
 {
 	"version": "4.0.0",
 	"melee": [],
-	"range": [],
-	"ontoken": [
+	"range": [
 		{
 			"id": "ea4f0b12-1692-478f-b64a-6b906b1be6bd",
 			"label": "Shadow Blast",
-			"menu": "ontoken",
+			"menu": "range",
 			"metaData": {},
 			"primary": {
 				"video": {
-					"dbSection": "static",
+					"dbSection": "range",
 					"menuType": "spell",
-					"animation": "eldritch_blast",
+					"animation": "eldritchblast",
 					"variant": "01",
 					"color": "purple",
 					"enableCustom": false,
@@ -60,13 +59,13 @@
 		{
 			"id": "a31e5735-4bdf-4918-a8ab-7d5a884606be",
 			"label": "Gangrenous Burst",
-			"menu": "ontoken",
+			"menu": "range",
 			"metaData": {},
 			"primary": {
 				"video": {
-					"dbSection": "static",
+					"dbSection": "range",
 					"menuType": "spell",
-					"animation": "eldritch_blast",
+					"animation": "eldritchblast",
 					"variant": "01",
 					"color": "purple",
 					"enableCustom": false,
@@ -114,13 +113,13 @@
 		{
 			"id": "80702e61-c3d8-4c2c-84aa-faf20d7bbbb8",
 			"label": "Vampiric Greed",
-			"menu": "ontoken",
+			"menu": "range",
 			"metaData": {},
 			"primary": {
 				"video": {
-					"dbSection": "static",
+					"dbSection": "range",
 					"menuType": "spell",
-					"animation": "toll_the_dead",
+					"animation": "tollthedead",
 					"variant": "01",
 					"color": "purple",
 					"enableCustom": false,
@@ -168,13 +167,13 @@
 		{
 			"id": "06508b60-3f3a-4048-a379-a5479fb2fae9",
 			"label": "Unspeakable Word",
-			"menu": "ontoken",
+			"menu": "range",
 			"metaData": {},
 			"primary": {
 				"video": {
-					"dbSection": "static",
+					"dbSection": "range",
 					"menuType": "spell",
-					"animation": "toll_the_dead",
+					"animation": "tollthedead",
 					"variant": "01",
 					"color": "purple",
 					"enableCustom": false,
@@ -222,13 +221,13 @@
 		{
 			"id": "90623652-00a6-4923-a5a9-e8d47a5f3730",
 			"label": "Withering Touch",
-			"menu": "ontoken",
+			"menu": "range",
 			"metaData": {},
 			"primary": {
 				"video": {
-					"dbSection": "static",
+					"dbSection": "range",
 					"menuType": "spell",
-					"animation": "toll_the_dead",
+					"animation": "tollthedead",
 					"variant": "01",
 					"color": "purple",
 					"enableCustom": false,
@@ -276,13 +275,13 @@
 		{
 			"id": "078239b7-545d-4ff5-9b69-0ec6d0ad8527",
 			"label": "Creeping Death",
-			"menu": "ontoken",
+			"menu": "range",
 			"metaData": {},
 			"primary": {
 				"video": {
-					"dbSection": "static",
+					"dbSection": "range",
 					"menuType": "spell",
-					"animation": "arms_of_hadar",
+					"animation": "armsofhadar",
 					"variant": "01",
 					"color": "purple",
 					"enableCustom": false,
@@ -330,13 +329,13 @@
 		{
 			"id": "44d5a966-ffb5-40ce-86b5-8d6f0723abf7",
 			"label": "Greater Shadow",
-			"menu": "ontoken",
+			"menu": "range",
 			"metaData": {},
 			"primary": {
 				"video": {
-					"dbSection": "static",
+					"dbSection": "range",
 					"menuType": "spell",
-					"animation": "arms_of_hadar",
+					"animation": "armsofhadar",
 					"variant": "01",
 					"color": "purple",
 					"enableCustom": false,
@@ -382,6 +381,116 @@
 			}
 		},
 		{
+			"id": "7ac32336-e4a6-42e8-950a-503e466623ed",
+			"label": "Entice",
+			"menu": "range",
+			"metaData": {},
+			"primary": {
+				"video": {
+					"dbSection": "range",
+					"menuType": "spell",
+					"animation": "darkness",
+					"variant": "01",
+					"color": "purple",
+					"enableCustom": false,
+					"customPath": ""
+				},
+				"sound": {
+					"enable": false,
+					"delay": 0,
+					"startTime": 0,
+					"volume": 0.75
+				},
+				"options": {
+					"contrast": 0,
+					"delay": 0,
+					"elevation": 1000,
+					"isWait": false,
+					"opacity": 1,
+					"repeat": 1,
+					"repeatDelay": 500,
+					"saturate": 0,
+					"size": 1,
+					"tint": false,
+					"tintColor": "#FFFFFF",
+					"zIndex": 1
+				}
+			},
+			"secondary": {
+				"enable": false
+			},
+			"source": {
+				"enable": false
+			},
+			"target": {
+				"enable": false
+			},
+			"macro": {
+				"enable": false
+			},
+			"soundOnly": {
+				"sound": {
+					"enable": false
+				}
+			}
+		},
+		{
+			"id": "a5d5bb69-f337-4b34-b529-389832422b69",
+			"label": "Shadow Trap",
+			"menu": "range",
+			"metaData": {},
+			"primary": {
+				"video": {
+					"dbSection": "range",
+					"menuType": "spell",
+					"animation": "web",
+					"variant": "01",
+					"color": "purple",
+					"enableCustom": false,
+					"customPath": ""
+				},
+				"sound": {
+					"enable": false,
+					"delay": 0,
+					"startTime": 0,
+					"volume": 0.75
+				},
+				"options": {
+					"contrast": 0,
+					"delay": 0,
+					"elevation": 1000,
+					"isWait": false,
+					"opacity": 1,
+					"repeat": 1,
+					"repeatDelay": 500,
+					"saturate": 0,
+					"size": 1,
+					"tint": false,
+					"tintColor": "#FFFFFF",
+					"zIndex": 1
+				}
+			},
+			"secondary": {
+				"enable": false
+			},
+			"source": {
+				"enable": false
+			},
+			"target": {
+				"enable": false
+			},
+			"macro": {
+				"enable": false
+			},
+			"soundOnly": {
+				"sound": {
+					"enable": false
+				}
+			}
+		}
+	],
+	"ontoken": [
+		{
 			"id": "dfa3767a-2d8c-4aba-b1fe-c299d875b8d9",
 			"label": "Summon Shadow",
 			"menu": "ontoken",
@@ -390,7 +499,7 @@
 				"video": {
 					"dbSection": "static",
 					"menuType": "spell",
-					"animation": "arms_of_hadar",
+					"animation": "armsofhadar",
 					"variant": "01",
 					"color": "purple",
 					"enableCustom": false,
@@ -445,114 +554,6 @@
 					"dbSection": "static",
 					"menuType": "spell",
 					"animation": "darkness",
-					"variant": "01",
-					"color": "purple",
-					"enableCustom": false,
-					"customPath": ""
-				},
-				"sound": {
-					"enable": false,
-					"delay": 0,
-					"startTime": 0,
-					"volume": 0.75
-				},
-				"options": {
-					"contrast": 0,
-					"delay": 0,
-					"elevation": 1000,
-					"isWait": false,
-					"opacity": 1,
-					"repeat": 1,
-					"repeatDelay": 500,
-					"saturate": 0,
-					"size": 1,
-					"tint": false,
-					"tintColor": "#FFFFFF",
-					"zIndex": 1
-				}
-			},
-			"secondary": {
-				"enable": false
-			},
-			"source": {
-				"enable": false
-			},
-			"target": {
-				"enable": false
-			},
-			"macro": {
-				"enable": false
-			},
-			"soundOnly": {
-				"sound": {
-					"enable": false
-				}
-			}
-		},
-		{
-			"id": "7ac32336-e4a6-42e8-950a-503e466623ed",
-			"label": "Entice",
-			"menu": "ontoken",
-			"metaData": {},
-			"primary": {
-				"video": {
-					"dbSection": "static",
-					"menuType": "spell",
-					"animation": "darkness",
-					"variant": "01",
-					"color": "purple",
-					"enableCustom": false,
-					"customPath": ""
-				},
-				"sound": {
-					"enable": false,
-					"delay": 0,
-					"startTime": 0,
-					"volume": 0.75
-				},
-				"options": {
-					"contrast": 0,
-					"delay": 0,
-					"elevation": 1000,
-					"isWait": false,
-					"opacity": 1,
-					"repeat": 1,
-					"repeatDelay": 500,
-					"saturate": 0,
-					"size": 1,
-					"tint": false,
-					"tintColor": "#FFFFFF",
-					"zIndex": 1
-				}
-			},
-			"secondary": {
-				"enable": false
-			},
-			"source": {
-				"enable": false
-			},
-			"target": {
-				"enable": false
-			},
-			"macro": {
-				"enable": false
-			},
-			"soundOnly": {
-				"sound": {
-					"enable": false
-				}
-			}
-		},
-		{
-			"id": "a5d5bb69-f337-4b34-b529-389832422b69",
-			"label": "Shadow Trap",
-			"menu": "ontoken",
-			"metaData": {},
-			"primary": {
-				"video": {
-					"dbSection": "static",
-					"menuType": "spell",
-					"animation": "web",
 					"variant": "01",
 					"color": "purple",
 					"enableCustom": false,

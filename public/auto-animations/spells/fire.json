@@ -1,18 +1,17 @@
 {
 	"version": "4.0.0",
 	"melee": [],
-	"range": [],
-	"ontoken": [
+	"range": [
 		{
 			"id": "25c90252-3170-4f27-9d94-76417e543d06",
 			"label": "Flame Dart",
-			"menu": "ontoken",
+			"menu": "range",
 			"metaData": {},
 			"primary": {
 				"video": {
-					"dbSection": "static",
+					"dbSection": "range",
 					"menuType": "spell",
-					"animation": "fire_bolt",
+					"animation": "firebolt",
 					"variant": "01",
 					"color": "orange",
 					"enableCustom": false,
@@ -60,13 +59,13 @@
 		{
 			"id": "c5033664-e0db-4a61-aef8-8a1a91cd7955",
 			"label": "Ignite",
-			"menu": "ontoken",
+			"menu": "range",
 			"metaData": {},
 			"primary": {
 				"video": {
-					"dbSection": "static",
+					"dbSection": "range",
 					"menuType": "spell",
-					"animation": "fire_bolt",
+					"animation": "firebolt",
 					"variant": "01",
 					"color": "orange",
 					"enableCustom": false,
@@ -114,11 +113,11 @@
 		{
 			"id": "1957f928-0afd-4fa2-8e11-2a9ec68ff315",
 			"label": "Pyroclasm",
-			"menu": "ontoken",
+			"menu": "range",
 			"metaData": {},
 			"primary": {
 				"video": {
-					"dbSection": "static",
+					"dbSection": "range",
 					"menuType": "spell",
 					"animation": "fireball",
 					"variant": "explosion",
@@ -168,11 +167,11 @@
 		{
 			"id": "70a4cb34-1c0d-408e-9d22-9b4bf42a188d",
 			"label": "Living Inferno",
-			"menu": "ontoken",
+			"menu": "range",
 			"metaData": {},
 			"primary": {
 				"video": {
-					"dbSection": "static",
+					"dbSection": "range",
 					"menuType": "spell",
 					"animation": "fireball",
 					"variant": "01",
@@ -218,7 +217,9 @@
 					"enable": false
 				}
 			}
-		},
+		}
+	],
+	"ontoken": [
 		{
 			"id": "2d227203-ce91-4547-b654-5777639eb6a0",
 			"label": "Dragonform",
@@ -228,7 +229,7 @@
 				"video": {
 					"dbSection": "static",
 					"menuType": "spell",
-					"animation": "burning_hands",
+					"animation": "burninghands",
 					"variant": "01",
 					"color": "orange",
 					"enableCustom": false,
@@ -282,7 +283,7 @@
 				"video": {
 					"dbSection": "static",
 					"menuType": "spell",
-					"animation": "burning_hands",
+					"animation": "burninghands",
 					"variant": "01",
 					"color": "orange",
 					"enableCustom": false,
@@ -336,7 +337,7 @@
 				"video": {
 					"dbSection": "static",
 					"menuType": "spell",
-					"animation": "flaming_sphere",
+					"animation": "flamingsphere",
 					"variant": "01",
 					"color": "orange",
 					"enableCustom": false,
@@ -390,7 +391,7 @@
 				"video": {
 					"dbSection": "static",
 					"menuType": "spell",
-					"animation": "divine_smite",
+					"animation": "divinesmite",
 					"variant": "01",
 					"color": "orange",
 					"enableCustom": false,
@@ -444,7 +445,7 @@
 				"video": {
 					"dbSection": "static",
 					"menuType": "spell",
-					"animation": "cure_wounds",
+					"animation": "curewounds",
 					"variant": "01",
 					"color": "orange",
 					"enableCustom": false,
