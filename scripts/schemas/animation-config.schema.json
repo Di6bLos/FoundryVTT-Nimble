@@ -4,16 +4,55 @@
 	"description": "Schema for validating animation configuration entries",
 	"type": "object",
 	"properties": {
+		"version": {
+			"type": "string",
+			"description": "Configuration file version"
+		},
 		"melee": {
 			"type": "array",
 			"items": {
 				"$ref": "#/definitions/meleeEntry"
 			}
+		},
+		"range": {
+			"type": "array",
+			"items": {
+				"$ref": "#/definitions/rangeEntry"
+			}
+		},
+		"ontoken": {
+			"type": "array",
+			"items": {
+				"$ref": "#/definitions/ontokenEntry"
+			}
+		},
+		"templatefx": {
+			"type": "array",
+			"items": {
+				"$ref": "#/definitions/genericEntry"
+			}
+		},
+		"aura": {
+			"type": "array",
+			"items": {
+				"$ref": "#/definitions/genericEntry"
+			}
+		},
+		"preset": {
+			"type": "array",
+			"items": {
+				"$ref": "#/definitions/genericEntry"
+			}
+		},
+		"aefx": {
+			"type": "array",
+			"items": {
+				"$ref": "#/definitions/genericEntry"
+			}
 		}
 	},
-	"required": ["melee"],
 	"definitions": {
-		"meleeEntry": {
+		"baseEntry": {
 			"type": "object",
 			"properties": {
 				"id": {
@@ -27,12 +66,7 @@
 				},
 				"menu": {
 					"type": "string",
-					"enum": ["melee"],
 					"description": "Menu category"
-				},
-				"meleeSwitch": {
-					"type": "object",
-					"description": "REQUIRED: Configuration for when used as a melee attack"
 				},
 				"primary": {
 					"type": "object",
@@ -57,7 +91,44 @@
 					"type": "object"
 				}
 			},
-			"required": ["id", "label", "menu", "meleeSwitch", "primary"]
+			"required": ["id", "label", "menu", "primary"]
+		},
+		"meleeEntry": {
+			"allOf": [
+				{ "$ref": "#/definitions/baseEntry" },
+				{
+					"properties": {
+						"menu": { "enum": ["melee"] },
+						"meleeSwitch": {
+							"type": "object",
+							"description": "Optional configuration for melee switch behaviour"
+						}
+					}
+				}
+			]
+		},
+		"rangeEntry": {
+			"allOf": [
+				{ "$ref": "#/definitions/baseEntry" },
+				{
+					"properties": {
+						"menu": { "enum": ["range"] }
+					}
+				}
+			]
+		},
+		"ontokenEntry": {
+			"allOf": [
+				{ "$ref": "#/definitions/baseEntry" },
+				{
+					"properties": {
+						"menu": { "enum": ["ontoken"] }
+					}
+				}
+			]
+		},
+		"genericEntry": {
+			"$ref": "#/definitions/baseEntry"
 		}
 	}
 }
