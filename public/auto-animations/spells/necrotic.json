@@ -37,6 +37,29 @@
 					"zIndex": 1
 				}
 			},
+			"meleeSwitch": {
+				"video": {
+					"dbSection": "range",
+					"menuType": "spell",
+					"animation": "eldritchblast",
+					"variant": "01",
+					"color": "purple",
+					"enableCustom": false,
+					"customPath": ""
+				},
+				"sound": {
+					"enable": false,
+					"delay": 0,
+					"startTime": 0,
+					"volume": 0.75
+				},
+				"options": {
+					"detect": "automatic",
+					"range": 2,
+					"returning": false,
+					"switchType": "on"
+				}
+			},
 			"secondary": {
 				"enable": false
 			},
