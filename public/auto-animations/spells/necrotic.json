@@ -1,16 +1,17 @@
 {
 	"version": "4.0.0",
-	"melee": [
+	"melee": [],
+	"range": [
 		{
 			"id": "90623652-00a6-4923-a5a9-e8d47a5f3730",
 			"label": "Withering Touch",
-			"menu": "melee",
+			"menu": "range",
 			"metaData": {},
 			"primary": {
 				"video": {
-					"dbSection": "melee",
+					"dbSection": "range",
 					"menuType": "spell",
-					"animation": "tollthedead",
+					"animation": "eldritchblast",
 					"variant": "01",
 					"color": "purple",
 					"enableCustom": false,
@@ -37,29 +38,6 @@
 					"zIndex": 1
 				}
 			},
-			"meleeSwitch": {
-				"video": {
-					"dbSection": "range",
-					"menuType": "spell",
-					"animation": "eldritchblast",
-					"variant": "01",
-					"color": "purple",
-					"enableCustom": false,
-					"customPath": ""
-				},
-				"sound": {
-					"enable": false,
-					"delay": 0,
-					"startTime": 0,
-					"volume": 0.75
-				},
-				"options": {
-					"detect": "automatic",
-					"range": 2,
-					"returning": false,
-					"switchType": "on"
-				}
-			},
 			"secondary": {
 				"enable": false
 			},
@@ -76,10 +54,9 @@
 				"sound": {
 					"enable": false
 				}
-			}
-		}
-	],
-	"range": [
+			},
+			"type": "spell"
+		},
 		{
 			"id": "ea4f0b12-1692-478f-b64a-6b906b1be6bd",
 			"label": "Shadow Blast",

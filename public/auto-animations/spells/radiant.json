@@ -1,16 +1,17 @@
 {
 	"version": "4.0.0",
-	"melee": [
+	"melee": [],
+	"range": [
 		{
 			"id": "6a45097e-eb5e-4afe-9f6d-c61315414ea7",
 			"label": "Vengeance",
-			"menu": "melee",
+			"menu": "range",
 			"metaData": {},
 			"primary": {
 				"video": {
-					"dbSection": "melee",
+					"dbSection": "range",
 					"menuType": "spell",
-					"animation": "divinesmite",
+					"animation": "guidingbolt",
 					"variant": "01",
 					"color": "yellow",
 					"enableCustom": false,
@@ -37,29 +38,6 @@
 					"zIndex": 1
 				}
 			},
-			"meleeSwitch": {
-				"video": {
-					"dbSection": "range",
-					"menuType": "spell",
-					"animation": "guidingbolt",
-					"variant": "01",
-					"color": "yellow",
-					"enableCustom": false,
-					"customPath": ""
-				},
-				"sound": {
-					"enable": false,
-					"delay": 0,
-					"startTime": 0,
-					"volume": 0.75
-				},
-				"options": {
-					"detect": "automatic",
-					"range": 2,
-					"returning": false,
-					"switchType": "on"
-				}
-			},
 			"secondary": {
 				"enable": false
 			},
@@ -76,10 +54,9 @@
 				"sound": {
 					"enable": false
 				}
-			}
-		}
-	],
-	"range": [
+			},
+			"type": "spell"
+		},
 		{
 			"id": "c1584cce-9795-48de-9a79-04e640dad109",
 			"label": "Condemn",

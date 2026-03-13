@@ -1,14 +1,15 @@
 {
 	"version": "4.0.0",
-	"melee": [
+	"melee": [],
+	"range": [
 		{
 			"id": "b1b4c6f5-9573-4aca-925e-99acabf12ec5",
 			"label": "Snowblind",
-			"menu": "melee",
+			"menu": "range",
 			"metaData": {},
 			"primary": {
 				"video": {
-					"dbSection": "melee",
+					"dbSection": "range",
 					"menuType": "spell",
 					"animation": "coneofcold",
 					"variant": "01",
@@ -37,29 +38,6 @@
 					"zIndex": 1
 				}
 			},
-			"meleeSwitch": {
-				"video": {
-					"dbSection": "range",
-					"menuType": "spell",
-					"animation": "coneofcold",
-					"variant": "01",
-					"color": "blue",
-					"enableCustom": false,
-					"customPath": ""
-				},
-				"sound": {
-					"enable": false,
-					"delay": 0,
-					"startTime": 0,
-					"volume": 0.75
-				},
-				"options": {
-					"detect": "automatic",
-					"range": 2,
-					"returning": false,
-					"switchType": "on"
-				}
-			},
 			"secondary": {
 				"enable": false
 			},
@@ -76,10 +54,9 @@
 				"sound": {
 					"enable": false
 				}
-			}
-		}
-	],
-	"range": [
+			},
+			"type": "spell"
+		},
 		{
 			"id": "bae0feb2-18c5-4624-9266-ce0007dac754",
 			"label": "Ice Lance",
