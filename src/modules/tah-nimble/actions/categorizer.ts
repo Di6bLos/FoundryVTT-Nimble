@@ -23,19 +23,16 @@ export async function organizeCategoriesForCharacter(
 	// Filter out excluded actions
 	const filteredActions = actions.filter((action) => !excludedItemIds.includes(action.itemId));
 
-	// Apply category visibility
-	const activeCategories =
-		enabledCategories.length > 0 ? enabledCategories : getDefaultCharacterCategories();
-
 	// Group actions by action cost (if configured)
+	// Pass user's raw enabledCategories so each function applies its own type-appropriate defaults
 	if (config.displayOptions.groupByActionCost) {
 		categories.push(
-			...createActionCostCategories(filteredActions, activeCategories, disabledCategories),
+			...createActionCostCategories(filteredActions, enabledCategories, disabledCategories),
 		);
 	} else {
 		// Group actions by type
 		categories.push(
-			...createTypeBasedCategories(filteredActions, activeCategories, disabledCategories),
+			...createTypeBasedCategories(filteredActions, enabledCategories, disabledCategories),
 		);
 	}
 
@@ -225,11 +222,4 @@ function createTypeBasedCategories(
 	}
 
 	return categories;
-}
-
-/**
- * Get default character categories
- */
-function getDefaultCharacterCategories(): string[] {
-	return ['spells', 'abilities', 'reactions', 'utility'];
 }

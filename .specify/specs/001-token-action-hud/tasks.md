@@ -122,7 +122,7 @@ description: "Implementation tasks for Token Action HUD Nimble Companion Module"
 
 ### Implementation for User Story 4
 
-- [ ] T038 [P] [US4] Create `src/modules/tah-nimble/settings/settingsUI.ts`: Create SettingConfig objects for module settings registration (currently in moduleSettings.ts T011, can now expand with UI)
+- [X] T038 [P] [US4] Create `src/modules/tah-nimble/settings/settingsUI.ts`: Create SettingConfig objects for module settings registration (currently in moduleSettings.ts T011, can now expand with UI)
 - [ ] T039 [US4] Implement settings form: Create simple settings interface (can be HTML form or use FoundryVTT's built-in settings form) in `public/modules/token-action-hud-nimble/templates/settings.html`
 - [ ] T040 [US4] Add category toggle controls: Checkboxes to enable/disable each category (Spells, Abilities, Reactions, etc. for character; Melee, Ranged, Abilities for NPC)
 - [ ] T041 [US4] Add action exclusion controls: Input/modal to select and exclude specific actions by name or ID
@@ -138,10 +138,10 @@ description: "Implementation tasks for Token Action HUD Nimble Companion Module"
 
 **Purpose**: Testing, documentation, error handling, optimization
 
-- [ ] T045 [P] Write unit tests for action extraction: `tests/unit/actionExtractor.test.ts` - test character spell extraction, feature extraction, NPC monsterFeature extraction, edge cases (no actions, invalid items)
-- [ ] T046 [P] Write unit tests for categorization: `tests/unit/categoryOrganizer.test.ts` - test category grouping by cost, by attack type, empty category filtering, collapsed state
-- [ ] T047 [P] Write unit tests for permissions: `tests/unit/permissions.test.ts` - test `canExecuteAction()` for player-owned tokens, GM tokens, non-controlled tokens
-- [ ] T048 [P] Write unit tests for action cost formatting: `tests/unit/actionCost.test.ts` - test cost.quantity → label conversion (0→"Free", 1→"1 Action", etc.)
+- [X] T045 [P] Write unit tests for action extraction: `tests/unit/actionExtractor.test.ts` - test character spell extraction, feature extraction, NPC monsterFeature extraction, edge cases (no actions, invalid items)
+- [X] T046 [P] Write unit tests for categorization: `tests/unit/categoryOrganizer.test.ts` - test category grouping by cost, by attack type, empty category filtering, collapsed state
+- [X] T047 [P] Write unit tests for permissions: `tests/unit/permissions.test.ts` - test `canExecuteAction()` for player-owned tokens, GM tokens, non-controlled tokens
+- [X] T048 [P] Write unit tests for action cost formatting: `tests/unit/actionCost.test.ts` - test cost.quantity → label conversion (0→"Free", 1→"1 Action", etc.)
 - [ ] T049 Write E2E test for character actions: `tests/e2e/character-hud.playwright.ts` - select character token, verify HUD displays, click action, verify chat message
 - [ ] T050 Write E2E test for NPC actions: `tests/e2e/npc-hud.playwright.ts` - select NPC token, verify melee/ranged attacks display, click attack, verify roll
 - [ ] T051 Write E2E test for configuration: `tests/e2e/hud-config.playwright.ts` - disable category, verify hidden; exclude action, verify hidden; reload, verify persisted
@@ -150,11 +150,11 @@ description: "Implementation tasks for Token Action HUD Nimble Companion Module"
 - [X] T054 [P] Add logging/debugging: Create debug logger in `src/modules/tah-nimble/utils/logger.ts` with optional console output controlled by setting
 - [X] T055 Create module README: `public/modules/token-action-hud-nimble/README.md` - installation, features, configuration, troubleshooting, gotchas (mana system, attack type detection)
 - [X] T056 [P] Create localization strings: Complete English translations in `public/modules/token-action-hud-nimble/languages/en.json` for all UI labels and error messages
-- [ ] T057 Optimize extraction speed: Profile action extraction, ensure <100ms for typical character (20-30 items). Cache actor items ref if needed
+- [X] T057 Optimize extraction speed: Profile action extraction, ensure <100ms for typical character (20-30 items). Cache actor items ref if needed
 - [X] T058 Optimize hook debouncing: Verify updateItem refresh debounced at 100ms to prevent excessive re-renders
 - [X] T059 Run `pnpm check`: Format, lint, type-check, circular-deps, test - verify module meets Nimble code quality standards (all 538 tests pass)
 - [ ] T060 Create demo/test world: Set up simple scene with 1 Nimble character (with at least 1 spell + 1 feature) and 1 NPC (with melee attack) for manual E2E testing
-- [ ] T061 Investigate FR-008 hotkeys: Check Token Action HUD Core v2 API for hotkey/shortcut registration (`window.TokenActionHUD`); if API exists, implement hotkey bindings in `src/modules/tah-nimble/index.ts`; if not, document as out-of-scope in README
+- [X] T061 Investigate FR-008 hotkeys: Check Token Action HUD Core v2 API for hotkey/shortcut registration (`window.TokenActionHUD`); if API exists, implement hotkey bindings in `src/modules/tah-nimble/index.ts`; if not, document as out-of-scope in README
 
 **Checkpoint**: Core implementation complete; browser validation and unit tests remaining
 
