@@ -6,6 +6,15 @@
 import type { HUDConfiguration } from '../types/nimble-hud';
 
 const MODULE_ID = 'token-action-hud-nimble';
+const MODULE_KEY = MODULE_ID as 'core';
+
+function registerSetting(key: string, options: object): void {
+	game.settings.register(
+		MODULE_KEY,
+		key as 'rollMode',
+		options as unknown as Parameters<typeof game.settings.register>[2],
+	);
+}
 
 /**
  * Register all module settings
@@ -13,61 +22,64 @@ const MODULE_ID = 'token-action-hud-nimble';
  */
 export function registerModuleSettings(): void {
 	// Per-user HUD configuration setting
-	game.settings.register(MODULE_ID, 'userConfigs', {
+	registerSetting('userConfigs', {
 		scope: 'client',
 		config: false,
 		type: Object,
 		default: {} as Record<string, HUDConfiguration>,
-		onChange: (value) => {
+		onChange: (value: unknown) => {
 			console.log(`[TAH-Nimble] HUD configuration updated`, value);
-			// Trigger HUD refresh event if needed
-			Hooks.callAll('tah-nimble:settingsChanged');
+			Hooks.callAll('tah-nimble:settingsChanged' as any);
 		},
-	} as Game.Settings.RegisterOptions);
+	});
 
 	// Feature flags
-	game.settings.register(MODULE_ID, 'enableDebugLogging', {
+	registerSetting('enableDebugLogging', {
 		name: 'Enable Debug Logging',
 		hint: 'Log detailed debug information to browser console',
 		scope: 'client',
 		config: true,
 		type: Boolean,
 		default: false,
-	} as Game.Settings.RegisterOptions);
+	});
 
-	game.settings.register(MODULE_ID, 'groupByActionCost', {
+	registerSetting('groupByActionCost', {
 		name: 'Group Actions by Cost',
 		hint: 'For characters: Group actions by numeric cost (1/2/3 Actions) instead of type',
 		scope: 'client',
 		config: true,
 		type: Boolean,
 		default: false,
-	} as Game.Settings.RegisterOptions);
+	});
 
-	game.settings.register(MODULE_ID, 'showActionCosts', {
+	registerSetting('showActionCosts', {
 		name: 'Show Action Costs',
 		hint: 'Display action costs in action labels (e.g., "Fireball (2 Actions)")',
 		scope: 'client',
 		config: true,
 		type: Boolean,
 		default: true,
-	} as Game.Settings.RegisterOptions);
+	});
+}
+
+function getSetting<T>(key: string): T {
+	return game.settings.get(MODULE_KEY, key as 'rollMode') as T;
+}
+
+async function setSetting(key: string, value: unknown): Promise<void> {
+	await game.settings.set(MODULE_KEY, key as 'rollMode', value as never);
 }
 
 /**
  * Get HUD configuration for a specific user
  */
 export function getHUDConfiguration(userId: string): HUDConfiguration {
-	const userConfigs = game.settings.get(MODULE_ID, 'userConfigs') as Record<
-		string,
-		HUDConfiguration
-	>;
+	const userConfigs = getSetting<Record<string, HUDConfiguration>>('userConfigs');
 
 	if (userConfigs[userId]) {
 		return userConfigs[userId];
 	}
 
-	// Return default configuration if not found
 	return getDefaultConfiguration(userId);
 }
 
@@ -78,16 +90,13 @@ export async function saveHUDConfiguration(
 	userId: string,
 	config: HUDConfiguration,
 ): Promise<void> {
-	const userConfigs = game.settings.get(MODULE_ID, 'userConfigs') as Record<
-		string,
-		HUDConfiguration
-	>;
+	const userConfigs = getSetting<Record<string, HUDConfiguration>>('userConfigs');
 	userConfigs[userId] = {
 		...config,
 		lastModified: new Date().toISOString(),
 	};
 
-	await game.settings.set(MODULE_ID, 'userConfigs', userConfigs);
+	await setSetting('userConfigs', userConfigs);
 }
 
 /**
@@ -97,7 +106,7 @@ export function getDefaultConfiguration(userId: string): HUDConfiguration {
 	return {
 		userId,
 		categories: {
-			enabled: [], // Empty means use system defaults
+			enabled: [],
 			disabled: [],
 			collapsed: [],
 		},
@@ -105,10 +114,10 @@ export function getDefaultConfiguration(userId: string): HUDConfiguration {
 			itemIds: [],
 		},
 		displayOptions: {
-			showActionCosts: game.settings.get(MODULE_ID, 'showActionCosts') as boolean,
+			showActionCosts: getSetting<boolean>('showActionCosts'),
 			showSpellTiers: true,
 			showManaCost: true,
-			groupByActionCost: game.settings.get(MODULE_ID, 'groupByActionCost') as boolean,
+			groupByActionCost: getSetting<boolean>('groupByActionCost'),
 			groupAttacksByType: true,
 			compactMode: false,
 		},
@@ -121,14 +130,5 @@ export function getDefaultConfiguration(userId: string): HUDConfiguration {
  * Check if debug logging is enabled
  */
 export function isDebugLoggingEnabled(): boolean {
-	return game.settings.get(MODULE_ID, 'enableDebugLogging') as boolean;
-}
-
-/**
- * Log debug message if debug logging is enabled
- */
-export function debugLog(message: string, data?: unknown): void {
-	if (isDebugLoggingEnabled()) {
-		console.log(`[TAH-Nimble Debug] ${message}`, data);
-	}
+	return getSetting<boolean>('enableDebugLogging');
 }

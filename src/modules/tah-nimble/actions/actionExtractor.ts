@@ -4,6 +4,41 @@
  */
 
 import type { NimbleHUDAction } from '../types/nimble-hud';
+import { formatActionCost, formatNPCActionName } from '../utils/actionCost';
+
+type NimbleItemSystem = {
+	activation?: {
+		cost?: { quantity?: number; type?: string; details?: string };
+		targets?: {
+			attackType?: string;
+			count?: number;
+			type?: string;
+			restriction?: string;
+			distance?: number;
+		};
+	};
+	subtype?: string;
+	description?: { value?: string } | string;
+	tier?: number;
+	school?: string;
+	manaCost?: number;
+	tags?: string[];
+};
+
+type NimbleItemWithActivate = Item & {
+	activate?: () => Promise<ChatMessage | null>;
+};
+
+function getItemSystem(item: Item): NimbleItemSystem {
+	return item.system as unknown as NimbleItemSystem;
+}
+
+function clampCostQuantity(qty: number): 0 | 1 | 2 | 3 {
+	if (qty <= 0) return 0;
+	if (qty === 1) return 1;
+	if (qty === 2) return 2;
+	return 3;
+}
 
 /**
  * Extract actions from a Nimble character actor
@@ -17,10 +52,8 @@ export async function extractCharacterActions(actor: Actor): Promise<NimbleHUDAc
 	// Filter for activatable items: spell, feature, boon with activation.cost.quantity > 0
 	const activatableItems = actor.items.filter((item) => {
 		const itemType = item.type as string;
-		const activation = item.system?.activation as unknown as
-			| { cost?: { quantity?: number } }
-			| undefined;
-		const quantity = activation?.cost?.quantity ?? 0;
+		const system = getItemSystem(item);
+		const quantity = system.activation?.cost?.quantity ?? 0;
 
 		return ['spell', 'feature', 'boon'].includes(itemType) && quantity > 0;
 	});
@@ -54,9 +87,11 @@ export async function extractNPCActions(actor: Actor): Promise<NimbleHUDAction[]
 	// Filter for monsterFeature items with valid subtypes
 	const monsterFeatures = actor.items.filter((item) => {
 		const itemType = item.type as string;
-		const subtype = item.system?.subtype as string | undefined;
+		const system = getItemSystem(item);
 
-		return itemType === 'monsterFeature' && subtype && validSubtypes.includes(subtype);
+		return (
+			itemType === 'monsterFeature' && !!system.subtype && validSubtypes.includes(system.subtype)
+		);
 	});
 
 	for (const item of monsterFeatures) {
@@ -77,15 +112,12 @@ export async function extractNPCActions(actor: Actor): Promise<NimbleHUDAction[]
  * Create a NimbleHUDAction from an item
  */
 async function createAction(item: Item, actor: Actor): Promise<NimbleHUDAction | null> {
-	const activation = item.system?.activation as unknown as
-		| {
-				cost?: { quantity?: number; type?: string; details?: string };
-				targets?: { attackType?: string; count?: number; type?: string; restriction?: string };
-		  }
-		| undefined;
+	const system = getItemSystem(item);
+	const activation = system.activation;
 
 	const cost = activation?.cost ?? {};
-	const quantity = cost.quantity ?? 1;
+	const rawQuantity = cost.quantity ?? 1;
+	const quantity = clampCostQuantity(rawQuantity);
 	const costLabel = formatActionCost(quantity);
 	const costType = cost.type ?? 'action';
 
@@ -95,8 +127,8 @@ async function createAction(item: Item, actor: Actor): Promise<NimbleHUDAction |
 	if (item.type === 'spell') {
 		category = 'spells';
 	} else if (item.type === 'monsterFeature') {
-		const subtype = item.system?.subtype as string | undefined;
-		const attackType = activation?.targets?.attackType as string | undefined;
+		const subtype = system.subtype;
+		const attackType = activation?.targets?.attackType;
 
 		if (subtype === 'action' || subtype === 'attackSequence') {
 			if (attackType === 'reach') {
@@ -117,28 +149,46 @@ async function createAction(item: Item, actor: Actor): Promise<NimbleHUDAction |
 		category = 'utility';
 	}
 
+	// Format display name with attack type and cost for NPC melee/ranged items
+	let displayName = item.name ?? 'Unknown Action';
+	if (item.type === 'monsterFeature' && ['melee', 'ranged'].includes(category)) {
+		const attackTypeStr = activation?.targets?.attackType ?? '';
+		const attackType =
+			attackTypeStr === 'range' ? 'range' : attackTypeStr === 'reach' ? 'reach' : '';
+		displayName = formatNPCActionName(displayName, attackType, quantity);
+	}
+
+	// Resolve description from various formats
+	let description = '';
+	if (system.description && typeof system.description === 'object' && system.description.value) {
+		description = system.description.value;
+	} else if (typeof system.description === 'string') {
+		description = system.description;
+	}
+
 	// Build action object
+	const nimbleItem = item as NimbleItemWithActivate;
 	const action: NimbleHUDAction = {
-		id: `action-${item.id}`,
-		itemId: item.id,
-		actorId: actor.id,
-		name: item.name,
-		icon: item.img || 'icons/svg/item-bag.svg',
-		description: item.system?.description?.value || item.system?.description || '',
+		id: `action-${item.id ?? Math.random().toString(36).slice(2)}`,
+		itemId: item.id ?? '',
+		actorId: actor.id ?? '',
+		name: displayName,
+		icon: item.img ?? 'icons/svg/item-bag.svg',
+		description,
 		type: item.type as 'spell' | 'feature' | 'monsterFeature' | 'boon',
 		category,
 		cost: {
-			quantity: quantity as 0 | 1 | 2 | 3,
+			quantity,
 			label: costLabel,
 			type: costType,
 			details: cost.details,
 		},
 		requiresTarget: (activation?.targets?.count ?? 0) > 0,
 		targets: activation?.targets,
-		canActivate: true, // TODO: Check if preconditions met (mana, resources, etc.)
+		canActivate: true,
 		activate: async () => {
 			try {
-				return await item.activate?.();
+				return (await nimbleItem.activate?.()) ?? null;
 			} catch (error) {
 				console.error(`[TAH-Nimble] Failed to activate ${item.name}:`, error);
 				return null;
@@ -148,53 +198,21 @@ async function createAction(item: Item, actor: Actor): Promise<NimbleHUDAction |
 
 	// Add spell-specific properties
 	if (item.type === 'spell') {
-		const spellData = item.system as unknown as {
-			tier?: number;
-			school?: string;
-			manaCost?: number;
-			tags?: string[];
-		};
-
 		action.spell = {
-			tier: spellData.tier ?? 0,
-			school: spellData.school ?? 'universal',
-			manaCost: spellData.manaCost ?? 0,
-			tags: spellData.tags ?? [],
+			tier: system.tier ?? 0,
+			school: system.school ?? 'universal',
+			manaCost: system.manaCost ?? 0,
+			tags: system.tags ?? [],
 		};
 	}
 
 	// Add attack-specific properties for melee/ranged
 	if (['melee', 'ranged'].includes(category)) {
-		const targetData = activation?.targets as unknown as
-			| {
-					attackType?: string;
-					distance?: number;
-			  }
-			| undefined;
-
 		action.attack = {
-			attackType: targetData?.attackType === 'range' ? 'range' : 'reach',
-			range: targetData?.distance,
+			attackType: activation?.targets?.attackType === 'range' ? 'range' : 'reach',
+			range: activation?.targets?.distance,
 		};
 	}
 
 	return action;
-}
-
-/**
- * Format numeric action cost to display label
- */
-function formatActionCost(quantity: 0 | 1 | 2 | 3): string {
-	switch (quantity) {
-		case 0:
-			return 'Free';
-		case 1:
-			return '1 Action';
-		case 2:
-			return '2 Actions';
-		case 3:
-			return '3 Actions';
-		default:
-			return 'Unknown';
-	}
 }

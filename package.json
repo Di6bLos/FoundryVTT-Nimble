@@ -9,6 +9,7 @@
 		"preinstall": "npx only-allow pnpm",
 		"build": "pnpm build:compendia && vite build",
 		"build:system": "vite build",
+		"build:tah-nimble": "vite build --config vite.config.tah-nimble.mts",
 		"build:compendia": "node ./build/buildCompendia.mjs",
 		"worktree:setup": "node ./build/worktreeSetup.mjs",
 		"worktree:cleanup": "node ./build/worktreeCleanup.mjs",

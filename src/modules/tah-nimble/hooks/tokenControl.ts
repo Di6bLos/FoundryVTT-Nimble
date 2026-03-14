@@ -3,7 +3,7 @@
  * Handles token selection/deselection to update HUD actions
  */
 
-import { debugLog } from '../settings/moduleSettings';
+import { debugLog } from '../utils/logger';
 
 /**
  * Setup the token control hook
@@ -17,7 +17,7 @@ export function setupTokenControlHook(): void {
 			debugLog(`Token control event: ${token.document.name} (controlled: ${controlled})`);
 
 			// Trigger HUD refresh
-			Hooks.callAll('tah-nimble:tokenSelected', token, controlled);
+			Hooks.callAll('tah-nimble:tokenSelected' as any, token, controlled);
 		} catch (error) {
 			console.error('[TAH-Nimble] Error in token control hook:', error);
 		}

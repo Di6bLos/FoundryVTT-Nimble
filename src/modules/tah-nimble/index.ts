@@ -9,6 +9,8 @@ import { setupItemUpdateHook } from './hooks/itemUpdates';
 import { setupTokenControlHook } from './hooks/tokenControl';
 import { getHUDConfiguration, registerModuleSettings } from './settings/moduleSettings';
 import type { NimbleHUDAction } from './types/nimble-hud';
+import { canExecuteAction } from './utils/permissions';
+import { isCharacterActor, isNPCActor } from './utils/typeGuards';
 
 const MODULE_ID = 'token-action-hud-nimble';
 const MODULE_TITLE = 'Token Action HUD — Nimble 2';
@@ -62,15 +64,21 @@ function registerSystemActions(): void {
 			if (!actor) return [];
 
 			try {
+				// Permission check: only allow action execution for owned actors
+				if (!canExecuteAction(actor, game.user.id)) {
+					console.warn(`[${MODULE_TITLE}] User lacks permission for actor ${actor.name}`);
+					return [];
+				}
+
 				const actions: NimbleHUDAction[] = [];
 
 				// Extract character actions (spell, feature, boon)
-				if (['character'].includes(actor.type)) {
+				if (isCharacterActor(actor)) {
 					actions.push(...(await extractCharacterActions(actor)));
 				}
 
 				// Extract NPC actions (monsterFeature only)
-				if (['npc', 'minion', 'soloMonster'].includes(actor.type)) {
+				if (isNPCActor(actor)) {
 					actions.push(...(await extractNPCActions(actor)));
 				}
 
@@ -95,11 +103,11 @@ function registerSystemActions(): void {
 
 				const config = getHUDConfiguration(game.user.id);
 
-				if (['character'].includes(actor.type)) {
+				if (isCharacterActor(actor)) {
 					return organizeCategoriesForCharacter(actions, config);
 				}
 
-				if (['npc', 'minion', 'soloMonster'].includes(actor.type)) {
+				if (isNPCActor(actor)) {
 					return organizeCategoriesForNPC(actions, config);
 				}
 
