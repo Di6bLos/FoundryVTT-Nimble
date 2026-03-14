@@ -35,12 +35,12 @@ interface NimbleHUDAction {
            | 'ranged'
            | 'triggered';              // HUD category for display
 
-  // Activation Cost
+  // Activation Cost (Nimble 3-Action Economy)
   cost: {
-    type: 'action' | 'bonus_action' | 'reaction' | 'minute' | 'hour' | 'special' | 'none';
-    label: string;                    // "Action", "Bonus Action", "Reaction", etc. (for display)
-    quantity?: number;                // Number of actions/reactions consumed
-    details?: string;                 // Trigger/condition text (for reactions and special)
+    quantity: 0 | 1 | 2 | 3;          // 0=Passive/Free, 1=1 Action, 2=2 Actions, 3=3 Actions (full turn)
+    label: string;                    // "Free", "1 Action", "2 Actions", "3 Actions" (for display)
+    type?: string;                    // Optional: 'special', 'minute', 'hour' for non-action costs
+    details?: string;                 // Trigger/condition text (for special costs)
   };
 
   // Spell-Specific Properties
@@ -242,52 +242,55 @@ interface ActionCategory {
 }
 ```
 
-#### Character Categories
+#### Character Categories (Organized by Action Cost - Nimble 3-Action Economy)
 
 ```typescript
 const CHARACTER_CATEGORIES: ActionCategory[] = [
   {
-    id: 'spells',
-    label: 'Spells',
-    description: 'Magical abilities',
-    icon: 'systems/nimble/icons/categories/spells.webp',
-    actions: [...],
+    id: 'quick-actions',
+    label: 'Quick Actions (1 Action)',
+    description: 'Fast combat actions',
+    icon: 'systems/nimble/icons/categories/quick.webp',
+    actions: [...],  // All spells/abilities with cost.quantity === 1
     sortOrder: 0,
     collapsible: true,
     actorType: 'character'
   },
   {
-    id: 'abilities',
-    label: 'Abilities',
-    description: 'Class and racial features',
-    icon: 'systems/nimble/icons/categories/abilities.webp',
-    actions: [...],
+    id: 'standard-actions',
+    label: 'Standard Actions (2 Actions)',
+    description: 'Main combat actions',
+    icon: 'systems/nimble/icons/categories/standard.webp',
+    actions: [...],  // All spells/abilities with cost.quantity === 2
     sortOrder: 1,
     collapsible: true,
     actorType: 'character'
   },
   {
-    id: 'reactions',
-    label: 'Reactions',
-    description: 'Out-of-turn responses',
-    icon: 'systems/nimble/icons/categories/reactions.webp',
-    actions: [...],
+    id: 'full-turn-actions',
+    label: 'Full-Turn Actions (3 Actions)',
+    description: 'Powerful actions using entire turn',
+    icon: 'systems/nimble/icons/categories/fullTurn.webp',
+    actions: [...],  // All spells/abilities with cost.quantity === 3
     sortOrder: 2,
     collapsible: true,
     actorType: 'character'
   },
   {
-    id: 'utility',
-    label: 'Utility',
-    description: 'Out-of-combat abilities',
-    icon: 'systems/nimble/icons/categories/utility.webp',
-    actions: [...],
+    id: 'free-actions',
+    label: 'Free Actions',
+    description: 'Passive abilities and reactions',
+    icon: 'systems/nimble/icons/categories/free.webp',
+    actions: [...],  // All spells/abilities with cost.quantity === 0 (passive)
     sortOrder: 3,
     collapsible: true,
     actorType: 'character'
   }
 ];
 ```
+
+**Alternative Organization** (by type):
+If desired, categories can still be organized by item type (Spells, Abilities) with numeric action cost displayed in action labels: `"Fireball (2 Actions)"`, `"Parry (1 Action)"`, etc.
 
 #### NPC Categories
 

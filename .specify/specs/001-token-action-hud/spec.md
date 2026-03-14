@@ -79,13 +79,21 @@ As a user (player or GM), I need to configure which actions appear in the HUD an
 
 ---
 
+## Clarifications
+
+### Session 2026-03-13 (Continued)
+
+- Q: Does Nimble use 3-action economy (numeric 1/2/3 action costs) or categorical types (action/bonus action/reaction)? → A: Nimble uses 3-action economy like Pathfinder 2e; actions have numeric costs (1 action, 2 actions, 3 actions, or free/passive).
+
+---
+
 ## Requirements *(mandatory)*
 
 ### Functional Requirements
 
 - **FR-001**: Module MUST register as a Token Action HUD Core companion module and be compatible with FoundryVTT v13+
-- **FR-002**: Module MUST extract and display Nimble-specific action types: Attacks (melee/ranged), Spells, Abilities, Reactions, Skills, and Utility Actions
-- **FR-003**: Module MUST organize actions into labeled categories matching Nimble 2 game mechanics
+- **FR-002**: Module MUST extract and display Nimble-specific action types: Attacks (melee/ranged), Spells, Abilities, Skills, and Utility Actions. Actions are labeled with their numeric action cost (1 Action, 2 Actions, 3 Actions, or Free).
+- **FR-003**: Module MUST organize actions into labeled categories matching Nimble 2 game mechanics and display numeric action costs prominently
 - **FR-004**: Module MUST support both PC (character) and NPC actor types; for NPCs, display combat-relevant actions
 - **FR-005**: Module MUST execute actions when clicked: roll attacks (with modifiers), cast spells, use abilities, perform skill checks. Action execution respects standard FoundryVTT permissions: players can only execute actions for tokens they control; GM can execute actions for any token. Target selection for actions that require targets follows Nimble's default targeting rules.
 - **FR-006**: Module MUST persist per-user configuration: enabled/disabled categories, action exclusions, HUD position. Settings are stored per user and consistent across all scenes.

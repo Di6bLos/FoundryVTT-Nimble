@@ -8,11 +8,12 @@
 
 ## Summary
 
-Create a FoundryVTT companion module that extends Token Action HUD Core with Nimble 2 system-specific actions. The module will extract and categorize Nimble items (spells, features, monster features) as combat actions, organize them by category (Spells, Abilities, Reactions, Melee/Ranged Attacks), and enable quick action execution from the HUD while respecting FoundryVTT permission models.
+Create a FoundryVTT companion module that extends Token Action HUD Core with Nimble 2 system-specific actions. The module will extract and categorize Nimble items (spells, features, monster features) as combat actions, organize them by action cost (Quick Actions [1 Action], Standard Actions [2 Actions], Full-Turn [3 Actions]), and enable quick action execution from the HUD while respecting FoundryVTT permission models.
 
-**Key Differentiators from D&D 5e/PF2e**:
+**Key Differentiators**:
+- Nimble uses **3-action economy** (like Pathfinder 2e): actions cost 1, 2, or 3 action points per turn, not categorical types like D&D 5e
 - Nimble uses separate item types for characters (spell, feature, boon) and NPCs (monsterFeature)
-- Activation cost types standardize action economy (action, bonus_action, reaction, special, minute, hour)
+- Action cost is numeric (1/2/3 or free), not categorical (action/bonus_action/reaction)
 - Spells consume mana; features do not
 - NPCs have attack sequences and triggered abilities (bloodied, lastStand states)
 

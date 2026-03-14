@@ -250,21 +250,28 @@ const hudItems = actor.items.filter(item =>
 
 ---
 
-### 8. Activation Cost Types
+### 8. Activation Cost Types & 3-Action Economy
 
-Nimble standardizes action economy via `activation.cost.type`:
+**CRITICAL**: Nimble uses a **3-action economy** (like Pathfinder 2e), where each action has a numeric action cost, not categorical types like D&D 5e.
 
-| Cost Type | Meaning | HUD Display | Combat Use |
-|-----------|---------|-------------|---|
-| **'action'** | Uses 1 action | `(Action)` | Primary combat action |
-| **'bonus_action'** | Uses 1 bonus action | `(Bonus Action)` | Quick action in turn |
-| **'reaction'** | Uses 1 reaction | `(Reaction)` | Out-of-turn response (Counterspell, Parry) |
-| **'minute'** | Takes 1 minute | `(1 Minute)` | Short rest/ritual |
-| **'hour'** | Takes 1 hour | `(1 Hour)` | Long ritual or long rest |
-| **'special'** | Complex/custom | Use `cost.details` text | Refer to item description |
-| **'none'** | Passive/always active | ❌ Do NOT display | Not an action |
+| Action Cost | Meaning | HUD Display | Combat Use | Examples |
+|-----------|---------|-------------|---|---|
+| **1 action** | Costs 1 action point per turn | `(1 Action)` | Quick combat action | Basic attack, cantrip, move |
+| **2 actions** | Costs 2 action points per turn | `(2 Actions)` | Standard powerful action | Powerful spell, multi-step ability |
+| **3 actions** | Costs all 3 actions per turn | `(3 Actions)` | Full-turn action | Powerful multi-step ability |
+| **Free** | Costs 0 actions (passive or reaction) | `(Free)` or ❌ hide | Passive/always active | Passive trait, automatic reaction |
 
-**Source**: `/src/view/sheets/pages/PlayerCharacterSpellsTab.svelte:32–76`
+**Data Structure** (NOT categorical type, but numeric cost):
+- Instead of `activation.cost.type` = 'action'/'bonus_action'/'reaction'
+- Nimble uses `activation.cost.quantity` or similar numeric field = 1, 2, or 3
+- Free actions have `cost.quantity = 0` or `cost.type = 'none'`
+
+**HUD Display Strategy**:
+- Display action cost as `"(1 Action)"`, `"(2 Actions)"`, `"(3 Actions)"`, or `"(Free)"`
+- Group actions by cost if desired (e.g., Quick Actions, Standard Actions, Full-Turn Actions)
+- Do NOT display passive abilities (cost = 0 or type = 'none') as actions
+
+**Source**: Pathfinder 2e-style action economy; Nimble adoption confirmed during clarification
 
 ---
 
