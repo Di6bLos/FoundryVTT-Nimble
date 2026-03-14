@@ -142,9 +142,9 @@ description: "Implementation tasks for Token Action HUD Nimble Companion Module"
 - [X] T046 [P] Write unit tests for categorization: `tests/unit/categoryOrganizer.test.ts` - test category grouping by cost, by attack type, empty category filtering, collapsed state
 - [X] T047 [P] Write unit tests for permissions: `tests/unit/permissions.test.ts` - test `canExecuteAction()` for player-owned tokens, GM tokens, non-controlled tokens
 - [X] T048 [P] Write unit tests for action cost formatting: `tests/unit/actionCost.test.ts` - test cost.quantity → label conversion (0→"Free", 1→"1 Action", etc.)
-- [ ] T049 Write E2E test for character actions: `tests/e2e/character-hud.playwright.ts` - select character token, verify HUD displays, click action, verify chat message
-- [ ] T050 Write E2E test for NPC actions: `tests/e2e/npc-hud.playwright.ts` - select NPC token, verify melee/ranged attacks display, click attack, verify roll
-- [ ] T051 Write E2E test for configuration: `tests/e2e/hud-config.playwright.ts` - disable category, verify hidden; exclude action, verify hidden; reload, verify persisted
+- [X] T049 Write E2E test for character actions: `tests/e2e/character-hud.playwright.ts` - select character token, verify HUD displays, click action, verify chat message
+- [X] T050 Write E2E test for NPC actions: `tests/e2e/npc-hud.playwright.ts` - select NPC token, verify melee/ranged attacks display, click attack, verify roll
+- [X] T051 Write E2E test for configuration: `tests/e2e/hud-config.playwright.ts` - disable category, verify hidden; exclude action, verify hidden; reload, verify persisted
 - [X] T052 [P] Add error handling: Catch null/undefined items, invalid activation costs, missing actor data. Log errors gracefully, don't crash HUD
 - [X] T053 [P] Implement graceful degradation: If action extraction fails for one item, continue with others. If actor is not Nimble type, don't display HUD (or show empty)
 - [X] T054 [P] Add logging/debugging: Create debug logger in `src/modules/tah-nimble/utils/logger.ts` with optional console output controlled by setting
