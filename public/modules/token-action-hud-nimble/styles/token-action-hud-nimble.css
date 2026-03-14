@@ -1,0 +1,112 @@
+/**
+ * Token Action HUD — Nimble 2 Module Styles
+ * Companion module styling for Token Action HUD Core
+ */
+
+:root {
+  /* Variables for Nimble 3-action economy */
+  --tah-nimble-color-quick: #4a90e2;      /* 1 Action */
+  --tah-nimble-color-standard: #f5a623;   /* 2 Actions */
+  --tah-nimble-color-full-turn: #d0021b;  /* 3 Actions */
+  --tah-nimble-color-free: #7ed321;       /* Free */
+}
+
+/**
+ * Action cost badges
+ * Display numeric action costs in action labels
+ */
+.tah-nimble.action-cost {
+  display: inline-block;
+  padding: 2px 6px;
+  margin-left: 4px;
+  border-radius: 3px;
+  font-size: 0.8em;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.tah-nimble.action-cost.cost-1 {
+  background-color: var(--tah-nimble-color-quick);
+  color: white;
+}
+
+.tah-nimble.action-cost.cost-2 {
+  background-color: var(--tah-nimble-color-standard);
+  color: white;
+}
+
+.tah-nimble.action-cost.cost-3 {
+  background-color: var(--tah-nimble-color-full-turn);
+  color: white;
+}
+
+.tah-nimble.action-cost.cost-free {
+  background-color: var(--tah-nimble-color-free);
+  color: #333;
+}
+
+/**
+ * Category-specific styling
+ */
+.tah-nimble .category.quick-actions {
+  border-left: 3px solid var(--tah-nimble-color-quick);
+}
+
+.tah-nimble .category.standard-actions {
+  border-left: 3px solid var(--tah-nimble-color-standard);
+}
+
+.tah-nimble .category.full-turn-actions {
+  border-left: 3px solid var(--tah-nimble-color-full-turn);
+}
+
+.tah-nimble .category.free-actions {
+  border-left: 3px solid var(--tah-nimble-color-free);
+}
+
+.tah-nimble .category.melee-attacks {
+  border-left: 3px solid #8B4513;
+}
+
+.tah-nimble .category.ranged-attacks {
+  border-left: 3px solid #556B2F;
+}
+
+/**
+ * Action item styling
+ */
+.tah-nimble .action-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 8px;
+}
+
+.tah-nimble .action-item:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 2px;
+}
+
+.tah-nimble .action-item .action-name {
+  flex: 1;
+  font-size: 0.9em;
+}
+
+.tah-nimble .action-item .action-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+/**
+ * Empty state
+ */
+.tah-nimble .empty-state {
+  padding: 12px 8px;
+  text-align: center;
+  color: #999;
+  font-size: 0.85em;
+  font-style: italic;
+}

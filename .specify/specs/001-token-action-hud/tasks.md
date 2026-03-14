@@ -26,7 +26,7 @@ description: "Implementation tasks for Token Action HUD Nimble Companion Module"
 - [X] T002 Create module manifest at `public/modules/token-action-hud-nimble/module.json` with systemId='nimble', version=1.0.0
 - [X] T003 [P] Create localization file at `public/modules/token-action-hud-nimble/languages/en.json` with placeholder translations for category labels
 - [X] T004 Create entry point file `src/modules/tah-nimble/index.ts` with module registration hook (already created; verify TAH Core registration on `Hooks.once('ready')`)
-- [X] T005 [P] Create CSS stylesheet at `src/modules/tah-nimble/styles/token-action-hud-nimble.css` with basic styling (category labels, action list layout, action cost color-coding)
+- [X] T005 [P] Create CSS stylesheet at `public/modules/token-action-hud-nimble/styles/token-action-hud-nimble.css` with basic styling (category labels, action list layout, action cost color-coding)
 - [X] T006 [P] Configure Vite build: add tah-nimble ESM entry point to `vite.config.tah-nimble.mts` + `build:tah-nimble` npm script
 - [X] T007 [P] Create TypeScript types file at `src/modules/tah-nimble/types/nimble-hud.ts` with NimbleHUDAction, ActionCategory, HUDConfiguration interfaces
 - [X] T008 Create utilities directory `src/modules/tah-nimble/utils/` with permissions.ts, typeGuards.ts, actionCost.ts, logger.ts
