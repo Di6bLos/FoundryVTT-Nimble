@@ -8,6 +8,7 @@ import { organizeCategoriesForCharacter, organizeCategoriesForNPC } from './acti
 import { setupItemUpdateHook } from './hooks/itemUpdates';
 import { setupTokenControlHook } from './hooks/tokenControl';
 import { getHUDConfiguration, registerModuleSettings } from './settings/moduleSettings';
+import { HUDSettingsApplication, loadSettingsTemplate } from './settings/settingsUI';
 import type { NimbleHUDAction } from './types/nimble-hud';
 import { canExecuteAction } from './utils/permissions';
 import { isCharacterActor, isNPCActor } from './utils/typeGuards';
@@ -23,6 +24,28 @@ Hooks.once('ready', () => {
 
 	// Register module settings
 	registerModuleSettings();
+
+	// Register settings menu button (done here to avoid circular dep between moduleSettings ↔ settingsUI)
+	const MODULE_KEY_MENU = MODULE_ID as 'core';
+	game.settings.registerMenu(
+		MODULE_KEY_MENU,
+		'hudSettingsMenu' as 'core',
+		{
+			name: 'HUD Settings',
+			label: 'Configure HUD',
+			hint: 'Customize which action categories appear in the HUD and exclude specific actions.',
+			icon: 'fa-solid fa-list-check',
+			type: class {
+				render() {
+					HUDSettingsApplication.open();
+				}
+			} as unknown as typeof foundry.applications.api.ApplicationV2,
+			restricted: false,
+		} as unknown as Parameters<typeof game.settings.registerMenu>[2],
+	);
+
+	// Pre-load Handlebars templates
+	void loadSettingsTemplate();
 
 	// Verify Token Action HUD Core is loaded
 	const tahCore = game.modules.get('token-action-hud-core');

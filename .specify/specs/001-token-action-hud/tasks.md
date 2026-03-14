@@ -123,9 +123,9 @@ description: "Implementation tasks for Token Action HUD Nimble Companion Module"
 ### Implementation for User Story 4
 
 - [X] T038 [P] [US4] Create `src/modules/tah-nimble/settings/settingsUI.ts`: Create SettingConfig objects for module settings registration (currently in moduleSettings.ts T011, can now expand with UI)
-- [ ] T039 [US4] Implement settings form: Create simple settings interface (can be HTML form or use FoundryVTT's built-in settings form) in `public/modules/token-action-hud-nimble/templates/settings.html`
-- [ ] T040 [US4] Add category toggle controls: Checkboxes to enable/disable each category (Spells, Abilities, Reactions, etc. for character; Melee, Ranged, Abilities for NPC)
-- [ ] T041 [US4] Add action exclusion controls: Input/modal to select and exclude specific actions by name or ID
+- [X] T039 [US4] Implement settings form: Create simple settings interface (can be HTML form or use FoundryVTT's built-in settings form) in `public/modules/token-action-hud-nimble/templates/settings.html`
+- [X] T040 [US4] Add category toggle controls: Checkboxes to enable/disable each category (Spells, Abilities, Reactions, etc. for character; Melee, Ranged, Abilities for NPC)
+- [X] T041 [US4] Add action exclusion controls: Input/modal to select and exclude specific actions by name or ID
 - [X] T042 [US4] Implement settings persistence: `game.settings.get/set` working in moduleSettings.ts, changes persist across session reload
 - [X] T043 [US4] Integrate config into HUD refresh: `tah-nimble:settingsChanged` hook triggers refresh; settings read on every HUD population
 - [ ] T044 [US4] Test configuration: Verify toggling category hides/shows actions in real-time, excluded actions don't appear, settings survive page reload (requires browser testing)

@@ -16,6 +16,7 @@
 	},
 	"esmodules": ["dist/token-action-hud-nimble.min.js"],
 	"styles": ["./styles/token-action-hud-nimble.css"],
+	"templates": ["templates/settings.html"],
 	"languages": [
 		{
 			"lang": "en",
