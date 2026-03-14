@@ -34,7 +34,7 @@ As a player, I need actions organized into logical categories (Combat, Spells, A
 **Acceptance Scenarios**:
 
 1. **Given** a Nimble character has spells, abilities, and attacks, **When** the HUD is displayed, **Then** actions are grouped into labeled categories (e.g., "Spells", "Abilities", "Melee Attacks", "Ranged Attacks")
-2. **Given** a category contains multiple actions, **When** the user hovers or expands a category, **Then** all actions in that category are visible without scrolling (or scrolling is limited to that category)
+2. **Given** a category contains multiple actions, **When** the user expands (clicks) a category, **Then** all actions in that category are visible (scrolling limited to that category if needed)
 3. **Given** an NPC has fewer action types, **When** the HUD is displayed, **Then** empty categories are not shown (no clutter)
 
 ---
@@ -79,20 +79,12 @@ As a user (player or GM), I need to configure which actions appear in the HUD an
 
 ---
 
-## Clarifications
-
-### Session 2026-03-13 (Continued)
-
-- Q: Does Nimble use 3-action economy (numeric 1/2/3 action costs) or categorical types (action/bonus action/reaction)? → A: Nimble uses 3-action economy like Pathfinder 2e; actions have numeric costs (1 action, 2 actions, 3 actions, or free/passive).
-
----
-
 ## Requirements *(mandatory)*
 
 ### Functional Requirements
 
 - **FR-001**: Module MUST register as a Token Action HUD Core companion module and be compatible with FoundryVTT v13+
-- **FR-002**: Module MUST extract and display Nimble-specific action types: Attacks (melee/ranged), Spells, Abilities, Skills, and Utility Actions. Actions are labeled with their numeric action cost (1 Action, 2 Actions, 3 Actions, or Free).
+- **FR-002**: Module MUST extract and display Nimble-specific action types: Attacks (melee/ranged), Spells, Abilities, and Utility Actions (boon items with activation cost). Actions are labeled with their numeric action cost (1 Action, 2 Actions, 3 Actions, or Free).
 - **FR-003**: Module MUST organize actions into labeled categories matching Nimble 2 game mechanics and display numeric action costs prominently
 - **FR-004**: Module MUST support both PC (character) and NPC actor types; for NPCs, display combat-relevant actions
 - **FR-005**: Module MUST execute actions when clicked: roll attacks (with modifiers), cast spells, use abilities, perform skill checks. Action execution respects standard FoundryVTT permissions: players can only execute actions for tokens they control; GM can execute actions for any token. Target selection for actions that require targets follows Nimble's default targeting rules.
@@ -131,8 +123,9 @@ As a user (player or GM), I need to configure which actions appear in the HUD an
 
 - Q: Can players execute actions for any token or only controlled tokens? → A: Players can only execute actions for tokens they control (standard FoundryVTT permissions); GM can execute actions for any token.
 - Q: Should HUD configuration be world-level, per-user, per-scene, or hybrid? → A: Per-user configuration: each player/GM has their own HUD settings (category visibility, action exclusions, position) consistent across all scenes.
-- Q: How should Nimble item types map to HUD action categories? → A: Deferred to planning phase research; `/speckit.plan` will document canonical Nimble item types and their category mappings.
+- Q: How should Nimble item types map to HUD action categories? → A: spell/feature/boon for characters; monsterFeature for NPCs. No "Skills" item type exists in Nimble — boon items serve as utility actions.
 - Q: When an action requires a target (spell, heal), how should target selection work? → A: Use Nimble's default targeting rules; actions follow Nimble's built-in target resolution logic rather than custom HUD logic.
+- Q: Does Nimble use 3-action economy (numeric 1/2/3 action costs) or categorical types (action/bonus action/reaction)? → A: Nimble uses 3-action economy like Pathfinder 2e; actions have numeric costs via `activation.cost.quantity` (1, 2, 3 actions, or 0 for free/passive).
 
 ---
 

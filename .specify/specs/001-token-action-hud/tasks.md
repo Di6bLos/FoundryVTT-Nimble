@@ -23,10 +23,10 @@ description: "Implementation tasks for Token Action HUD Nimble Companion Module"
 **Purpose**: Project initialization and basic module structure
 
 - [ ] T001 Create Token Action HUD Nimble module directory structure in `src/modules/tah-nimble/`
-- [ ] T002 Create module manifest at `public/module/tah-nimble/module.json` with systemId='nimble', version=1.0.0
-- [ ] T003 [P] Create localization file at `public/module/tah-nimble/languages/en.json` with placeholder translations for category labels
-- [ ] T004 Create entry point file `src/modules/tah-nimble/tah-nimble.ts` with module registration hook
-- [ ] T005 [P] Create Sass stylesheet at `src/styles/tah-nimble.scss` with basic styling (category labels, action list layout)
+- [ ] T002 Create module manifest at `public/modules/token-action-hud-nimble/module.json` with systemId='nimble', version=1.0.0
+- [ ] T003 [P] Create localization file at `public/modules/token-action-hud-nimble/languages/en.json` with placeholder translations for category labels
+- [ ] T004 Create entry point file `src/modules/tah-nimble/index.ts` with module registration hook (already created; verify TAH Core registration on `Hooks.once('ready')`)
+- [ ] T005 [P] Create Sass stylesheet at `src/modules/tah-nimble/styles/token-action-hud-nimble.scss` with basic styling (category labels, action list layout, action cost color-coding)
 - [ ] T006 [P] Configure Vite build: add tah-nimble ESM entry point to vite.config.ts
 - [ ] T007 [P] Create TypeScript types file at `src/modules/tah-nimble/types/nimble-hud.ts` with NimbleHUDAction, ActionCategory, HUDConfiguration interfaces
 - [ ] T008 Create utilities directory `src/modules/tah-nimble/utils/` (placeholder for action extraction, categorization, permissions)
@@ -49,7 +49,7 @@ description: "Implementation tasks for Token Action HUD Nimble Companion Module"
 - [ ] T014 [P] Implement `src/modules/tah-nimble/utils/actionCost.ts`: Helper functions to extract and format action costs from `activation.cost.quantity` (0|1|2|3 → "Free"|"1 Action"|"2 Actions"|"3 Actions")
 - [ ] T015 Implement `src/modules/tah-nimble/hooks/tokenControl.ts`: Hook listener `Hooks.on('controlToken')` - detect when token selected/deselected, trigger HUD population
 - [ ] T016 Implement `src/modules/tah-nimble/hooks/itemUpdates.ts`: Hook listener `Hooks.on('updateItem')` - debounced refresh (100ms) when items added/updated/deleted on controlled token
-- [ ] T017 Implement `src/modules/tah-nimble/tah-nimble.ts` main entry: Register 'nimble' system with Token Action HUD Core, set up all hooks, initialize settings
+- [ ] T017 Complete `src/modules/tah-nimble/index.ts` main entry: Confirm 'nimble' system registration with Token Action HUD Core, verify all hooks initialized, verify settings registered
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -63,11 +63,11 @@ description: "Implementation tasks for Token Action HUD Nimble Companion Module"
 
 ### Implementation for User Story 1
 
-- [ ] T018 [P] [US1] Implement `src/modules/tah-nimble/utils/actionExtractor.ts`: `extractCharacterActions(actor)` - filter actor.items for type in ['spell', 'feature', 'boon'] where `activation.cost.quantity > 0`, convert to NimbleHUDAction array with id, itemId, name, icon, cost (extracted from `activation.cost.quantity`), activate callback
+- [ ] T018 [P] [US1] Implement `src/modules/tah-nimble/actions/actionExtractor.ts`: `extractCharacterActions(actor)` - filter actor.items for type in ['spell', 'feature', 'boon'] where `activation.cost.quantity > 0`, convert to NimbleHUDAction array with id, itemId, name, icon, cost (extracted from `activation.cost.quantity`), activate callback
 - [ ] T019 [P] [US1] Implement character action extraction: Handle spell-specific fields (tier, school, manaCost) from `item.system.tier` and `item.system.school`
-- [ ] T020 [US1] Create `src/modules/tah-nimble/utils/actionExtractor.ts`: Add `extractNPCActions(actor)` - filter for type='monsterFeature' with valid subtype in ['action', 'attackSequence', 'feature', 'bloodied', 'lastStand'], extract cost from `activation.cost.quantity`
+- [ ] T020 [US1] Extend `src/modules/tah-nimble/actions/actionExtractor.ts`: Add `extractNPCActions(actor)` - filter for type='monsterFeature' with valid subtype in ['action', 'attackSequence', 'feature', 'bloodied', 'lastStand'], extract cost from `activation.cost.quantity`
 - [ ] T021 [P] [US1] Implement NPC action extraction: Detect attack type (melee vs ranged) from `activation.targets.attackType` ('reach'|'range'|'')
-- [ ] T022 [US1] Create `src/modules/tah-nimble/utils/actionFormatter.ts`: `formatActionName(item, cost)` - return label like "Fireball (2 Actions)" or "Stab (1 Action)"
+- [ ] T022 [US1] Add `formatActionName(item, cost)` to `src/modules/tah-nimble/actions/actionExtractor.ts` (or extract to `src/modules/tah-nimble/utils/actionCost.ts`): return label like "Fireball (2 Actions)" or "Stab (1 Action)" using `activation.cost.quantity`
 - [ ] T023 [US1] Implement action execution: Create wrapper function `executeAction(itemId, actorId, options)` that calls `item.activate(options)`, returns ChatMessage or null
 - [ ] T024 [US1] Integrate action extraction into token control hook: When token selected, call `extractCharacterActions()` or `extractNPCActions()`, add to HUD via `TokenActionHUD.addSystemActions('nimble', actions)`
 - [ ] T025 [US1] Test action execution: Verify clicking HUD action calls `item.activate()` correctly, chat message created, dice rolls appear
@@ -84,7 +84,7 @@ description: "Implementation tasks for Token Action HUD Nimble Companion Module"
 
 ### Implementation for User Story 2
 
-- [ ] T026 [P] [US2] Implement `src/modules/tah-nimble/utils/categoryOrganizer.ts`: `organizeCategoriesForCharacter(actions)` - group actions by `cost.quantity`: 1 Action, 2 Actions, 3 Actions, Free. Return Map<categoryId, ActionCategory>
+- [ ] T026 [P] [US2] Implement `src/modules/tah-nimble/actions/categorizer.ts`: `organizeCategoriesForCharacter(actions)` - group actions by `cost.quantity`: 1 Action, 2 Actions, 3 Actions, Free. Return Map<categoryId, ActionCategory>
 - [ ] T027 [P] [US2] Implement category organization for NPC: `organizeCategoriesForNPC(actions)` - group by attack type (Melee vs Ranged) + subtype (Abilities, Triggered). Return Map<categoryId, ActionCategory>
 - [ ] T028 [US2] Create category visibility logic: Hide empty categories (no actions). Add to `categoryOrganizer.ts`
 - [ ] T029 [US2] Implement category collapsibility: Check user config for `categories.collapsed` list, apply to returned ActionCategory objects
@@ -123,7 +123,7 @@ description: "Implementation tasks for Token Action HUD Nimble Companion Module"
 ### Implementation for User Story 4
 
 - [ ] T038 [P] [US4] Create `src/modules/tah-nimble/settings/settingsUI.ts`: Create SettingConfig objects for module settings registration (currently in moduleSettings.ts T011, can now expand with UI)
-- [ ] T039 [US4] Implement settings form: Create simple settings interface (can be HTML form or use FoundryVTT's built-in settings form) in `public/module/tah-nimble/templates/settings.html`
+- [ ] T039 [US4] Implement settings form: Create simple settings interface (can be HTML form or use FoundryVTT's built-in settings form) in `public/modules/token-action-hud-nimble/templates/settings.html`
 - [ ] T040 [US4] Add category toggle controls: Checkboxes to enable/disable each category (Spells, Abilities, Reactions, etc. for character; Melee, Ranged, Abilities for NPC)
 - [ ] T041 [US4] Add action exclusion controls: Input/modal to select and exclude specific actions by name or ID
 - [ ] T042 [US4] Implement settings persistence: Verify `game.settings.get/set` working correctly (already in T011), test that changes persist across session reload
@@ -148,12 +148,13 @@ description: "Implementation tasks for Token Action HUD Nimble Companion Module"
 - [ ] T052 [P] Add error handling: Catch null/undefined items, invalid activation costs, missing actor data. Log errors gracefully, don't crash HUD
 - [ ] T053 [P] Implement graceful degradation: If action extraction fails for one item, continue with others. If actor is not Nimble type, don't display HUD (or show empty)
 - [ ] T054 [P] Add logging/debugging: Create debug logger in `src/modules/tah-nimble/utils/logger.ts` with optional console output controlled by setting
-- [ ] T055 Create module README: `public/module/tah-nimble/README.md` - installation, features, configuration, troubleshooting, gotchas (mana system, attack type detection)
-- [ ] T056 [P] Create localization strings: Complete English translations in `public/module/tah-nimble/languages/en.json` for all UI labels and error messages
+- [ ] T055 Create module README: `public/modules/token-action-hud-nimble/README.md` - installation, features, configuration, troubleshooting, gotchas (mana system, attack type detection)
+- [ ] T056 [P] Create localization strings: Complete English translations in `public/modules/token-action-hud-nimble/languages/en.json` for all UI labels and error messages
 - [ ] T057 Optimize extraction speed: Profile action extraction, ensure <100ms for typical character (20-30 items). Cache actor items ref if needed
 - [ ] T058 Optimize hook debouncing: Verify updateItem refresh debounced at 100ms to prevent excessive re-renders
 - [ ] T059 Run `pnpm check`: Format, lint, type-check, circular-deps, test - verify module meets Nimble code quality standards
-- [ ] T060 Create demo/test world: Set up simple scene with Nimble character and NPC for manual testing before release
+- [ ] T060 Create demo/test world: Set up simple scene with 1 Nimble character (with at least 1 spell + 1 feature) and 1 NPC (with melee attack) for manual E2E testing
+- [ ] T061 Investigate FR-008 hotkeys: Check Token Action HUD Core v2 API for hotkey/shortcut registration (`window.TokenActionHUD`); if API exists, implement hotkey bindings in `src/modules/tah-nimble/index.ts`; if not, document as out-of-scope in README
 
 **Checkpoint**: All user stories tested, documented, polished
 
@@ -282,18 +283,18 @@ T023-T025: Integration + testing (depends on all above complete)
 
 ---
 
-**Total Tasks**: 60
+**Total Tasks**: 61
 **Phase 1 Setup**: 10 tasks
 **Phase 2 Foundational**: 7 tasks
 **Phase 3 (US1)**: 8 tasks
 **Phase 4 (US2)**: 7 tasks
 **Phase 5 (US3)**: 5 tasks
 **Phase 6 (US4)**: 7 tasks
-**Phase 7 Polish**: 16 tasks
+**Phase 7 Polish**: 17 tasks (includes T061 for FR-008 hotkey investigation)
 
 **Suggested MVP Scope**: Phases 1-3 (Setup + Foundational + US1) = 25 tasks
 **Full Feature Scope**: Phases 1-6 (all user stories) = 44 tasks
-**Production Ready**: All 60 tasks (includes testing + docs)
+**Production Ready**: All 61 tasks (includes testing + docs)
 
 ---
 
