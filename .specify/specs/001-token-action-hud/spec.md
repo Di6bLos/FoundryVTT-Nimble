@@ -74,7 +74,7 @@ As a user (player or GM), I need to configure which actions appear in the HUD an
 - What happens when a character has no actions in a category (e.g., no spells)? → Category is hidden or shows "No actions available"
 - What happens when the HUD is repositioned and the scene is reloaded? → Position persists (standard HUD behavior)
 - What happens when a character's abilities are updated (levelup, gaining a spell)? → HUD updates without requiring a scene reload
-- What happens when an action requires a target (spell, attack) and no target is selected? → HUD shows the action but clicking displays "Select a target" message
+- What happens when an action requires a target (spell, attack)? → HUD executes the action using Nimble's default targeting rules (follows system conventions, not custom HUD logic)
 - What happens when an NPC or PC is not a Nimble actor (e.g., imported from another system)? → HUD does not break; displays gracefully or hides if no actions available
 
 ---
@@ -87,8 +87,8 @@ As a user (player or GM), I need to configure which actions appear in the HUD an
 - **FR-002**: Module MUST extract and display Nimble-specific action types: Attacks (melee/ranged), Spells, Abilities, Reactions, Skills, and Utility Actions
 - **FR-003**: Module MUST organize actions into labeled categories matching Nimble 2 game mechanics
 - **FR-004**: Module MUST support both PC (character) and NPC actor types; for NPCs, display combat-relevant actions
-- **FR-005**: Module MUST execute actions when clicked: roll attacks (with modifiers), cast spells, use abilities, perform skill checks
-- **FR-006**: Module MUST persist user configuration: enabled/disabled categories, action exclusions, HUD position (per user or per scene)
+- **FR-005**: Module MUST execute actions when clicked: roll attacks (with modifiers), cast spells, use abilities, perform skill checks. Action execution respects standard FoundryVTT permissions: players can only execute actions for tokens they control; GM can execute actions for any token. Target selection for actions that require targets follows Nimble's default targeting rules.
+- **FR-006**: Module MUST persist per-user configuration: enabled/disabled categories, action exclusions, HUD position. Settings are stored per user and consistent across all scenes.
 - **FR-007**: Module MUST handle dynamic updates: when character abilities change (level up, equip item, gain spell), HUD updates without scene reload
 - **FR-008**: Module MUST support action shortcuts/hot keys if Token Action HUD Core provides the API
 - **FR-009**: Module MUST provide localization support for action names and category labels (English minimum)
@@ -117,14 +117,25 @@ As a user (player or GM), I need to configure which actions appear in the HUD an
 
 ---
 
+## Clarifications
+
+### Session 2026-03-13
+
+- Q: Can players execute actions for any token or only controlled tokens? → A: Players can only execute actions for tokens they control (standard FoundryVTT permissions); GM can execute actions for any token.
+- Q: Should HUD configuration be world-level, per-user, per-scene, or hybrid? → A: Per-user configuration: each player/GM has their own HUD settings (category visibility, action exclusions, position) consistent across all scenes.
+- Q: How should Nimble item types map to HUD action categories? → A: Deferred to planning phase research; `/speckit.plan` will document canonical Nimble item types and their category mappings.
+- Q: When an action requires a target (spell, heal), how should target selection work? → A: Use Nimble's default targeting rules; actions follow Nimble's built-in target resolution logic rather than custom HUD logic.
+
+---
+
 ## Assumptions
 
 The following reasonable defaults are assumed based on the feature description and Token Action HUD ecosystem:
 
 1. **Module architecture**: Companion module format matching token-action-hud-dnd5e and token-action-hud-pf2e structure (single ESM script, localization files, styles, manifest)
-2. **Action data extraction**: Actions are extracted from Nimble actor data (Items collection), matching how D&D 5e/PF2e modules read ability/spell/attack data
+2. **Action data extraction**: Actions are extracted from Nimble actor data (Items collection), matching how D&D 5e/PF2e modules read ability/spell/attack data. Specific Nimble item type → HUD category mappings will be determined during planning phase research.
 3. **Compatibility scope**: Module targets FoundryVTT v13+ (verified version; minimum v12 acceptable if tested)
-4. **Customization scope**: Configuration stored in module settings (world-level and optionally user-level preferences)
+4. **Customization scope**: Configuration stored per-user (each player/GM maintains their own preferences across all scenes)
 5. **Error handling**: Missing or corrupted ability data displays gracefully in HUD without crashing the module
 6. **Performance**: HUD updates and action execution complete within 100ms (standard UI responsiveness expectation)
 
