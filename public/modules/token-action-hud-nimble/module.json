@@ -29,8 +29,8 @@
 			{
 				"id": "nimble",
 				"compatibility": {
-					"minimum": "2.0.0",
-					"verified": "2.0.0"
+					"minimum": "0.7.2",
+					"verified": "0.7.2"
 				}
 			}
 		],

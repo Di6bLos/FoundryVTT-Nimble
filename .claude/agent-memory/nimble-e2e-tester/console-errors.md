@@ -21,6 +21,19 @@ All 4 errors and 3 warnings observed during test session are pre-existing and un
   Pathfinder 2e are currently supported."
 - **Meaning:** Third-party bridge module limitation, not a Nimble bug.
 
+### 5. token-action-hud-nimble — registerMenu type error (BLOCKING BUG)
+- **Source:** `token-action-hud-nimble/dist/token-action-hud-nimble.min.js`, `Hooks.once('ready', ...)`
+- **Message:** "Error thrown in hooked function '' for hook 'ready'. You must provide a menu type that is a FormApplication or ApplicationV2 instance or subclass"
+- **Root cause:** `src/modules/tah-nimble/index.ts` calls `game.settings.registerMenu(...)` with a
+  plain class `{ render() { HUDSettingsApplication.open(); } }` instead of a real `FormApplication`
+  or `ApplicationV2` subclass. FoundryVTT v13 rejects this.
+- **Effect:** The `ready` hook throws and aborts mid-execution. `registerSystemActions()` is never
+  called, so `window.TokenActionHUD.addSystemActions(...)` never runs. The HUD never populates.
+  `window.TokenActionHUD` is also `undefined` — the real TAH Core API is at
+  `game.modules.get('token-action-hud-core').api` and uses a `SystemManager` class-based pattern.
+- **File to fix:** `src/modules/tah-nimble/index.ts` — the `registerMenu` call (lines 30–45)
+  must pass a proper `foundry.applications.api.ApplicationV2` subclass.
+
 ## Warnings
 
 ### 1. V1 Application framework is deprecated (x2)

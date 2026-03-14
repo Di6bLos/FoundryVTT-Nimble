@@ -1,0 +1,85 @@
+{
+	"_id": "TestCharacter001",
+	"type": "character",
+	"name": "Test Character",
+	"img": "systems/nimble/assets/artwork/character-default.webp",
+	"data": {
+		"attributes": {
+			"hp": {
+				"value": 30,
+				"max": 30
+			}
+		}
+	},
+	"items": [
+		{
+			"_id": "spell001",
+			"type": "spell",
+			"name": "Fireball",
+			"img": "icons/magic/fire/explosion-fire.webp",
+			"data": {
+				"tier": 2,
+				"school": "evocation",
+				"manaCost": {
+					"value": 2
+				},
+				"activation": {
+					"type": "spell",
+					"cost": {
+						"quantity": 2
+					}
+				}
+			}
+		},
+		{
+			"_id": "spell002",
+			"type": "spell",
+			"name": "Magic Missile",
+			"img": "icons/magic/control/magic-missile.webp",
+			"data": {
+				"tier": 1,
+				"school": "evocation",
+				"manaCost": {
+					"value": 1
+				},
+				"activation": {
+					"type": "spell",
+					"cost": {
+						"quantity": 1
+					}
+				}
+			}
+		},
+		{
+			"_id": "feature001",
+			"type": "feature",
+			"name": "Second Wind",
+			"img": "icons/magic/healing/heal.webp",
+			"data": {
+				"activation": {
+					"type": "ability",
+					"cost": {
+						"quantity": 1
+					}
+				}
+			}
+		},
+		{
+			"_id": "feature002",
+			"type": "feature",
+			"name": "Power Attack",
+			"img": "icons/weapons/swords/sword-military.webp",
+			"data": {
+				"activation": {
+					"type": "ability",
+					"cost": {
+						"quantity": 2
+					}
+				}
+			}
+		}
+	],
+	"folder": null,
+	"sort": 0,
+	"flags": {}
+}

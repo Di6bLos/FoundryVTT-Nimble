@@ -1,0 +1,53 @@
+{
+	"_id": "TestNPC001",
+	"type": "npc",
+	"name": "Test NPC",
+	"img": "systems/nimble/assets/artwork/npc-default.webp",
+	"data": {
+		"attributes": {
+			"hp": {
+				"value": 50,
+				"max": 50
+			}
+		}
+	},
+	"items": [
+		{
+			"_id": "monsterfeature001",
+			"type": "monsterFeature",
+			"name": "Sword Attack",
+			"img": "icons/weapons/swords/sword-military.webp",
+			"data": {
+				"subtype": "action",
+				"activation": {
+					"targets": {
+						"attackType": "reach"
+					},
+					"cost": {
+						"quantity": 1
+					}
+				}
+			}
+		},
+		{
+			"_id": "monsterfeature002",
+			"type": "monsterFeature",
+			"name": "Bow Attack",
+			"img": "icons/weapons/bows/bow-recurve.webp",
+			"data": {
+				"subtype": "action",
+				"activation": {
+					"targets": {
+						"attackType": "range"
+					},
+					"cost": {
+						"quantity": 1
+					}
+				}
+			}
+		}
+	],
+	"folder": null,
+	"sort": 0,
+	"flags": {}
+}

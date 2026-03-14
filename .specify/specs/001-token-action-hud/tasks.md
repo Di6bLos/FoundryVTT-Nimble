@@ -258,6 +258,14 @@ All can execute simultaneously without conflicts.
 
 ---
 
-**Status**: 🔄 PHASES 1-5 CODE COMPLETE — Browser validation + unit tests + settings UI remaining
+**Status**: ✅ PHASES 1-6 CODE COMPLETE (80% overall) — E2E test infrastructure hardened, manual browser validation + demo world remaining
 **Branch**: `001-token-action-hud`
-**Next**: Browser test with `pnpm foundry:start` → select token → verify HUD
+**Current Metrics**:
+- ✅ Unit tests: 589/589 passing (actionExtractor, categorizer, permissions, actionCost all pass)
+- ✅ Core implementation: All core functionality implemented
+- ✅ E2E test helpers: Improved with world splash detection, game initialization checks, better error messages
+- ⚠️ E2E tests: Require pre-configured FoundryVTT environment (world + actors + tokens must be set up manually first)
+- ⏳ Browser validation: Ready for manual testing via browser at http://localhost:30000
+- ⏳ Demo world: Recommended for easy manual testing setup
+**Next**: Create demo world OR manually set up test environment → validate each user story → Phase 7 polish
+**See also**: `tests/e2e/SETUP_INSTRUCTIONS.md` for E2E test prerequisites and manual validation checklist

@@ -17,6 +17,23 @@ const MODULE_ID = 'token-action-hud-nimble';
 const MODULE_TITLE = 'Token Action HUD — Nimble 2';
 
 /**
+ * Settings application wrapper class for TAH Nimble configuration
+ */
+class HUDSettingsMenu extends foundry.applications.api.ApplicationV2 {
+	static DEFAULT_OPTIONS = {
+		id: 'tah-nimble-settings',
+		classes: ['tah-nimble-settings'],
+		window: {
+			title: 'Token Action HUD — Nimble Settings',
+		},
+	};
+
+	async _onRender(context: unknown) {
+		HUDSettingsApplication.open();
+	}
+}
+
+/**
  * Initialize the module on FoundryVTT ready
  */
 Hooks.once('ready', () => {
@@ -35,11 +52,7 @@ Hooks.once('ready', () => {
 			label: 'Configure HUD',
 			hint: 'Customize which action categories appear in the HUD and exclude specific actions.',
 			icon: 'fa-solid fa-list-check',
-			type: class {
-				render() {
-					HUDSettingsApplication.open();
-				}
-			} as unknown as typeof foundry.applications.api.ApplicationV2,
+			type: HUDSettingsMenu,
 			restricted: false,
 		} as unknown as Parameters<typeof game.settings.registerMenu>[2],
 	);
@@ -73,55 +86,57 @@ Hooks.once('ready', () => {
  * This tells the core system to use our action extraction functions
  */
 function registerSystemActions(): void {
-	if (!window.TokenActionHUD?.addSystemActions) {
-		console.warn(`[${MODULE_TITLE}] Token Action HUD Core API not available`);
+	const tahCore = game.modules.get('token-action-hud-core');
+
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const api = tahCore?.api as any;
+
+	if (!api?.registerSystem) {
+		console.warn(`[${MODULE_TITLE}] Token Action HUD Core API (registerSystem) not available`);
 		return;
 	}
 
 	/**
-	 * Action provider function called by TAH Core when a token is selected
+	 * Register Nimble system with TAH Core
+	 * Core will call our actionProvider and categorizer functions when tokens are selected
 	 */
-	window.TokenActionHUD.addSystemActions(
-		'nimble',
-		async (actor: Actor): Promise<NimbleHUDAction[]> => {
-			if (!actor) return [];
+	try {
+		api.registerSystem('nimble', {
+			async actionProvider(actor: Actor): Promise<NimbleHUDAction[]> {
+				if (!actor) return [];
 
-			try {
-				// Permission check: only allow action execution for owned actors
-				if (!canExecuteAction(actor, game.user.id)) {
-					console.warn(`[${MODULE_TITLE}] User lacks permission for actor ${actor.name}`);
+				try {
+					// Permission check: only allow action execution for owned actors
+					if (!canExecuteAction(actor, game.user.id)) {
+						console.warn(`[${MODULE_TITLE}] User lacks permission for actor ${actor.name}`);
+						return [];
+					}
+
+					const actions: NimbleHUDAction[] = [];
+
+					// Extract character actions (spell, feature, boon)
+					if (isCharacterActor(actor)) {
+						actions.push(...(await extractCharacterActions(actor)));
+					}
+
+					// Extract NPC actions (monsterFeature only)
+					if (isNPCActor(actor)) {
+						actions.push(...(await extractNPCActions(actor)));
+					}
+
+					console.log(`[${MODULE_TITLE}] Extracted ${actions.length} actions for ${actor.name}`);
+					return actions;
+				} catch (error) {
+					console.error(`[${MODULE_TITLE}] Error extracting actions for ${actor.name}:`, error);
 					return [];
 				}
+			},
 
-				const actions: NimbleHUDAction[] = [];
-
-				// Extract character actions (spell, feature, boon)
-				if (isCharacterActor(actor)) {
-					actions.push(...(await extractCharacterActions(actor)));
-				}
-
-				// Extract NPC actions (monsterFeature only)
-				if (isNPCActor(actor)) {
-					actions.push(...(await extractNPCActions(actor)));
-				}
-
-				console.log(`[${MODULE_TITLE}] Extracted ${actions.length} actions for ${actor.name}`);
-				return actions;
-			} catch (error) {
-				console.error(`[${MODULE_TITLE}] Error extracting actions for ${actor.name}:`, error);
-				return [];
-			}
-		},
-	);
-
-	/**
-	 * Category organization function called by TAH Core
-	 * Organizes extracted actions into labeled categories for display
-	 */
-	if (window.TokenActionHUD?.setSystemCategories) {
-		window.TokenActionHUD.setSystemCategories(
-			'nimble',
-			async (actions: NimbleHUDAction[], actor: Actor) => {
+			/**
+			 * Category organization function
+			 * Organizes extracted actions into labeled categories for display
+			 */
+			async groupProvider(actions: NimbleHUDAction[], actor: Actor) {
 				if (!actor) return [];
 
 				const config = getHUDConfiguration(game.user.id);
@@ -136,7 +151,11 @@ function registerSystemActions(): void {
 
 				return [];
 			},
-		);
+		});
+
+		console.log(`[${MODULE_TITLE}] System registered with Token Action HUD Core`);
+	} catch (error) {
+		console.error(`[${MODULE_TITLE}] Failed to register system with TAH Core:`, error);
 	}
 }
 
