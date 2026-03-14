@@ -108,7 +108,7 @@ Create a FoundryVTT companion module that extends Token Action HUD Core with Nim
 - **Requirement**: All code in TypeScript, Svelte components, Sass for styling
 - **Status**: ✅ **PASS** — Module will use:
   - TypeScript (strict mode) for all `.ts` files
-  - Sass for styles (module will include styles/tah-nimble.scss)
+  - CSS for styles (module will include styles/tah-nimble.css)
   - No Svelte components needed (HUD framework handled by Core; module adds action data only)
 
 ### Constitution Check: **APPROVED** ✅
@@ -153,7 +153,7 @@ src/
 │       └── preUseItem.ts           # Optional: log action usage via nimble.preUseItem hook
 │
 └── styles/
-    └── tah-nimble.scss             # Module-specific styling (category labels, layout tweaks)
+    └── tah-nimble.css              # Module-specific styling (category labels, layout tweaks)
 
 tests/
 ├── unit/

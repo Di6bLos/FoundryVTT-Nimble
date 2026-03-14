@@ -59,7 +59,7 @@ src/
 │       └── tokenControl.ts         # Listen to token selection, populate HUD
 │
 └── styles/
-    └── tah-nimble.scss             # Module styling (override HUD defaults if needed)
+    └── tah-nimble.css              # Module styling (override HUD defaults if needed)
 
 tests/
 ├── unit/
