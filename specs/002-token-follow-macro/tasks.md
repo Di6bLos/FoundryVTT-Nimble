@@ -10,8 +10,8 @@
 
 The Token Follow Macro requires foundational hook infrastructure and scene flag management, followed by three independently testable user stories. Each story can be developed and tested in isolation.
 
-**Total Tasks**: 26
-**MVP Scope**: Phase 1-3 (User Story 1: Create Follow Link) — ~12 tasks
+**Total Tasks**: 39
+**MVP Scope**: Phase 1-3 (User Story 1: Create Follow Link) — ~13 tasks
 
 ---
 
@@ -23,9 +23,9 @@ The Token Follow Macro requires foundational hook infrastructure and scene flag 
 
 ### Tasks
 
-- [ ] T001 Create hook registration system in `src/hooks/index.ts`
-- [ ] T002 Create utility module structure in `src/utils/followManager.ts`
-- [ ] T003 Add FOLLOW_MACRO constants to `src/config.ts`
+- [X] T001 Create hook registration system in `src/hooks/index.ts`
+- [X] T002 Create utility module structure in `src/utils/followManager.ts`
+- [X] T003 Add FOLLOW_MACRO constants to `src/config.ts`
 
 ---
 
@@ -38,12 +38,13 @@ The Token Follow Macro requires foundational hook infrastructure and scene flag 
 
 ### Tasks
 
-- [ ] T004 Implement FollowManager.getRelationships() in `src/utils/followManager.ts`
-- [ ] T005 [P] Implement FollowManager.setRelationships() in `src/utils/followManager.ts`
-- [ ] T006 [P] Implement FollowManager.getFollowersOf() in `src/utils/followManager.ts`
-- [ ] T007 [P] Implement FollowManager.wouldCreateCycle() cycle detection in `src/utils/followManager.ts`
-- [ ] T008 Create `src/hooks/tokenFollowUpdate.ts` hook listener for token movement
-- [ ] T009 [P] Register tokenFollowUpdate hook in `src/hooks/index.ts` initialization
+- [X] T004 Implement FollowManager.getRelationships() in `src/utils/followManager.ts`
+- [X] T005 [P] Implement FollowManager.setRelationships() in `src/utils/followManager.ts`
+- [X] T006 [P] Implement FollowManager.getFollowersOf() in `src/utils/followManager.ts`
+- [X] T007 [P] Implement FollowManager.wouldCreateCycle() cycle detection in `src/utils/followManager.ts`
+- [X] T008 Create `src/hooks/tokenFollowUpdate.ts` hook listener for token movement
+- [X] T009 Create hook handler file structure in `src/hooks/deleteTokenHandler.ts`
+- [X] T010 [P] Register tokenFollowUpdate hook in `src/hooks/index.ts` initialization
 
 ### Independent Test Criteria
 - Scene flags can store and retrieve follow relationships
@@ -69,16 +70,16 @@ The Token Follow Macro requires foundational hook infrastructure and scene flag 
 
 ### Tasks
 
-- [ ] T010 [US1] Create macro JSON shell in `packs/macros/core/follow-token-macro.json`
-- [ ] T011 [US1] Implement macro ownership validation in macro JSON
-- [ ] T012 [US1] Implement state detection (token as follower/leader/unrelated) in macro JSON
-- [ ] T013 [US1] Implement targeting prompt in macro JSON
-- [ ] T014 [US1] Implement distance calculation using `canvas.grid.measureDistance()` in macro JSON
-- [ ] T015 [P] [US1] Implement FollowManager.create() validation in `src/utils/followManager.ts`
-- [ ] T016 [US1] Implement relationship creation in macro and FollowManager
-- [ ] T017 [US1] Implement chat feedback for relationship creation in macro JSON
-- [ ] T018 [US1] Implement repositionFollower() function in `src/hooks/tokenFollowUpdate.ts`
-- [ ] T019 [US1] Write Playwright E2E test for "create follow link" in `tests/e2e/follow-macro.spec.ts`
+- [X] T011 [US1] Create macro JSON shell in `packs/macros/core/follow-token-macro.json`
+- [X] T012 [US1] Implement macro ownership validation in macro JSON
+- [X] T013 [US1] Implement state detection (token as follower/leader/unrelated) in macro JSON
+- [X] T014 [US1] Implement targeting prompt in macro JSON
+- [X] T015 [US1] Implement distance calculation using `canvas.grid.measureDistance()` in macro JSON
+- [X] T016 [P] [US1] Implement FollowManager.create() validation in `src/utils/followManager.ts`
+- [X] T017 [US1] Implement relationship creation in macro and FollowManager
+- [X] T018 [US1] Implement chat feedback for relationship creation in macro JSON
+- [X] T019 [US1] Implement repositionFollower() function in `src/hooks/tokenFollowUpdate.ts`
+- [X] T020 [US1] Write Playwright E2E test for "create follow link" in `tests/e2e/follow-macro.spec.ts`
 
 ### Independent Test Strategy
 - Unit: FollowManager.create() with valid/invalid inputs
@@ -103,13 +104,13 @@ The Token Follow Macro requires foundational hook infrastructure and scene flag 
 
 ### Tasks
 
-- [ ] T020 [US2] Implement "Clear Follow" dialog option in macro JSON
-- [ ] T021 [US2] Implement relationship deletion via FollowManager.deleteByFollower() in `src/utils/followManager.ts`
-- [ ] T022 [US2] Implement manual movement detection in `src/hooks/tokenFollowUpdate.ts`
-- [ ] T023 [US2] Implement automatic cleanup on token deletion in `src/hooks/deleteTokenHandler.ts`
-- [ ] T024 [US2] Implement chat feedback for clearing/breaking links in macro JSON
-- [ ] T025 [P] [US2] Write Playwright E2E test for "clear follow link" in `tests/e2e/follow-macro.spec.ts`
-- [ ] T026 [US2] Write Playwright E2E test for "manual movement breaks link" in `tests/e2e/follow-macro.spec.ts`
+- [X] T021 [US2] Implement "Clear Follow" dialog option in macro JSON
+- [X] T022 [US2] Implement relationship deletion via FollowManager.deleteByFollower() in `src/utils/followManager.ts`
+- [X] T023 [US2] Implement manual movement detection in `src/hooks/tokenFollowUpdate.ts`
+- [X] T024 [US2] Implement automatic cleanup on token deletion in `src/hooks/deleteTokenHandler.ts`
+- [X] T025 [US2] Implement chat feedback for clearing/breaking links in macro JSON
+- [X] T026 [P] [US2] Write Playwright E2E test for "clear follow link" in `tests/e2e/follow-macro.spec.ts`
+- [X] T027 [US2] Write Playwright E2E test for "manual movement breaks link" in `tests/e2e/follow-macro.spec.ts`
 
 ### Independent Test Strategy
 - Unit: FollowManager.deleteByFollower() removes correct relationship
@@ -133,9 +134,9 @@ The Token Follow Macro requires foundational hook infrastructure and scene flag 
 
 ### Tasks
 
-- [ ] T027 [P] [US3] Implement chat message formatting for relationship listing in macro JSON
-- [ ] T028 [US3] Add visual indicator/marker for follower tokens (if applicable in FoundryVTT API)
-- [ ] T029 [US3] Write Playwright E2E test for "view follow status" in `tests/e2e/follow-macro.spec.ts`
+- [X] T028 [P] [US3] Implement chat message formatting for relationship listing in macro JSON
+- [X] T029 [US3] Add visual indicator/marker for follower tokens (if applicable in FoundryVTT API)
+- [X] T030 [US3] Write Playwright E2E test for "view follow status" in `tests/e2e/follow-macro.spec.ts`
 
 ### Independent Test Strategy
 - E2E: Establish 2+ relationships, check chat log shows all links, hover shows indicators
@@ -150,10 +151,11 @@ The Token Follow Macro requires foundational hook infrastructure and scene flag 
 
 ### Tasks
 
-- [ ] T030 Handle token deletion while following is active (`src/hooks/deleteTokenHandler.ts`)
-- [ ] T031 Handle follower moving to different scene (automatic break)
-- [ ] T032 Handle ownership changes mid-follow (invalidate if user loses ownership)
-- [ ] T033 Write integration test for edge cases in `tests/e2e/follow-macro.spec.ts`
+- [X] T031 Handle token deletion while following is active (`src/hooks/deleteTokenHandler.ts`)
+- [X] T032 Handle follower moving to different scene (automatic break)
+- [X] T033 Handle ownership changes mid-follow (invalidate if user loses ownership)
+- [X] T034 Write integration test for edge cases in `tests/e2e/follow-macro.spec.ts`
+- [X] T035 [P] Write performance benchmark test measuring rendering frame rate with 5+ active follow relationships in `tests/e2e/follow-macro.spec.ts`
 
 ---
 
@@ -165,10 +167,10 @@ The Token Follow Macro requires foundational hook infrastructure and scene flag 
 
 ### Tasks
 
-- [ ] T034 Document follow macro usage in project memory (`.specify/memory/follow-macro.md`)
-- [ ] T035 Document gotchas and performance considerations in `.specify/memory/follow-macro.md`
-- [ ] T036 [P] Run `pnpm check` and ensure all quality gates pass
-- [ ] T037 Update CLAUDE.md with follow macro implementation notes (if applicable)
+- [X] T036 Document follow macro usage in project memory (`.specify/memory/follow-macro.md`)
+- [X] T037 Document gotchas and performance considerations in `.specify/memory/follow-macro.md`
+- [X] T038 [P] Run `pnpm check` and ensure all quality gates pass
+- [X] T039 Update CLAUDE.md with follow macro implementation notes (if applicable)
 
 ---
 
@@ -211,7 +213,7 @@ Phase 3: US1 (Create Follow Link) ─── Phase 4: US2 (Clear Link)
 ## MVP Scope Recommendation
 
 **Minimum Viable Product**: Phases 1-3 only
-- Task count: ~15 tasks (T001-T019)
+- Task count: ~16 tasks (T001-T020)
 - Delivery: Full P1 user story (create links with dynamic distance)
 - Demo value: Players can link tokens and maintain spacing
 - Time estimate: ~1-2 weeks for experienced developer
@@ -244,10 +246,10 @@ Phase 3: US1 (Create Follow Link) ─── Phase 4: US2 (Clear Link)
 
 - ✅ Phase 1: `pnpm check` passes
 - ✅ Phase 2: `pnpm check` passes + unit tests for FollowManager
-- ✅ Phase 3: `pnpm check` passes + E2E test T019 passes
-- ✅ Phase 4: `pnpm check` passes + E2E tests T025, T026 pass
-- ✅ Phase 5: `pnpm check` passes + E2E test T029 passes
-- ✅ Phase 6: `pnpm check` passes + all edge case tests pass
+- ✅ Phase 3: `pnpm check` passes + E2E test T020 passes
+- ✅ Phase 4: `pnpm check` passes + E2E tests T026, T027 pass
+- ✅ Phase 5: `pnpm check` passes + E2E test T030 passes
+- ✅ Phase 6: `pnpm check` passes + all edge case tests pass + performance benchmark (T035) meets 30+ fps target
 - ✅ Phase 7: Documentation complete + all gates pass + code review approved
 
 ---
@@ -255,7 +257,7 @@ Phase 3: US1 (Create Follow Link) ─── Phase 4: US2 (Clear Link)
 ## Format Validation Checklist
 
 ✅ All tasks follow checklist format: `- [ ] [TaskID] [P?] [Story?] Description with file path`
-✅ Task IDs sequential (T001-T037)
+✅ Task IDs sequential (T001-T039)
 ✅ [P] markers used only for parallelizable tasks
 ✅ [Story] labels present only in user story phases (US1, US2, US3)
 ✅ All descriptions include specific file paths

@@ -217,3 +217,148 @@ export async function closeDialogs(page: Page): Promise<void> {
 	await page.keyboard.press('Escape');
 	await page.waitForTimeout(200);
 }
+
+/**
+ * Create a test scene with the given name.
+ * Returns the scene ID.
+ */
+export async function createTestScene(page: Page, sceneName: string): Promise<string> {
+	const sceneId = await page.evaluate((name: string) => {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		const game = (window as any).game;
+		if (!game) {
+			throw new Error('Game not available');
+		}
+
+		// Create a new scene via FoundryVTT API
+		return (game.scenes?.documentClass as any)
+			.create({
+				name: name,
+				width: 1280,
+				height: 720,
+				padding: 0,
+			})
+			.then((scene: any) => {
+				// Activate the scene
+				scene.activate();
+				return scene.id;
+			});
+	}, sceneName);
+
+	await page.waitForTimeout(1000); // Allow scene to fully load
+	return sceneId;
+}
+
+/**
+ * Create test tokens on the current scene with specific positions.
+ * Returns an object with leader and follower token data.
+ */
+export async function createTestTokens(
+	page: Page,
+	leaderName: string,
+	followerName: string,
+	options?: {
+		leaderPos?: { x: number; y: number };
+		followerPos?: { x: number; y: number };
+	},
+): Promise<{
+	leader: { id: string; name: string; x: number; y: number };
+	follower: { id: string; name: string; x: number; y: number };
+}> {
+	const result = await page.evaluate(
+		(args: {
+			leaderName: string;
+			followerName: string;
+			leaderPos: { x: number; y: number };
+			followerPos: { x: number; y: number };
+		}) => {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			const game = (window as any).game;
+			if (!game || !game.ready) {
+				throw new Error('Game not ready');
+			}
+
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			const scene = (window as any).canvas?.scene;
+			if (!scene) {
+				throw new Error('No active scene');
+			}
+
+			// Get a default actor to clone (using a basic dummy)
+			const testActors = game.actors?.contents || [];
+			if (testActors.length === 0) {
+				throw new Error('No test actors available - create a test actor first');
+			}
+
+			const baseActor = testActors[0];
+
+			// Create leader actor
+			const leaderPromise = game.actors?.documentClass.create({
+				name: args.leaderName,
+				type: baseActor.type,
+				data: baseActor.data,
+			});
+
+			// Create follower actor
+			const followerPromise = game.actors?.documentClass.create({
+				name: args.followerName,
+				type: baseActor.type,
+				data: baseActor.data,
+			});
+
+			return Promise.all([leaderPromise, followerPromise]).then(
+				([leaderActor, followerActor]: any[]) => {
+					// Create tokens for the actors
+					const leaderTokenPromise = scene.createEmbeddedDocuments('Token', [
+						{
+							actor: leaderActor.id,
+							name: args.leaderName,
+							x: args.leaderPos.x,
+							y: args.leaderPos.y,
+						},
+					]);
+
+					const followerTokenPromise = scene.createEmbeddedDocuments('Token', [
+						{
+							actor: followerActor.id,
+							name: args.followerName,
+							x: args.followerPos.x,
+							y: args.followerPos.y,
+						},
+					]);
+
+					return Promise.all([leaderTokenPromise, followerTokenPromise]).then(
+						([leaderTokens, followerTokens]: any[]) => {
+							const leaderToken = leaderTokens[0];
+							const followerToken = followerTokens[0];
+
+							return {
+								leader: {
+									id: leaderToken.id,
+									name: leaderToken.name,
+									x: leaderToken.x,
+									y: leaderToken.y,
+								},
+								follower: {
+									id: followerToken.id,
+									name: followerToken.name,
+									x: followerToken.x,
+									y: followerToken.y,
+								},
+							};
+						},
+					);
+				},
+			);
+		},
+		{
+			leaderName,
+			followerName,
+			leaderPos: options?.leaderPos || { x: 0, y: 0 },
+			followerPos: options?.followerPos || { x: 100, y: 0 },
+		},
+	);
+
+	await page.waitForTimeout(500); // Allow tokens to render
+	return result as any;
+}

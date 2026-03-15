@@ -15,6 +15,26 @@ const ROLL_MODE = {
 	NORMAL: 0,
 };
 
+/**
+ * Follow Macro Configuration
+ * Defines constants for the token follow macro feature
+ */
+const FOLLOW_MACRO = {
+	// Performance targets
+	REPOSITION_TIMEOUT_MS: 500, // Follower should move within 500ms of leader movement
+	SETUP_TIMEOUT_MS: 5000, // Macro setup should complete within 5 seconds
+	CLEANUP_TIMEOUT_MS: 1000, // Auto-cleanup should occur within 1 second
+
+	// Storage
+	SCENE_FLAG_KEY: 'nimble.followRelationships',
+
+	// Distance tolerance
+	DISTANCE_TOLERANCE_SQUARES: 1, // Allow ±1 grid square tolerance in distance
+
+	// Chat message prefixes
+	CHAT_PREFIX: 'follow-macro',
+};
+
 /** --------------------------------------------- */
 /**                 CONFIG                        */
 /** --------------------------------------------- */
@@ -844,6 +864,7 @@ const itemConfig = {
 const NIMBLE = {
 	// Constants
 	ROLL_MODE,
+	FOLLOW_MACRO,
 
 	// Config
 	abilityScoreAbbreviations,

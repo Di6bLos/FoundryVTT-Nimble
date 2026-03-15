@@ -80,6 +80,7 @@ A token owner can see which of their tokens are currently following other tokens
 - **FR-011**: Macro MUST detect the selected token's state (follower vs. leader) and present a context-aware dialog: if the token is a follower, show "Clear Follow" option; if not, show "Start Following" option.
 - **FR-009**: System MUST store follow relationships in scene flags and automatically break the relationship if either token is moved to a different scene.
 - **FR-010**: Macro MUST be executable by any player who owns both tokens, with no special permissions required.
+- **FR-012**: System MUST prevent circular follow chains (e.g., Token A following Token B following Token A). If creating a relationship would form a cycle, reject it and display a user-friendly error message.
 
 ### Key Entities
 
@@ -93,7 +94,7 @@ A token owner can see which of their tokens are currently following other tokens
 - **SC-001**: Follower token moves to match leader token position within 500ms of leader movement completion.
 - **SC-002**: Follow relationship maintains configured distance within 1 grid square tolerance (e.g., if distance is 3 squares, follower is always 2-4 squares away).
 - **SC-003**: Macro completes follow relationship setup (selection → targeting → confirmation) in under 5 seconds.
-- **SC-004**: Zero performance impact on scene rendering when 5+ follow relationships are active simultaneously.
+- **SC-004**: Scene rendering maintains 30+ fps (60 fps preferred) with 5+ active follow relationships. Measured via browser DevTools frame rate counter during continuous token movement with multiple followers active.
 - **SC-005**: 100% of follow relationship creation attempts succeed when user owns both tokens; 0% when user does not own one or both tokens.
 - **SC-006**: Follow relationship automatically breaks within 1 second if leader or follower token is deleted or moves to a different scene.
 

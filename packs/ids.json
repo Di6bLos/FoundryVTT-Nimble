@@ -785,6 +785,7 @@
 			"atk-ranged": "NimMacroAtkRange2",
 			"atk-spells": "NimMacroAtkSpell3",
 			"day-night-toggle": "NimMacroDayNight5",
+			"follow-token-macro": "qCnuD6DAKVhMFIaI",
 			"open-door": "NimMacroOpenDoor6",
 			"place-light": "NimMacroPlcLight8"
 		}
