@@ -19,11 +19,12 @@ See topic files for details. Links below.
   Fix needed: add the `evaluate()` force-enable workaround before selectOption.
 
 ## TAH Nimble Module BLOCKING BUG (updated 2026-03-15)
-- TAH Core v2.0.16 installed; module.json declares compatibility with 2.0.0 only.
-- FoundryVTT shows error banner and HUD never renders. `#token-action-hud` never in DOM.
-- TAH Core real API: `game.modules.get('token-action-hud-core').api` (not `window.TokenActionHUD`).
-- API keys: ActionHandler, RollHandler, SystemManager, Logger, Utils, Timer, etc.
-- See console-errors.md #5 for full detail and files to fix.
+- OLD BUG (FIXED): version mismatch and window.TokenActionHUD reference — resolved in bb881d6.
+- NEW BLOCKING BUG: `NimbleSystemManager.registerDefaults()` returns `{ groups: [...] }` but
+  TAH Core expects `{ layout: [...] }`. Causes `TypeError: Cannot convert undefined or null to object`
+  at `Object.entries(null)` in TAH Core's `getUserGroups`. HUD never renders.
+- Fix: change return value to `{ layout: [{ nestId, id, name, type, groups }] }` format.
+- See console-errors.md #6 for full root cause analysis and correct format.
 
 ## Test World Data (Midgard / Lodge scene — set up 2026-03-15)
 - Test Character (id: in4mN7uDenugEpRw, type: character):

@@ -40,25 +40,45 @@ export function createSystemManagerClass(
 
 		/**
 		 * Register default group structure for both character and NPC actors
-		 * Returns { groups: GroupDef[] }
+		 * TAH Core expects layout with nestId and id for each group
 		 */
-		registerDefaults(): { groups: Array<{ id: string; name: string; type: string }> } {
+		registerDefaults(): any {
 			return {
-				groups: [
+				layout: [
 					// Character groups
-					{ id: 'spells', name: 'Spells', type: 'system' },
-					{ id: 'abilities', name: 'Abilities', type: 'system' },
-					{ id: 'reactions', name: 'Reactions', type: 'system' },
-					{ id: 'utility', name: 'Utility', type: 'system' },
-					{ id: 'quick-actions', name: 'Quick Actions (1 Action)', type: 'system' },
-					{ id: 'standard-actions', name: 'Standard Actions (2 Actions)', type: 'system' },
-					{ id: 'full-turn-actions', name: 'Full-Turn Actions (3 Actions)', type: 'system' },
-					{ id: 'free-actions', name: 'Free Actions', type: 'system' },
+					{ nestId: 'spells', id: 'spells', name: 'Spells', type: 'system' },
+					{ nestId: 'abilities', id: 'abilities', name: 'Abilities', type: 'system' },
+					{ nestId: 'reactions', id: 'reactions', name: 'Reactions', type: 'system' },
+					{ nestId: 'utility', id: 'utility', name: 'Utility', type: 'system' },
+					{
+						nestId: 'quick-actions',
+						id: 'quick-actions',
+						name: 'Quick Actions (1 Action)',
+						type: 'system',
+					},
+					{
+						nestId: 'standard-actions',
+						id: 'standard-actions',
+						name: 'Standard Actions (2 Actions)',
+						type: 'system',
+					},
+					{
+						nestId: 'full-turn-actions',
+						id: 'full-turn-actions',
+						name: 'Full-Turn Actions (3 Actions)',
+						type: 'system',
+					},
+					{ nestId: 'free-actions', id: 'free-actions', name: 'Free Actions', type: 'system' },
 					// NPC groups
-					{ id: 'melee', name: 'Melee Attacks', type: 'system' },
-					{ id: 'ranged', name: 'Ranged Attacks', type: 'system' },
-					{ id: 'attack-sequences', name: 'Attack Sequences', type: 'system' },
-					{ id: 'triggered', name: 'Triggered Actions', type: 'system' },
+					{ nestId: 'melee', id: 'melee', name: 'Melee Attacks', type: 'system' },
+					{ nestId: 'ranged', id: 'ranged', name: 'Ranged Attacks', type: 'system' },
+					{
+						nestId: 'attack-sequences',
+						id: 'attack-sequences',
+						name: 'Attack Sequences',
+						type: 'system',
+					},
+					{ nestId: 'triggered', id: 'triggered', name: 'Triggered Actions', type: 'system' },
 				],
 			};
 		}

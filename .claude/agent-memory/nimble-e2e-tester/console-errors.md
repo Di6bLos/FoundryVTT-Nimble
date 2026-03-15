@@ -21,21 +21,42 @@ All 4 errors and 3 warnings observed during test session are pre-existing and un
   Pathfinder 2e are currently supported."
 - **Meaning:** Third-party bridge module limitation, not a Nimble bug.
 
-### 5. token-action-hud-nimble — TAH Core version mismatch (BLOCKING BUG)
-- **Message:** "The installed Token Action HUD system module requires Token Action HUD Core module
-  version 2.0.0, but version 2.0.16 is installed."
-- **Root cause:** `public/modules/token-action-hud-nimble/module.json` declares compatibility
-  against TAH Core 2.0.0, but the installed TAH Core is 2.0.16. The module's API usage in
-  `src/modules/tah-nimble/index.ts` also references `window.TokenActionHUD` which does not exist
-  in TAH Core 2.0.16 — the real API surface is `game.modules.get('token-action-hud-core').api`
-  with class keys: ActionHandlerExtender, ActionHandler, DataHandler, Logger, PreRollHandler,
-  RollHandler, RollHandlerExtender, SystemManager, Timer, Utils.
-- **Effect:** HUD never renders. `#token-action-hud` element never appears in DOM even after
-  token selection. `tokenSelected` fires correctly but TAH Core aborts due to version check.
-- **Verification (2026-03-15):** Selecting Test Character token → `tahHUDExists: false` confirmed.
-- **Files to fix:**
-  1. `public/modules/token-action-hud-nimble/module.json` — update `minimumCoreVersion`/`compatibleCoreVersion` for TAH Core to 2.0.16+
-  2. `src/modules/tah-nimble/index.ts` — replace `window.TokenActionHUD` API usage with `game.modules.get('token-action-hud-core').api` pattern and implement `SystemManager` subclass
+### 5. token-action-hud-nimble — RESOLVED: version mismatch fixed (2026-03-15)
+- **Status:** module.json and index.ts were fixed in branch 001-token-action-hud. Module now
+  registers successfully. Console shows "TAH Core API ready", "SystemManager created", "Ready".
+
+### 6. token-action-hud-nimble — registerDefaults() wrong return format (NEW BLOCKING BUG, 2026-03-15)
+- **Message:** `TypeError: Cannot convert undefined or null to object` at `Object.entries(...)`
+  in `getUserGroups` inside `token-action-hud-core.min.mjs:1:24921`
+- **Root cause:** `NimbleSystemManager.registerDefaults()` returns `{ groups: [...] }`, but TAH Core
+  expects `{ layout: [...] }`. TAH Core reads `systemManager.defaults?.layout` in `LayoutHandler.#a()`.
+  Since `.layout` is undefined, `defaultLayout = null`. When `getUserGroups` falls back to the layout
+  (`A = this.layoutHandler.layout = null`), `Object.entries(null)` throws TypeError.
+- **Effect:** HUD element (`#token-action-hud`) never renders. Token selection fires correctly
+  but `HudManager.init()` crashes at `GroupHandler.init()`.
+- **Correct format** (from dnd5e reference module):
+  ```js
+  return {
+    layout: [
+      {
+        nestId: 'spells',
+        id: 'spells',
+        name: 'Spells',
+        type: 'system',
+        groups: [/* nested subgroups with nestId: 'spells_subgroupId' */]
+      },
+      ...
+    ]
+  }
+  ```
+- **File to fix:** `src/modules/tah-nimble/system/NimbleSystemManager.ts` — change
+  `registerDefaults()` to return `{ layout: [{ nestId, id, name, type, groups }] }` instead
+  of `{ groups: [...] }`. Top-level groups need `nestId === id`. Nested groups need
+  `nestId === 'parentId_childId'`.
+- **Verification (2026-03-15):** Selecting Test Character → `tahHUDExists: false` confirmed after fix attempt.
+- **Note:** TAH Core also uses `Hooks.call` (not `callAll`) in dnd5e for `tokenActionHudSystemReady`.
+  Our module uses `Hooks.callAll`. Both should work since `.on()` responds to both, but use `Hooks.call`
+  to match the reference implementation.
 
 ## Warnings
 
