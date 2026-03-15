@@ -18,15 +18,12 @@ See topic files for details. Links below.
   The `loginAsGM` helper in helpers.ts does NOT force-enable the GM option.
   Fix needed: add the `evaluate()` force-enable workaround before selectOption.
 
-## TAH Nimble Module BLOCKING BUG (updated 2026-03-15)
-- BUG 1 (FIXED): version mismatch and `{ groups }` vs `{ layout }` — resolved in commit 97f9230.
-  HUD now renders (#token-action-hud appears, name shows, groups are in DOM).
-- BUG 2 (ACTIVE): All groups stay `tah-hidden`; no action buttons visible. Root cause: flat layout
-  (no subgroups). TAH Core only renders `.tah-action` elements inside list/tab subgroups. Our top-level
-  groups have `groups.lists = []`, so the template renders nothing and `hideIfEmpty` keeps all hidden.
-  Data is correct (groupHandler.groups has actions with selected:true). Only rendering broken.
-  Fix: add nested subgroups to layout, add actions to subgroup nestId (e.g. 'spells_all').
-- See console-errors.md #6 for full analysis.
+## TAH Nimble Module Status (updated 2026-03-15 MVP validation)
+- BUG 1 (FIXED): version mismatch and `{ groups }` vs `{ layout }` — resolved.
+- BUG 2 (FIXED): subgroup rendering. Each group now has `_all` subgroup. Actions render correctly.
+- MVP PASS: Full end-to-end path validated 2026-03-15. See below for details.
+- NEW FINDING: `Roll._evaluateASTAsync` TypeError during NPC attack roll — non-fatal, chat card
+  still created. Likely a Nimble system bug unrelated to TAH. See console-errors.md #7.
 
 ## Test World Data (Midgard / Lodge scene — set up 2026-03-15)
 - Test Character (id: in4mN7uDenugEpRw, type: character):

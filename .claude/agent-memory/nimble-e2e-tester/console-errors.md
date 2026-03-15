@@ -25,29 +25,20 @@ All 4 errors and 3 warnings observed during test session are pre-existing and un
 - **Status:** module.json and index.ts were fixed in branch 001-token-action-hud. Module now
   registers successfully. Console shows "TAH Core API ready", "SystemManager created", "Ready".
 
-### 6. token-action-hud-nimble — registerDefaults() flat groups not rendered (ACTIVE BLOCKING BUG, updated 2026-03-15)
-- **Status:** Partially fixed. `{ groups: [] }` → `{ layout: [] }` was fixed in commit 97f9230, unblocking
-  HUD element creation. But actions still don't display — all groups remain `tah-hidden`.
-- **Root cause (NEW deeper issue):** TAH Core v2's `group.hbs` template renders actions only inside
-  subgroups (via `groups.lists` and `groups.tabs` arrays on the parent group). With our flat layout
-  (top-level groups with no children), `groups.lists.length === 0` always. TAH Core's `hideIfEmpty`
-  logic adds `tah-hidden` to any subgroup with no `.tah-action` elements, but those elements never
-  render because there are no subgroups to hold them.
-- **Data state confirmed:** `groupHandler.groups['spells'].actions` has 6 actions with `selected: true`.
-  `groupHandler.groups['abilities'].actions` has 1 action (Dodge) with `selected: true`. Data is
-  correct; only rendering is broken.
-- **Correct structure required (from dnd5e reference):** Each top-level group must have a `groups`
-  array containing nested subgroups. Subgroup nestIds use `parentId_childId` format. Actions must
-  be added via `addActions(items, { id: childId, nestId: 'parentId_childId', type: 'system' })`.
-  OR: use `addGroup(subgroupData, parentGroupData)` in `buildSystemActions` to dynamically create
-  a subgroup, then `addActions` to that subgroup.
-- **Simplest fix:** In `registerDefaults()`, make each category group contain ONE subgroup with
-  the same name. Example: `spells` parent → `spells_all` subgroup. Then in `buildSystemActions`,
-  call `addActions(items, { id: 'all', nestId: 'spells_all', type: 'system' })`.
-- **Alternative fix:** Use `addGroup` + `addActions` entirely in `buildSystemActions` (no static
-  layout needed for leaf-level groups).
-- **Verification (2026-03-15):** `groups['spells'].groups = { lists: [], tabs: [] }` — confirmed empty.
-  `hud.outerHTML` shows all groups with class `tah-hidden` and empty `.tah-subgroups` containers.
+### 6. token-action-hud-nimble — subgroup rendering — RESOLVED (2026-03-15)
+- **Status:** FIXED. Each top-level group now has a `_all` subgroup (e.g. `spells_all`). Actions are
+  registered against the subgroup nestId. Groups with actions show visible; empty groups get `tah-hidden`.
+- **Verified 2026-03-15 MVP test:** Character HUD shows 6 spells + 1 ability. NPC HUD shows 2 attacks.
+  All empty groups correctly hidden. Click → activate() → activation dialog → chat card path confirmed.
+
+### 7. Roll._evaluateASTAsync — Cannot read 'class' (2026-03-15, NEEDS INVESTIGATION)
+- **Source:** `foundry.mjs:30569`, `Roll._evaluateASTAsync` called from `Roll.toMessage`
+- **Fires when:** NPC monsterFeature attack is rolled via activation dialog "Roll" button
+- **Message:** `TypeError: Cannot read properties of undefined (reading 'class')`
+- **Impact:** Despite the error, the chat card IS created with correct damage output ("10 Slashing").
+  Roll still completes successfully. May be a non-fatal evaluation path for dice terms.
+- **Not TAH-related:** Fires in Foundry's dice engine, not in NimbleRollHandler or tah-nimble code.
+- **To investigate:** Check if this fires when rolling NPC attacks outside of TAH (open NPC sheet directly).
 
 ## Warnings
 
