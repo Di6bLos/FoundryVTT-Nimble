@@ -82,8 +82,8 @@ const relationships = scene.getFlag('nimble', 'followRelationships') || [];
    - Calculate and store distance using `canvas.grid.measureDistance()`.
 
 2. **On Movement** (via updateToken hook):
-   - If moved token is a leader, reposition all followers.
-   - If moved token is a follower and distance has changed, update the relationship's distance and timestamp (user intent to change distance).
+   - If moved token is a leader, move all followers to leader's old position + 1 grid space further back.
+   - If moved token is a follower AND the move is user-initiated (not from our internal hook), break the relationship immediately.
    - If moved token changed scenes, remove all relationships involving that token.
 
 3. **On Deletion** (via deleteToken hook):

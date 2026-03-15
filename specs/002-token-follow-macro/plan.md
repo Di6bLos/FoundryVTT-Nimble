@@ -1,46 +1,48 @@
-# Implementation Plan: Token Follow Macro
+# Implementation Plan: Token Follow — Distance Spacing & Manual Break
 
 **Branch**: `002-token-follow-macro` | **Date**: 2026-03-15 | **Spec**: [spec.md](spec.md)
-**Input**: Feature specification from `/specs/002-token-follow-macro/spec.md`
+**Input**: Two follow-up behaviors from live testing: (1) maintain 1 grid space gap between leader and follower; (2) break the follow link when the follower token is manually moved.
 
 ## Summary
 
-Create a FoundryVTT macro that allows token owners to link a "follower" token to a "leader" token, maintaining a dynamic distance between them. When the leader moves, the follower automatically repositions to maintain the distance set at link creation time. The macro supports state-aware interactions (create/clear links), scene-scoped persistence, and handles edge cases like token deletion or scene transitions. Distance calculation uses FoundryVTT's built-in `canvas.grid.measureDistance()` to support all grid types (square, hex, etc.).
+The retrace-steps movement model is live and working. Two small behavioral gaps remain:
+
+1. **Spacing**: The follower lands on the leader's old tile, leaving no gap. The user wants 1 grid square of empty space between them at all times.
+2. **Manual break**: Moving the follower token should break the follow relationship, making it a free agent.
+
+Both changes are confined to `src/hooks/tokenFollowUpdate.ts`. No new files, no new entities, no schema changes.
+
+---
 
 ## Technical Context
 
-**Language/Runtime**: JavaScript (FoundryVTT macro script)
-**Macro Format**: JSON macro in `packs/macros/core/`
-**Primary Dependencies**: FoundryVTT v13 core (no external npm packages)
-**Storage**: Scene flags (`scene.flags.nimble.followRelationships`)
-**Testing**: Playwright E2E tests
-**Target Platform**: FoundryVTT web application (any supported browser)
-**Project Type**: FoundryVTT macro system feature
-**Performance Goals**:
-  - Follower moves within 500ms of leader movement (SC-001)
-  - Macro setup completes in <5s (SC-003)
-  - Zero impact on rendering with 5+ active relationships (SC-004)
-**Constraints**:
-  - Must maintain distance within 1 grid square tolerance (SC-002)
-  - Zero new npm dependencies
-  - Must not break existing scene/actor/token behavior
-**Scale/Scope**: Single macro serving all players who own multiple tokens
+**Language/Version**: TypeScript 5.9.3
+**Primary Dependencies**: FoundryVTT v13 global APIs (`canvas.grid`, `Hooks`, `TokenDocument`)
+**Storage**: Scene flags via `FollowManager` (no change)
+**Testing**: Playwright E2E (browser-first) + `pnpm check` type gates
+**Target Platform**: FoundryVTT browser client (Chromium)
+**Project Type**: Game system hook extension
+**Performance Goals**: Follower repositions within 500ms of leader movement
+**Constraints**: Must not break chain-following (A→B→C); must not introduce infinite loops
+**Scale/Scope**: 5–10 follow relationships per scene
+
+---
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+*GATE: Must pass before proceeding to implementation.*
 
-**Principle I (Browser-First Testing)**: ✓ **PASS** — Will require Playwright E2E tests for token movement, state transitions, and edge cases. Manual testing via browser required.
+| Principle | Status | Notes |
+|-----------|--------|-------|
+| I. Browser-First Testing | ✅ PASS | Both behaviors require manual Playwright verification |
+| II. Organization & Locality | ✅ PASS | All changes in `src/hooks/tokenFollowUpdate.ts` |
+| III. Documentation | ✅ PASS | Gotchas documented in research.md and quickstart.md |
+| IV. Minimal Dependencies | ✅ PASS | No new packages; uses existing `canvas.grid` APIs |
+| V. TypeScript + Svelte + Sass | ✅ PASS | TypeScript only; no new components or styles |
 
-**Principle II (Organization & Locality)**: ✓ **PASS** — Macro JSON lives in `packs/macros/core/`; supporting scripts (if any) in `src/` with clear naming.
+No violations. No complexity tracking needed.
 
-**Principle III (Documentation)**: ✓ **PASS** — Will document: (1) macro usage instructions in-game, (2) edge cases (scene transitions, token deletion), (3) how to access/modify follow relationships via scene flags, (4) performance considerations.
-
-**Principle IV (Minimal Dependencies)**: ✓ **PASS** — Zero new npm dependencies. Uses only FoundryVTT core APIs.
-
-**Principle V (TypeScript + Svelte + Sass)**: ✓ **EXEMPT** — Macro is hand-written JavaScript in JSON macro pack (not TypeScript/Svelte/Sass). This is a documented exception per constitution for macro packs.
-
-**Overall**: ✓ **PASS** — No violations. Feature aligns with all core principles.
+---
 
 ## Project Structure
 
@@ -48,47 +50,140 @@ Create a FoundryVTT macro that allows token owners to link a "follower" token to
 
 ```text
 specs/002-token-follow-macro/
-├── spec.md              # Feature specification (complete)
-├── plan.md              # This file (you are here)
-├── research.md          # Phase 0 (pending)
-├── data-model.md        # Phase 1 (pending)
-├── quickstart.md        # Phase 1 (pending)
-├── contracts/           # Phase 1 (pending) - macro interface schema
-└── checklists/
-    └── requirements.md  # Quality checklist (complete)
+├── plan.md              ← This file
+├── research.md          ← Complete (no changes needed)
+├── data-model.md        ← Updated: lifecycle diagram reflects manual-break behavior
+├── quickstart.md        ← Updated: new function signatures, testing steps
+├── contracts/           ← N/A (internal hook system, no external API)
+└── tasks.md             ← To be generated by /speckit.tasks
 ```
 
-### Source Code (FoundryVTT Nimble)
+### Source Code (files changed by this feature)
 
 ```text
-packs/macros/core/
-├── (existing macros)
-└── follow-token-macro.json    # NEW: Follow macro JSON definition
-
-src/
-├── hooks/
-│   └── tokenFollowUpdate.ts   # NEW: Hook to listen for token movement
-├── utils/
-│   └── followManager.ts       # NEW: Utility functions for follow relationship CRUD
-└── config.ts                  # UPDATE: Add follow-related constants if needed
-
-tests/
-├── e2e/
-│   └── follow-macro.spec.ts   # NEW: Playwright E2E tests for token following
-└── unit/
-    └── followManager.spec.ts  # NEW: Unit tests for follow relationship logic
+src/hooks/tokenFollowUpdate.ts   ← Primary change file (2 new behaviors)
+src/utils/followManager.ts       ← Already has FollowRelationship exported (no change needed)
 ```
 
-**Structure Decision**: This is a FoundryVTT macro-based feature. The macro JSON lives in `packs/macros/` while supporting code (hooks, utilities) lives in `src/` to maintain consistency with Nimble's TypeScript architecture. No new npm dependencies or external services required. The feature is self-contained within scene flags and token movement hooks.
+---
 
-## Complexity Tracking
+## Phase 0: Research Summary
 
-> No Constitution Check violations. No complexity justifications needed.
+Research was completed in the initial planning session. Findings remain valid:
 
-| Category | Status |
+- **Storage**: Scene flags via `FollowManager.getRelationships()` / `FollowManager.deleteByPair()`
+- **Distance**: `canvas.grid.size` gives pixel size of 1 grid square; used to compute the 1-square trailing offset
+- **Hook behavior**: `noHook: true` in `token.update()` suppresses BOTH `preUpdateToken` and `updateToken`, so any hook firing for a follower token is definitively user-initiated
+
+No new unknowns. Refer to [research.md](research.md) for full rationale.
+
+---
+
+## Phase 1: Design
+
+### Behavior 1 — 1 Grid Space Trailing Distance
+
+**Current**: `moveChainFollowers` moves the follower to `oldLeaderPos` (exactly the tile the leader vacated).
+
+**New**: Follower moves to `oldLeaderPos + normalize(oldLeaderPos - newLeaderPos) * gridSize`.
+
+This is "1 more step away from the leader in the direction of travel", producing exactly 1 empty tile between the follower and the leader.
+
+**New helper** `calculateTrailingPosition`:
+```typescript
+function calculateTrailingPosition(
+    oldLeaderPos: { x: number; y: number },
+    newLeaderPos: { x: number; y: number },
+): { x: number; y: number } {
+    if (!canvas.grid) return oldLeaderPos;
+
+    const gridSize = canvas.grid.size;
+    const dx = oldLeaderPos.x - newLeaderPos.x;
+    const dy = oldLeaderPos.y - newLeaderPos.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+
+    if (dist === 0) return oldLeaderPos; // No net movement
+
+    // Step 1 grid square further from the leader along the travel direction
+    const scale = gridSize / dist;
+    return {
+        x: Math.round((oldLeaderPos.x + dx * scale) / gridSize) * gridSize,
+        y: Math.round((oldLeaderPos.y + dy * scale) / gridSize) * gridSize,
+    };
+}
+```
+
+The `Math.round(... / gridSize) * gridSize` snaps the result to the nearest grid square, preventing off-grid placement on diagonal moves.
+
+**Caller change** in `moveChainFollowers`:
+```typescript
+// Before:
+await followerToken.update({ x: oldLeaderPos.x, y: oldLeaderPos.y }, { noHook: true });
+
+// After:
+const targetPos = calculateTrailingPosition(oldLeaderPos, { x: leaderToken.x, y: leaderToken.y });
+await followerToken.update({ x: targetPos.x, y: targetPos.y }, { noHook: true });
+```
+
+---
+
+### Behavior 2 — Break Link on Manual Follower Move
+
+**Trigger**: `onUpdateToken` fires for a token that is registered as a follower AND `options.noHook` is not set (meaning it's a user drag, not our programmatic move).
+
+**Implementation**: Add a follower-break check at the TOP of `onUpdateToken`, before the `if (!oldPos) return` guard:
+
+```typescript
+// Break follow link if a follower was manually moved
+const allRelationships = FollowManager.getRelationships(scene);
+const myFollowerRels = allRelationships.filter((rel) => rel.followerId === token.id);
+if (myFollowerRels.length > 0) {
+    for (const rel of myFollowerRels) {
+        await FollowManager.deleteByPair(scene, rel.leaderId, rel.followerId);
+        console.log(
+            `[TokenFollowUpdate] Follow link broken: ${token.name} was manually moved`,
+        );
+    }
+    // Do NOT return here — if this token is also a leader in a chain,
+    // fall through so its own followers get updated too.
+}
+```
+
+**Why not return early**: A token can be both a follower (of A) AND a leader (of C) in a chain A→B→C. If the user manually moves B:
+- Break A→B (B becomes a free agent from A's perspective)
+- B's own follower C should still respond to B's new position (B is now moving freely)
+
+So after breaking the inbound link, we continue through the function. The leader logic (`if (!oldPos) return`) will handle whether C follows.
+
+---
+
+### Chain Behavior After Manual Break
+
+| Scenario | Result |
 |----------|--------|
-| Dependencies | No violations (0 new packages) |
-| Architecture | No violations (uses FoundryVTT core APIs) |
-| Code Organization | No violations (macro + src/ utilities) |
-| Testing | No violations (Playwright + unit tests planned) |
-| Documentation | No violations (gotchas to be documented in memory) |
+| User moves follower B (no chain below) | A→B link broken; B is free |
+| User moves middle token B (A→B→C) | A→B link broken; C follows B's new position (B→C intact) |
+| Programmatic move of follower by our hook | `noHook: true` suppresses hook; no break triggered |
+
+---
+
+## Edge Cases
+
+| Scenario | Handling |
+|----------|----------|
+| Leader moves 0 pixels (no-op update) | `x === undefined && y === undefined` guard exits early |
+| `canvas.grid` is null (gridless scene) | `calculateTrailingPosition` returns `oldLeaderPos` unchanged |
+| Follower is also a leader (chain) | Break inbound link; fall through to propagate outbound chain |
+| `deleteByPair` called for already-deleted relationship | `deleteByPair` checks count difference; silently no-ops |
+| Diagonal move causes off-grid snap | `Math.round(... / gridSize) * gridSize` corrects it |
+
+---
+
+## Verification Checklist
+
+1. `pnpm check` — no new type errors
+2. Move leader 1 square → follower ends up 2 squares from leader (1 gap)
+3. Move leader diagonally → follower is 1 diagonal grid square further back (snapped to grid)
+4. Manually drag follower → relationship is deleted; leader moves freely
+5. Chain A→B→C: move A → B goes 2 squares behind A's new pos; C goes 2 squares behind B's new pos
+6. Manually drag B in chain → A→B breaks; C still follows B

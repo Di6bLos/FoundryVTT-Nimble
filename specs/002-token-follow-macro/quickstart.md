@@ -127,60 +127,43 @@ async function clearFollowRelationship(followerId) {
 
 **Type**: TypeScript source at `src/hooks/tokenFollowUpdate.ts`
 
-**Purpose**: Listen to token movement and reposition followers
+**Purpose**: Listen to token movement; reposition followers (with 1-grid-space gap) and break link on manual follower move.
 
-**Hook Event**: `updateToken` (fires when a token changes position, rotation, or other properties)
+**Hook Events**: `preUpdateToken` (cache old position) + `updateToken` (act on move)
 
-**Function Signature**:
+**Function Signatures** (as implemented):
 
 ```typescript
-export function setupTokenFollowHook(): void {
-  Hooks.on('updateToken', async (token: Token, changes: any) => {
-    // Skip if change is not position-related
-    if (!changes.x && !changes.y) return;
+// Module-level cache: stores old leader positions before each move
+const leaderPreviousPositions = new Map<string, { x: number; y: number }>();
 
-    // Get relationships
-    const scene = token.scene;
-    const relationships = scene?.getFlag('nimble', 'followRelationships') || [];
+// Fires BEFORE the move — caches old position for leaders
+function onPreUpdateToken(token: TokenDocument, changes: object, _options: object): void;
 
-    // Find followers of this token
-    const followers = relationships.filter(r => r.leaderId === token.id);
+// Fires AFTER the move — breaks follower links and moves chain followers
+async function onUpdateToken(token: TokenDocument, changes: object, options: object): Promise<void>;
 
-    // Reposition each follower
-    for (const relationship of followers) {
-      await repositionFollower(token, relationship);
-    }
+// Computes trailing position: 1 grid square further back than oldLeaderPos
+function calculateTrailingPosition(
+    oldLeaderPos: { x: number; y: number },
+    newLeaderPos: { x: number; y: number },
+): { x: number; y: number };
 
-    // Check if this token is a follower that moved (distance changed?)
-    const asFollower = relationships.find(r => r.followerId === token.id);
-    if (asFollower && changes.x !== undefined && changes.y !== undefined) {
-      // User manually moved follower = break relationship
-      // (unless the move was by the system repositioning)
-      // [Implement: detect manual vs. automatic move]
-    }
-  });
-}
+// Recursively moves all followers in the chain to their trailing positions
+async function moveChainFollowers(
+    scene: Scene,
+    leaderToken: TokenDocument,
+    oldLeaderPos: { x: number; y: number },
+    allRelationships: FollowRelationship[],
+): Promise<void>;
 
-async function repositionFollower(leader: Token, relationship: FollowRelationship) {
-  const follower = canvas.tokens.get(relationship.followerId);
-  if (!follower) return; // Follower deleted or off-scene
-
-  // Calculate new position maintaining distance
-  const dx = leader.x - follower.x;
-  const dy = leader.y - follower.y;
-  const currentDist = Math.sqrt(dx * dx + dy * dy);
-
-  if (currentDist === 0) return; // Same position
-
-  const targetDist = relationship.distance * canvas.grid.size;
-  const scale = targetDist / currentDist;
-
-  const newX = leader.x - (dx * scale);
-  const newY = leader.y - (dy * scale);
-
-  await follower.update({ x: newX, y: newY });
-}
+export function registerTokenFollowUpdate(): void;
 ```
+
+**Key Behavioral Rules**:
+- `{ noHook: true }` on `followerToken.update()` suppresses ALL hooks for that move (including `preUpdateToken`), so any `onUpdateToken` firing is definitively user-initiated
+- If `onUpdateToken` fires for a follower, break the inbound relationship; do NOT return (let outbound chain still fire)
+- `calculateTrailingPosition` snaps result to grid using `Math.round(x / gridSize) * gridSize`
 
 ---
 
@@ -310,10 +293,16 @@ describe('Token Follow Macro', () => {
     // Verify: Follower moves 5 squares east (distance remains 3)
   });
 
-  it('should update distance when follower is manually moved', async () => {
-    // Setup: Establish follow relationship (distance = 3)
-    // Action: Drag follower 2 squares away
-    // Verify: Relationship's distance updates to ~5; chat shows update
+  it('should maintain 1 grid space gap after leader moves', async () => {
+    // Setup: Leader at (0,0), follower at (2,0) — establish follow link
+    // Action: Move leader 1 square east to (1,0)
+    // Verify: Follower moves to (-1,0) — 1 empty square between them
+  });
+
+  it('should break follow link when follower is manually moved', async () => {
+    // Setup: Establish follow relationship
+    // Action: Manually drag follower token to new position
+    // Verify: Relationship deleted; leader moves freely without follower
   });
 
   it('should break link when running macro on follower with "Clear Follow"', async () => {

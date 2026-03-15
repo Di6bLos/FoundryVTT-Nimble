@@ -1,265 +1,130 @@
-# Tasks: Token Follow Macro
+# Tasks: Token Follow — Trailing Distance & Manual Break
 
-**Feature**: `002-token-follow-macro`
-**Created**: 2026-03-15
-**Implementation Strategy**: MVP-first (User Story 1), incremental delivery (US2, US3)
+**Input**: Design documents from `/specs/002-token-follow-macro/`
+**Branch**: `002-token-follow-macro`
+**Scope**: Incremental enhancement to the existing working retrace-steps hook. Two behaviors added.
 
----
+## Format: `[ID] [P?] [Story] Description`
 
-## Overview
+- **[P]**: Can run in parallel (different files, no dependencies)
+- **[Story]**: Which user story this task belongs to
 
-The Token Follow Macro requires foundational hook infrastructure and scene flag management, followed by three independently testable user stories. Each story can be developed and tested in isolation.
+## Current State
 
-**Total Tasks**: 39
-**MVP Scope**: Phase 1-3 (User Story 1: Create Follow Link) — ~13 tasks
+The following is already complete and working:
+- `src/utils/followManager.ts` — `FollowRelationship` exported, all CRUD methods present
+- `src/hooks/tokenFollowUpdate.ts` — `preUpdateToken` + `updateToken` hooks, `moveChainFollowers` recursive chain
+- Macro JSON in `packs/macros/core/follow-token-macro.json`
 
----
-
-## Phase 1: Setup & Infrastructure
-
-**Goal**: Initialize project structure and hook system
-**Critical**: Must complete before user story implementation
-**Estimated**: ~3-4 tasks
-
-### Tasks
-
-- [X] T001 Create hook registration system in `src/hooks/index.ts`
-- [X] T002 Create utility module structure in `src/utils/followManager.ts`
-- [X] T003 Add FOLLOW_MACRO constants to `src/config.ts`
+Only `tokenFollowUpdate.ts` needs changes.
 
 ---
 
-## Phase 2: Foundational - Scene Flags & Data Model
+## Phase 1: Setup
 
-**Goal**: Implement core data model and scene flag management
-**Critical**: All user stories depend on these
-**Dependencies**: Phase 1 complete
-**Estimated**: ~5-6 tasks
+**Purpose**: Confirm the current implementation is clean before adding new behaviors.
 
-### Tasks
+- [x] T001 Verify `pnpm type-check` passes with zero errors in `src/hooks/tokenFollowUpdate.ts` and `src/utils/followManager.ts`
 
-- [X] T004 Implement FollowManager.getRelationships() in `src/utils/followManager.ts`
-- [X] T005 [P] Implement FollowManager.setRelationships() in `src/utils/followManager.ts`
-- [X] T006 [P] Implement FollowManager.getFollowersOf() in `src/utils/followManager.ts`
-- [X] T007 [P] Implement FollowManager.wouldCreateCycle() cycle detection in `src/utils/followManager.ts`
-- [X] T008 Create `src/hooks/tokenFollowUpdate.ts` hook listener for token movement
-- [X] T009 Create hook handler file structure in `src/hooks/deleteTokenHandler.ts`
-- [X] T010 [P] Register tokenFollowUpdate hook in `src/hooks/index.ts` initialization
-
-### Independent Test Criteria
-- Scene flags can store and retrieve follow relationships
-- Cycle detection prevents A→B→A relationships
-- Hook listener fires on token movement events
+**Checkpoint**: Baseline is clean — safe to add new code.
 
 ---
 
-## Phase 3: User Story 1 - Create Follow Link Between Owned Tokens (P1)
+## Phase 2: Foundational
 
-**Goal**: Token owners can establish follow relationships with dynamic distance
-**Priority**: P1 (core functionality)
-**Dependencies**: Phase 1-2 complete
-**Estimated**: ~8-10 tasks
-**Independent Test**: Can fully test by selecting 2 owned tokens, running macro, verifying relationship created
-
-### Acceptance Criteria
-1. Macro validates token ownership before creating link
-2. Distance measured using `canvas.grid.measureDistance()`
-3. Follower moves to maintain distance when leader moves
-4. Chat feedback confirms relationship creation
-5. Support for square and hex grids
-
-### Tasks
-
-- [X] T011 [US1] Create macro JSON shell in `packs/macros/core/follow-token-macro.json`
-- [X] T012 [US1] Implement macro ownership validation in macro JSON
-- [X] T013 [US1] Implement state detection (token as follower/leader/unrelated) in macro JSON
-- [X] T014 [US1] Implement targeting prompt in macro JSON
-- [X] T015 [US1] Implement distance calculation using `canvas.grid.measureDistance()` in macro JSON
-- [X] T016 [P] [US1] Implement FollowManager.create() validation in `src/utils/followManager.ts`
-- [X] T017 [US1] Implement relationship creation in macro and FollowManager
-- [X] T018 [US1] Implement chat feedback for relationship creation in macro JSON
-- [X] T019 [US1] Implement repositionFollower() function in `src/hooks/tokenFollowUpdate.ts`
-- [X] T020 [US1] Write Playwright E2E test for "create follow link" in `tests/e2e/follow-macro.spec.ts`
-
-### Independent Test Strategy
-- Unit: FollowManager.create() with valid/invalid inputs
-- E2E: Select leader, run macro, target follower, verify chat message and distance maintained
+No new foundational work required. `FollowRelationship` is already exported and all hooks are registered.
 
 ---
 
-## Phase 4: User Story 2 - Remove or Break Follow Link (P2)
+## Phase 3: User Story 1 — 1 Grid Space Trailing Distance (Priority: P1) 🎯 MVP
 
-**Goal**: Token owners can cancel or break follow relationships
-**Priority**: P2 (essential usability)
-**Dependencies**: Phase 1-3 complete
-**Estimated**: ~6-7 tasks
-**Independent Test**: Can fully test by establishing link, clearing via macro, verifying no movement
+**Goal**: When the leader moves, the follower lands 1 grid square further back than the leader's old tile — creating exactly 1 empty square gap between them at all times.
 
-### Acceptance Criteria
-1. Smart state-aware dialog (shows "Clear Follow" for followers)
-2. Clearing relationship removes it from scene flags
-3. Manual follower movement breaks relationship
-4. Chat feedback on clear/break events
-5. Token deletion triggers automatic cleanup
+**Independent Test**: Place two tokens. Link them with the macro. Move the leader 1 square. Verify the follower ends up 2 squares from the leader (1 empty square between them). Move diagonally — verify follower snaps to a valid grid square.
 
-### Tasks
+### Implementation for User Story 1
 
-- [X] T021 [US2] Implement "Clear Follow" dialog option in macro JSON
-- [X] T022 [US2] Implement relationship deletion via FollowManager.deleteByFollower() in `src/utils/followManager.ts`
-- [X] T023 [US2] Implement manual movement detection in `src/hooks/tokenFollowUpdate.ts`
-- [X] T024 [US2] Implement automatic cleanup on token deletion in `src/hooks/deleteTokenHandler.ts`
-- [X] T025 [US2] Implement chat feedback for clearing/breaking links in macro JSON
-- [X] T026 [P] [US2] Write Playwright E2E test for "clear follow link" in `tests/e2e/follow-macro.spec.ts`
-- [X] T027 [US2] Write Playwright E2E test for "manual movement breaks link" in `tests/e2e/follow-macro.spec.ts`
+- [x] T002 [US1] Add `calculateTrailingPosition` helper function in `src/hooks/tokenFollowUpdate.ts` — computes `oldLeaderPos + normalize(oldLeaderPos - newLeaderPos) * gridSize`, snapped to grid with `Math.round(... / gridSize) * gridSize`; returns `oldLeaderPos` unchanged if `canvas.grid` is null or distance is 0
+- [x] T003 [US1] Update `moveChainFollowers` in `src/hooks/tokenFollowUpdate.ts` to call `calculateTrailingPosition(oldLeaderPos, { x: leaderToken.x, y: leaderToken.y })` and use the result as the `followerToken.update()` target instead of `oldLeaderPos` directly
+- [x] T004 [US1] Run `pnpm type-check` — confirm zero new errors in `src/hooks/tokenFollowUpdate.ts`
 
-### Independent Test Strategy
-- Unit: FollowManager.deleteByFollower() removes correct relationship
-- E2E: Establish link, run macro on follower, click "Clear Follow", verify stopped following
+**Checkpoint**: Follower now maintains 1-square gap. US1 fully functional and independently testable.
 
 ---
 
-## Phase 5: User Story 3 - Follow Status Visibility (P3)
+## Phase 4: User Story 2 — Break Follow Link on Manual Follower Move (Priority: P1)
 
-**Goal**: Token owners can see active follow relationships at a glance
-**Priority**: P3 (nice-to-have usability)
-**Dependencies**: Phase 1-3 complete (independent from US2)
-**Estimated**: ~2-3 tasks
-**Independent Test**: Can fully test by establishing links, checking chat log and hover indicators
+**Goal**: When the user manually drags a follower token, the follow relationship is deleted automatically. The follower becomes a free agent.
 
-### Acceptance Criteria
-1. Chat messages confirm follow relationships
-2. Hover/selection provides visual feedback
-3. Lists leader/follower tokens in message
-4. Works with multiple active relationships
+**Independent Test**: Link two tokens. Manually drag the follower to a new position. Move the leader — verify the follower does NOT move. Verify the follow link is gone (run macro on follower — it should show "Start Following", not "Clear Follow").
 
-### Tasks
+**Chain edge case**: In an A→B→C chain, manually move B. Verify: A→B link is deleted (B no longer follows A), but B→C link survives (C still follows B when B is moved programmatically).
 
-- [X] T028 [P] [US3] Implement chat message formatting for relationship listing in macro JSON
-- [X] T029 [US3] Add visual indicator/marker for follower tokens (if applicable in FoundryVTT API)
-- [X] T030 [US3] Write Playwright E2E test for "view follow status" in `tests/e2e/follow-macro.spec.ts`
+### Implementation for User Story 2
 
-### Independent Test Strategy
-- E2E: Establish 2+ relationships, check chat log shows all links, hover shows indicators
+- [x] T005 [US2] In `onUpdateToken` in `src/hooks/tokenFollowUpdate.ts`, add a follower-break check BEFORE the `if (!oldPos) return` guard: query `FollowManager.getRelationships(scene)`, filter for relationships where `rel.followerId === token.id`, call `FollowManager.deleteByPair()` for each, log the break — then continue (do NOT return early, so outbound chain still fires if token is also a leader)
+- [x] T006 [US2] Run `pnpm type-check` — confirm zero new errors
+
+**Checkpoint**: Dragging a follower breaks the link. US2 fully functional.
 
 ---
 
-## Phase 6: Edge Cases & Error Handling
+## Phase 5: Polish & Cross-Cutting Concerns
 
-**Goal**: Handle edge cases gracefully
-**Dependencies**: All user stories complete
-**Estimated**: ~3-4 tasks
-
-### Tasks
-
-- [X] T031 Handle token deletion while following is active (`src/hooks/deleteTokenHandler.ts`)
-- [X] T032 Handle follower moving to different scene (automatic break)
-- [X] T033 Handle ownership changes mid-follow (invalidate if user loses ownership)
-- [X] T034 Write integration test for edge cases in `tests/e2e/follow-macro.spec.ts`
-- [X] T035 [P] Write performance benchmark test measuring rendering frame rate with 5+ active follow relationships in `tests/e2e/follow-macro.spec.ts`
+- [x] T007 Run full `pnpm check` suite (format, lint, circular-deps, type-check, tests) — all must pass
+- [ ] T008 [P] Browser test — spacing: link two tokens, move leader 1 square cardinal direction, verify 1-square gap; move leader diagonally, verify follower is grid-snapped and maintains gap
+- [ ] T009 [P] Browser test — manual break: link two tokens, drag follower, move leader, verify follower stays put and macro shows "Start Following" for the formerly-follower token
+- [ ] T010 Browser test — chain (A→B→C): move A, verify B and C each maintain 1-square gap from their respective leaders; manually move B, verify A→B breaks but C still follows B
 
 ---
 
-## Phase 7: Polish & Documentation
+## Dependencies & Execution Order
 
-**Goal**: Documentation, performance optimization, gotchas
-**Dependencies**: All implementation complete
-**Estimated**: ~2-3 tasks
+### Phase Dependencies
 
-### Tasks
+- **Phase 1 (Setup)**: No dependencies — start here
+- **Phase 3 (US1)**: Depends on Phase 1 baseline being clean
+- **Phase 4 (US2)**: Independent of Phase 3; can run in parallel (both touch same file — coordinate to avoid conflicts)
+- **Phase 5 (Polish)**: Depends on Phases 3 + 4 complete
 
-- [X] T036 Document follow macro usage in project memory (`.specify/memory/follow-macro.md`)
-- [X] T037 Document gotchas and performance considerations in `.specify/memory/follow-macro.md`
-- [X] T038 [P] Run `pnpm check` and ensure all quality gates pass
-- [X] T039 Update CLAUDE.md with follow macro implementation notes (if applicable)
+### Within Phases
 
----
+- T002 and T003 must run sequentially (T003 uses the function from T002)
+- T008, T009 can run in parallel (different browser test scenarios)
+- T010 depends on T002, T003, T005 being complete
 
-## Dependency Graph
+### Parallel Opportunities
 
-```
-Phase 1: Setup
-    ↓
-Phase 2: Foundational (Scene Flags & Hooks)
-    ↓
-Phase 3: US1 (Create Follow Link) ─── Phase 4: US2 (Clear Link)
-    ↓                                  ↓
-    └──────────────┬──────────────────┘
-                   ↓
-         Phase 5: US3 (Visibility) [can start after Phase 2]
-                   ↓
-         Phase 6: Edge Cases
-                   ↓
-         Phase 7: Polish
+```bash
+# Once T001 passes, these can start in parallel (different logical changes in same file):
+Task: "T002-T004: Add calculateTrailingPosition + update moveChainFollowers"
+Task: "T005-T006: Add follower-break detection in onUpdateToken"
+
+# Once T007 passes, browser tests can run in parallel:
+Task: "T008: Spacing browser test"
+Task: "T009: Manual break browser test"
+# T010 runs after T008 + T009 pass (requires both behaviors)
 ```
 
 ---
 
-## Parallel Execution Opportunities
+## Implementation Strategy
 
-### Within Phase 3 (US1):
-- **T015 & T016** can run in parallel (validation + creation)
-- **T019** (E2E test) can start after T018 completes
+### MVP (Both behaviors, 10 tasks total)
 
-### Within Phase 4 (US2):
-- **T021, T022, T023** can run in parallel (different handlers)
-- **T025, T026** (E2E tests) can run in parallel after T024
+1. T001 — Confirm baseline clean
+2. T002–T004 — Add 1-square trailing distance (Phase 3)
+3. T005–T006 — Add manual-break detection (Phase 4)
+4. T007–T010 — Full check + browser verification (Phase 5)
 
-### Cross-Phase:
-- **Phase 5 (US3)** can start immediately after Phase 3 (independent of US2)
-- **Phase 6 (Edge Cases)** can run parallel with US3 once Phase 3 complete
+Both behaviors are small, localized changes to a single file. Total estimated change: ~30 lines in `src/hooks/tokenFollowUpdate.ts`.
 
 ---
 
-## MVP Scope Recommendation
+## Notes
 
-**Minimum Viable Product**: Phases 1-3 only
-- Task count: ~16 tasks (T001-T020)
-- Delivery: Full P1 user story (create links with dynamic distance)
-- Demo value: Players can link tokens and maintain spacing
-- Time estimate: ~1-2 weeks for experienced developer
-
-**Phase 4 (US2)** can be added immediately after for usability.
-**Phase 5 (US3)** is truly optional but easy to add later.
-
----
-
-## Testing Strategy
-
-**Unit Tests** (if implemented):
-- FollowManager CRUD operations
-- Cycle detection logic
-- Distance calculations
-
-**E2E Tests** (required):
-- Each user story gets ≥1 end-to-end test
-- Tests include happy path + error cases
-- Tests verify chat feedback and side effects
-
-**Manual Testing**:
-- Browser testing via Playwright suite before commit
-- Verify macro works in multi-player scenarios
-- Test performance with 5+ active relationships
-
----
-
-## Quality Gates (Per Phase)
-
-- ✅ Phase 1: `pnpm check` passes
-- ✅ Phase 2: `pnpm check` passes + unit tests for FollowManager
-- ✅ Phase 3: `pnpm check` passes + E2E test T020 passes
-- ✅ Phase 4: `pnpm check` passes + E2E tests T026, T027 pass
-- ✅ Phase 5: `pnpm check` passes + E2E test T030 passes
-- ✅ Phase 6: `pnpm check` passes + all edge case tests pass + performance benchmark (T035) meets 30+ fps target
-- ✅ Phase 7: Documentation complete + all gates pass + code review approved
-
----
-
-## Format Validation Checklist
-
-✅ All tasks follow checklist format: `- [ ] [TaskID] [P?] [Story?] Description with file path`
-✅ Task IDs sequential (T001-T039)
-✅ [P] markers used only for parallelizable tasks
-✅ [Story] labels present only in user story phases (US1, US2, US3)
-✅ All descriptions include specific file paths
-✅ Setup & Foundational phases have NO story labels
-✅ Edge Cases & Polish phases have NO story labels
+- [P] tasks = no sequential dependency on incomplete tasks
+- [Story] label maps task to user story for traceability
+- Both US1 and US2 changes live in the same file — implement sequentially to avoid merge conflicts
+- T005 must NOT return early when a follower-that-is-also-a-leader is detected; fall-through to leader logic is intentional
+- `calculateTrailingPosition` must handle `canvas.grid === null` (gridless scenes) by returning `oldLeaderPos` unchanged
