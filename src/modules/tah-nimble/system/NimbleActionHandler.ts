@@ -88,7 +88,7 @@ export function createActionHandlerClass(BaseActionHandler: any) {
 		 * Build system actions for the selected token/actor
 		 * Called when HUD needs to refresh actions
 		 */
-		async buildSystemActions(groupIds: string[]): Promise<void> {
+		async buildSystemActions(_groupIds: string[]): Promise<void> {
 			const actor = this.actor;
 			if (!actor) return;
 
@@ -116,7 +116,7 @@ export function createActionHandlerClass(BaseActionHandler: any) {
 				// Group items by their assigned group ID
 				const grouped = new Map<string, Item[]>();
 				for (const item of items) {
-					if (excludedIds.includes(item.id)) continue;
+					if (excludedIds.includes(item.id as string)) continue;
 
 					const groupId = determineGroupId(item, actor, groupByActionCost);
 					if (!grouped.has(groupId)) {

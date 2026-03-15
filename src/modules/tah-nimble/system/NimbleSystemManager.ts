@@ -67,7 +67,7 @@ export function createSystemManagerClass(
 		 * Register settings for this system
 		 * Called by TAH Core to let systems customize their settings
 		 */
-		registerSettings(settingsHandler: any): void {
+		registerSettings(_settingsHandler: any): void {
 			// Use our existing settings registration
 			registerModuleSettings();
 		}

@@ -21,18 +21,21 @@ All 4 errors and 3 warnings observed during test session are pre-existing and un
   Pathfinder 2e are currently supported."
 - **Meaning:** Third-party bridge module limitation, not a Nimble bug.
 
-### 5. token-action-hud-nimble — registerMenu type error (BLOCKING BUG)
-- **Source:** `token-action-hud-nimble/dist/token-action-hud-nimble.min.js`, `Hooks.once('ready', ...)`
-- **Message:** "Error thrown in hooked function '' for hook 'ready'. You must provide a menu type that is a FormApplication or ApplicationV2 instance or subclass"
-- **Root cause:** `src/modules/tah-nimble/index.ts` calls `game.settings.registerMenu(...)` with a
-  plain class `{ render() { HUDSettingsApplication.open(); } }` instead of a real `FormApplication`
-  or `ApplicationV2` subclass. FoundryVTT v13 rejects this.
-- **Effect:** The `ready` hook throws and aborts mid-execution. `registerSystemActions()` is never
-  called, so `window.TokenActionHUD.addSystemActions(...)` never runs. The HUD never populates.
-  `window.TokenActionHUD` is also `undefined` — the real TAH Core API is at
-  `game.modules.get('token-action-hud-core').api` and uses a `SystemManager` class-based pattern.
-- **File to fix:** `src/modules/tah-nimble/index.ts` — the `registerMenu` call (lines 30–45)
-  must pass a proper `foundry.applications.api.ApplicationV2` subclass.
+### 5. token-action-hud-nimble — TAH Core version mismatch (BLOCKING BUG)
+- **Message:** "The installed Token Action HUD system module requires Token Action HUD Core module
+  version 2.0.0, but version 2.0.16 is installed."
+- **Root cause:** `public/modules/token-action-hud-nimble/module.json` declares compatibility
+  against TAH Core 2.0.0, but the installed TAH Core is 2.0.16. The module's API usage in
+  `src/modules/tah-nimble/index.ts` also references `window.TokenActionHUD` which does not exist
+  in TAH Core 2.0.16 — the real API surface is `game.modules.get('token-action-hud-core').api`
+  with class keys: ActionHandlerExtender, ActionHandler, DataHandler, Logger, PreRollHandler,
+  RollHandler, RollHandlerExtender, SystemManager, Timer, Utils.
+- **Effect:** HUD never renders. `#token-action-hud` element never appears in DOM even after
+  token selection. `tokenSelected` fires correctly but TAH Core aborts due to version check.
+- **Verification (2026-03-15):** Selecting Test Character token → `tahHUDExists: false` confirmed.
+- **Files to fix:**
+  1. `public/modules/token-action-hud-nimble/module.json` — update `minimumCoreVersion`/`compatibleCoreVersion` for TAH Core to 2.0.16+
+  2. `src/modules/tah-nimble/index.ts` — replace `window.TokenActionHUD` API usage with `game.modules.get('token-action-hud-core').api` pattern and implement `SystemManager` subclass
 
 ## Warnings
 

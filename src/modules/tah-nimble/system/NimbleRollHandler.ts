@@ -13,7 +13,7 @@ export function createRollHandlerClass(BaseRollHandler: any) {
 		 * Handle a click on a HUD action
 		 * encodedValue is in format "item|{itemId}"
 		 */
-		async handleActionClick(event: Event, encodedValue: string): Promise<void> {
+		async handleActionClick(_event: Event, encodedValue: string): Promise<void> {
 			try {
 				const actor = this.actor;
 				if (!actor) {

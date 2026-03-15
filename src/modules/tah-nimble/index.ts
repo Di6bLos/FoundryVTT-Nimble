@@ -16,15 +16,27 @@ const MODULE_ID = 'token-action-hud-nimble';
 const MODULE_TITLE = 'Token Action HUD — Nimble 2';
 
 /**
- * Hook into TAH Core API ready event
- * This fires when TAH Core v2 has loaded and its API is available
+ * Register the Nimble system with TAH Core
+ * Uses the direct API approach for TAH Core v2.0.11+
  */
-Hooks.on('tokenActionHudCoreApiReady', (coreModule: any) => {
-	console.log(`[${MODULE_TITLE}] TAH Core API ready, registering system...`);
+function registerWithTAHCore(): void {
+	const tahCore = game.modules.get('token-action-hud-core') as any;
+
+	if (!tahCore?.active) {
+		console.warn(`[${MODULE_TITLE}] Token Action HUD Core is not active`);
+		return;
+	}
 
 	try {
+		const api = tahCore.api;
+
+		if (!api || typeof api.registerSystem !== 'function') {
+			console.error(`[${MODULE_TITLE}] TAH Core API or registerSystem function not available`);
+			return;
+		}
+
 		// Extract TAH Core base classes
-		const { SystemManager, ActionHandler, RollHandler } = coreModule.api;
+		const { SystemManager, ActionHandler, RollHandler } = api;
 
 		if (!SystemManager || !ActionHandler || !RollHandler) {
 			console.error(`[${MODULE_TITLE}] TAH Core API classes not available`);
@@ -40,26 +52,14 @@ Hooks.on('tokenActionHudCoreApiReady', (coreModule: any) => {
 			NimbleRollHandlerClass,
 		);
 
-		// Expose our SystemManager on the module's API
-		const module = game.modules.get(MODULE_ID) as any;
-		if (!module) {
-			console.error(`[${MODULE_TITLE}] Module not found`);
-			return;
-		}
-
-		module.api = {
-			requiredCoreModuleVersion: '2.0.0',
-			SystemManager: NimbleSystemManagerClass,
-		};
-
-		// Fire our own ready hook so TAH Core knows we're ready
-		Hooks.callAll('tokenActionHudSystemReady', module);
+		// Register the system with TAH Core
+		api.registerSystem('nimble', NimbleSystemManagerClass);
 
 		console.log(`[${MODULE_TITLE}] System registered with TAH Core`);
 	} catch (error) {
 		console.error(`[${MODULE_TITLE}] Failed to register system with TAH Core:`, error);
 	}
-});
+}
 
 /**
  * Initialize module settings and UI
@@ -85,7 +85,7 @@ Hooks.once('ready', () => {
 		} as unknown as Parameters<typeof game.settings.registerMenu>[2],
 	);
 
-	// Verify Token Action HUD Core is loaded
+	// Verify Token Action HUD Core is loaded and register our system
 	const tahCore = game.modules.get('token-action-hud-core');
 	if (!tahCore?.active) {
 		console.warn(
@@ -95,6 +95,9 @@ Hooks.once('ready', () => {
 	}
 
 	console.log(`[${MODULE_TITLE}] Token Action HUD Core detected (v${tahCore.version})`);
+
+	// Register with TAH Core
+	registerWithTAHCore();
 
 	// Setup hooks for real-time updates
 	setupTokenControlHook();
