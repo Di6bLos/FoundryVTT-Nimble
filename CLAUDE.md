@@ -47,3 +47,10 @@ After completing any feature, bug fix, or architectural discovery, update:
 
 Include: patterns confirmed, key file locations, bug fixes and their root causes, gotchas.
 Keep entries concise. Update or remove stale entries rather than appending duplicates.
+
+## Active Technologies
+- TypeScript 5.9.3 + FoundryVTT v13 global APIs (`canvas.grid`, `Hooks`, `TokenDocument`) (002-token-follow-macro)
+- Scene flags via `FollowManager` (no change) (002-token-follow-macro)
+
+## Recent Changes
+- 002-token-follow-macro: Added TypeScript 5.9.3 + FoundryVTT v13 global APIs (`canvas.grid`, `Hooks`, `TokenDocument`)
