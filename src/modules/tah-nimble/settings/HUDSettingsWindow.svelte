@@ -249,7 +249,12 @@
 </article>
 
 <footer class="nimble-sheet__footer tah-nimble-settings__footer">
-	<button id="tah-nimble-reset-settings" class="nimble-button" data-button-variant="basic" onclick={reset}>
+	<button
+		id="tah-nimble-reset-settings"
+		class="nimble-button"
+		data-button-variant="basic"
+		onclick={reset}
+	>
 		{game.i18n.localize('TAH_NIMBLE.settings.ui.reset')}
 	</button>
 	<button class="nimble-button" data-button-variant="basic" onclick={() => dialog.close()}>

@@ -18,7 +18,9 @@ export class FollowManager {
 	 * Get all follow relationships for the current scene
 	 */
 	static getRelationships(scene: Scene): FollowRelationship[] {
-		const relationships = scene.getFlag('nimble', 'followRelationships');
+		const relationships = (
+			scene as unknown as { getFlag(scope: string, key: string): unknown }
+		).getFlag('nimble', 'followRelationships');
 		return Array.isArray(relationships) ? relationships : [];
 	}
 
@@ -26,7 +28,11 @@ export class FollowManager {
 	 * Store follow relationships in scene flags
 	 */
 	static async setRelationships(scene: Scene, relationships: FollowRelationship[]): Promise<void> {
-		await scene.setFlag('nimble', 'followRelationships', relationships);
+		await (
+			scene as unknown as {
+				setFlag(scope: string, key: string, value: unknown): Promise<Scene>;
+			}
+		).setFlag('nimble', 'followRelationships', relationships);
 	}
 
 	/**

@@ -42,7 +42,6 @@ async function onDeleteToken(token: TokenDocument): Promise<void> {
 				const message = `<p><strong>${token.name}</strong> (leader) was deleted. <strong>${otherToken?.name ?? 'A token'}</strong> is no longer following it.</p>`;
 				ChatMessage.create({
 					content: message,
-					type: CONST.CHAT_MESSAGE_TYPES.OTHER,
 					flavor: '🔗 Follow Link Broken (Leader Deleted)',
 				});
 			} else {
@@ -50,7 +49,6 @@ async function onDeleteToken(token: TokenDocument): Promise<void> {
 				const message = `<p><strong>${token.name}</strong> (follower) was deleted. <strong>${otherToken?.name ?? 'A token'}</strong> lost this follower.</p>`;
 				ChatMessage.create({
 					content: message,
-					type: CONST.CHAT_MESSAGE_TYPES.OTHER,
 					flavor: '🔗 Follow Link Broken (Follower Deleted)',
 				});
 			}

@@ -11,6 +11,8 @@ interface FollowRelationship {
 	timestamp: number;
 }
 
+type TokenWithIcon = { mesh?: { tint?: number } };
+
 export class FollowVisualIndicator {
 	private static readonly FOLLOWER_CLASS = 'token-is-follower';
 	private static readonly LEADER_CLASS = 'token-is-leader';
@@ -21,10 +23,6 @@ export class FollowVisualIndicator {
 	 * Uses CSS class and optional overlay
 	 */
 	static addFollowerIndicator(token: Token): void {
-		if (token.canvas) {
-			token.canvas.addChildAt(token, token.canvas.getChildIndex(token));
-		}
-
 		// Add CSS class for styling
 		const tokenElement = document.querySelector(`[data-token-id="${token.id}"]`);
 		if (tokenElement) {
@@ -32,8 +30,9 @@ export class FollowVisualIndicator {
 		}
 
 		// Add border or glow effect via token sprite
-		if (token.icon) {
-			token.icon.tint = 0xaaaaff; // Light blue tint for followers
+		const tokenWithIcon = token as unknown as TokenWithIcon;
+		if (tokenWithIcon.mesh) {
+			tokenWithIcon.mesh.tint = 0xaaaaff; // Light blue tint for followers
 		}
 	}
 
@@ -50,8 +49,9 @@ export class FollowVisualIndicator {
 		}
 
 		// Reset tint
-		if (token.icon) {
-			token.icon.tint = 0xffffff;
+		const tokenWithIcon = token as unknown as TokenWithIcon;
+		if (tokenWithIcon.mesh) {
+			tokenWithIcon.mesh.tint = 0xffffff;
 		}
 	}
 
@@ -61,22 +61,23 @@ export class FollowVisualIndicator {
 	 */
 	static updateAllIndicators(scene: Scene, relationships: FollowRelationship[]): void {
 		// Clear all indicators first
-		scene.tokens.forEach((token) => {
-			FollowVisualIndicator.removeIndicator(token);
+		scene.tokens.forEach((tokenDoc) => {
+			const token = tokenDoc.object;
+			if (token) FollowVisualIndicator.removeIndicator(token);
 		});
 
 		// Add indicators based on current relationships
 		for (const rel of relationships) {
-			const followerToken = scene.tokens.get(rel.followerId);
-			const leaderToken = scene.tokens.get(rel.leaderId);
+			const followerDoc = scene.tokens.get(rel.followerId);
+			const leaderDoc = scene.tokens.get(rel.leaderId);
 
-			if (followerToken) {
-				FollowVisualIndicator.addFollowerIndicator(followerToken);
+			if (followerDoc?.object) {
+				FollowVisualIndicator.addFollowerIndicator(followerDoc.object);
 			}
 
 			// Optionally add indicator to leaders too
-			if (leaderToken) {
-				const tokenElement = document.querySelector(`[data-token-id="${leaderToken.id}"]`);
+			if (leaderDoc) {
+				const tokenElement = document.querySelector(`[data-token-id="${leaderDoc.id}"]`);
 				if (tokenElement) {
 					tokenElement.classList.add(FollowVisualIndicator.LEADER_CLASS);
 				}
