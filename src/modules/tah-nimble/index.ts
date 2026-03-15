@@ -8,30 +8,13 @@ import { organizeCategoriesForCharacter, organizeCategoriesForNPC } from './acti
 import { setupItemUpdateHook } from './hooks/itemUpdates';
 import { setupTokenControlHook } from './hooks/tokenControl';
 import { getHUDConfiguration, registerModuleSettings } from './settings/moduleSettings';
-import { HUDSettingsApplication, loadSettingsTemplate } from './settings/settingsUI';
+import { HUDSettingsApplication } from './settings/settingsUI';
 import type { NimbleHUDAction } from './types/nimble-hud';
 import { canExecuteAction } from './utils/permissions';
 import { isCharacterActor, isNPCActor } from './utils/typeGuards';
 
 const MODULE_ID = 'token-action-hud-nimble';
 const MODULE_TITLE = 'Token Action HUD — Nimble 2';
-
-/**
- * Settings application wrapper class for TAH Nimble configuration
- */
-class HUDSettingsMenu extends foundry.applications.api.ApplicationV2 {
-	static DEFAULT_OPTIONS = {
-		id: 'tah-nimble-settings',
-		classes: ['tah-nimble-settings'],
-		window: {
-			title: 'Token Action HUD — Nimble Settings',
-		},
-	};
-
-	async _onRender(context: unknown) {
-		HUDSettingsApplication.open();
-	}
-}
 
 /**
  * Initialize the module on FoundryVTT ready
@@ -52,13 +35,10 @@ Hooks.once('ready', () => {
 			label: 'Configure HUD',
 			hint: 'Customize which action categories appear in the HUD and exclude specific actions.',
 			icon: 'fa-solid fa-list-check',
-			type: HUDSettingsMenu,
+			type: HUDSettingsApplication,
 			restricted: false,
 		} as unknown as Parameters<typeof game.settings.registerMenu>[2],
 	);
-
-	// Pre-load Handlebars templates
-	void loadSettingsTemplate();
 
 	// Verify Token Action HUD Core is loaded
 	const tahCore = game.modules.get('token-action-hud-core');

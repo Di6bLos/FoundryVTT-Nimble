@@ -4,6 +4,8 @@
  */
 
 import path from 'node:path';
+import { svelte } from '@sveltejs/vite-plugin-svelte';
+import { sveltePreprocess } from 'svelte-preprocess';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
@@ -27,7 +29,25 @@ export default defineConfig({
 	esbuild: {
 		keepNames: true,
 	},
+	plugins: [
+		svelte({
+			configFile: path.resolve(__dirname, 'svelte.config.js'),
+			dynamicCompileOptions({ filename }) {
+				if (filename.includes('node_modules')) {
+					return { runes: false };
+				}
+			},
+			preprocess: sveltePreprocess({
+				typescript: {
+					tsconfigFile: './tsconfig.json',
+				},
+			}),
+		}),
+	],
 	resolve: {
 		conditions: ['browser'],
+		alias: {
+			'#lib': path.resolve(__dirname, 'lib'),
+		},
 	},
 });

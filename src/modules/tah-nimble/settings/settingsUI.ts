@@ -3,6 +3,8 @@
  * Provides a category-toggle and action-exclusion interface via FoundryVTT's ApplicationV2
  */
 
+import { SvelteApplicationMixin } from '#lib/SvelteApplicationMixin.svelte.js';
+import HUDSettingsWindow from './HUDSettingsWindow.svelte';
 import {
 	getDefaultConfiguration,
 	getHUDConfiguration,
@@ -11,12 +13,11 @@ import {
 
 const MODULE_ID = 'token-action-hud-nimble';
 const MODULE_KEY = MODULE_ID as 'core';
-const TEMPLATE_PATH = `modules/${MODULE_ID}/templates/settings.html`;
 
 /**
  * All configurable categories with display labels
  */
-const CHARACTER_CATEGORIES = [
+export const CHARACTER_CATEGORIES = [
 	{ id: 'spells', label: 'Spells' },
 	{ id: 'abilities', label: 'Abilities' },
 	{ id: 'reactions', label: 'Reactions' },
@@ -27,7 +28,7 @@ const CHARACTER_CATEGORIES = [
 	{ id: 'free-actions', label: 'Free Actions' },
 ] as const;
 
-const NPC_CATEGORIES = [
+export const NPC_CATEGORIES = [
 	{ id: 'melee', label: 'Melee Attacks' },
 	{ id: 'ranged', label: 'Ranged Attacks' },
 	{ id: 'attack-sequences', label: 'Attack Sequences' },
@@ -137,13 +138,15 @@ export function isCategoryEnabled(categoryId: string): boolean {
 // Opens as a FoundryVTT settings menu dialog
 // ---------------------------------------------------------------------------
 
-const { HandlebarsApplicationMixin, ApplicationV2 } = foundry.applications.api;
+const { ApplicationV2 } = foundry.applications.api;
 
 /**
  * HUD Settings dialog – category toggles and action exclusions
  */
-export class HUDSettingsApplication extends HandlebarsApplicationMixin(ApplicationV2) {
+export class HUDSettingsApplication extends SvelteApplicationMixin(ApplicationV2) {
 	static #instance: HUDSettingsApplication | null = null;
+
+	root = HUDSettingsWindow;
 
 	static open(): HUDSettingsApplication {
 		if (HUDSettingsApplication.#instance?.rendered) {
@@ -157,23 +160,20 @@ export class HUDSettingsApplication extends HandlebarsApplicationMixin(Applicati
 	}
 
 	static override DEFAULT_OPTIONS = foundry.utils.mergeObject(
-		ApplicationV2.DEFAULT_OPTIONS,
+		super.DEFAULT_OPTIONS,
 		{
 			id: 'tah-nimble-settings',
-			classes: ['tah-nimble-settings-app'] as string[],
+			classes: ['nimble-sheet', 'nimble-sheet--tah-settings'],
 			window: {
 				title: 'Token Action HUD — Nimble 2: Settings',
 				icon: 'fa-solid fa-gear',
 				resizable: true,
 			},
 			position: { width: 480, height: 'auto' },
+			actions: {},
 		},
 		{ inplace: false },
 	);
-
-	static override PARTS = {
-		form: { template: TEMPLATE_PATH },
-	};
 
 	override async close(
 		options?: Parameters<foundry.applications.api.ApplicationV2['close']>[0],
@@ -211,113 +211,12 @@ export class HUDSettingsApplication extends HandlebarsApplicationMixin(Applicati
 		}));
 
 		return {
+			dialog: this,
 			groupByActionCost,
 			showActionCosts,
 			characterCategories,
 			npcCategories,
 			excludedItemIds: config.actionExclusions.itemIds,
-		} as unknown as ReturnType<
-			foundry.applications.api.ApplicationV2['_prepareContext']
-		> extends Promise<infer T>
-			? T
-			: never;
+		} as object;
 	}
-
-	protected override _attachFrameListeners(): void {
-		super._attachFrameListeners();
-
-		const html = this.element;
-		if (!html) return;
-
-		// Add exclusion button
-		html.querySelector('#tah-nimble-add-exclusion')?.addEventListener('click', () => {
-			const input = html.querySelector<HTMLInputElement>('#tah-nimble-exclude-input');
-			const itemId = input?.value?.trim();
-			if (itemId) {
-				void excludeAction(itemId).then(() => {
-					if (input) input.value = '';
-					void this.render();
-				});
-			}
-		});
-
-		// Remove exclusion buttons
-		html.querySelectorAll<HTMLButtonElement>('.tah-nimble-remove-exclusion').forEach((btn) => {
-			btn.addEventListener('click', () => {
-				const itemId = btn.dataset.itemId;
-				if (itemId) void includeAction(itemId).then(() => void this.render(false));
-			});
-		});
-
-		// Reset settings button
-		html.querySelector('#tah-nimble-reset-settings')?.addEventListener('click', async () => {
-			const userId = game.user.id;
-			const defaultConfig = getDefaultConfiguration(userId);
-			await saveHUDConfiguration(userId, defaultConfig);
-			Hooks.callAll('tah-nimble:settingsChanged' as any);
-			void this.render();
-		});
-
-		// Form submit
-		html.querySelector('form')?.addEventListener('submit', (e) => {
-			e.preventDefault();
-			void this._onSubmit(html);
-		});
-	}
-
-	private async _onSubmit(html: HTMLElement): Promise<void> {
-		const userId = game.user.id;
-		const config = getHUDConfiguration(userId);
-
-		// Display options
-		const groupByActionCost =
-			html.querySelector<HTMLInputElement>('[name="groupByActionCost"]')?.checked ?? false;
-		const showActionCosts =
-			html.querySelector<HTMLInputElement>('[name="showActionCosts"]')?.checked ?? true;
-
-		await game.settings.set(
-			MODULE_KEY,
-			'groupByActionCost' as 'rollMode',
-			groupByActionCost as never,
-		);
-		await game.settings.set(MODULE_KEY, 'showActionCosts' as 'rollMode', showActionCosts as never);
-
-		// Character category toggles
-		const allCharacterIds = CHARACTER_CATEGORIES.map((c) => c.id);
-		const newDisabled: string[] = [];
-
-		for (const catId of allCharacterIds) {
-			const checked = html.querySelector<HTMLInputElement>(
-				`[name="characterCategory-${catId}"]`,
-			)?.checked;
-			if (!checked) newDisabled.push(catId);
-		}
-
-		// NPC category toggles
-		const allNpcIds = NPC_CATEGORIES.map((c) => c.id);
-		for (const catId of allNpcIds) {
-			const checked = html.querySelector<HTMLInputElement>(
-				`[name="npcCategory-${catId}"]`,
-			)?.checked;
-			if (!checked) newDisabled.push(catId);
-		}
-
-		config.categories.disabled = newDisabled;
-		config.categories.enabled = [];
-		config.displayOptions.groupByActionCost = groupByActionCost;
-		config.displayOptions.showActionCosts = showActionCosts;
-
-		await saveHUDConfiguration(userId, config);
-		Hooks.callAll('tah-nimble:settingsChanged' as any);
-
-		ui.notifications?.info('Token Action HUD — Nimble 2: Settings saved.');
-		void this.close();
-	}
-}
-
-/**
- * Pre-load the settings template so it is cached when the dialog opens
- */
-export async function loadSettingsTemplate(): Promise<void> {
-	await loadTemplates([TEMPLATE_PATH]);
 }
