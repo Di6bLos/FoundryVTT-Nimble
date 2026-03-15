@@ -1,11 +1,6 @@
 <script lang="ts">
-	import {
-		excludeAction,
-		includeAction,
-		resetUserSettings,
-		CHARACTER_CATEGORIES,
-		NPC_CATEGORIES,
-	} from './settingsUI.js';
+	import { CHARACTER_CATEGORIES, NPC_CATEGORIES } from './hudCategories.js';
+	import { excludeAction, includeAction, resetUserSettings } from './hudActions.js';
 
 	interface Category {
 		id: string;
@@ -94,6 +89,7 @@
 				}
 			}
 
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			Hooks.callAll('tah-nimble:settingsChanged' as any);
 			ui.notifications?.info('Token Action HUD — Nimble 2: Settings saved.');
 			await dialog.close();
