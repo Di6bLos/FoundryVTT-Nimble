@@ -146,7 +146,12 @@ export function createActionHandlerClass(BaseActionHandler: any) {
 						};
 					});
 
-					await this.addActions(tahActions, { id: groupId, type: 'system' });
+					// Add actions to the 'all' subgroup under each parent group (required by TAH Core v2)
+					await this.addActions(tahActions, {
+						id: 'all',
+						nestId: `${groupId}_all`,
+						type: 'system',
+					});
 				}
 			} catch (error) {
 				console.error('[TAH-Nimble] Error building system actions:', error);
