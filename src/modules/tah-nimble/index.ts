@@ -1,7 +1,7 @@
 /**
  * Token Action HUD — Nimble 2 Module Entry Point
  * Companion module that extends Token Action HUD Core v2 with Nimble-specific action extraction
- * Uses class-based API: SystemManager, ActionHandler, RollHandler
+ * Uses hook-based registration with TAH Core v2.0.11+
  */
 
 import { setupItemUpdateHook } from './hooks/itemUpdates';
@@ -15,54 +15,108 @@ import { createSystemManagerClass } from './system/NimbleSystemManager';
 const MODULE_ID = 'token-action-hud-nimble';
 const MODULE_TITLE = 'Token Action HUD — Nimble 2';
 
+// Store created classes at module scope for final registration
+let NimbleSystemManagerClass: any;
+
 /**
- * Register the Nimble system with TAH Core
- * Uses the direct API approach for TAH Core v2.0.11+
+ * Hook #1: Create ActionHandler class when TAH Core API is ready
  */
-function registerWithTAHCore(): void {
-	const tahCore = game.modules.get('token-action-hud-core') as any;
-
-	if (!tahCore?.active) {
-		console.warn(`[${MODULE_TITLE}] Token Action HUD Core is not active`);
-		return;
-	}
-
+Hooks.once('tokenActionHudCoreApiReady' as any, (tahModule: any) => {
+	console.log(`[${MODULE_TITLE}] TAH Core API ready`);
 	try {
-		const api = tahCore.api;
+		const ActionHandler = tahModule.api.ActionHandler;
+		if (!ActionHandler) {
+			console.error(`[${MODULE_TITLE}] TAH Core ActionHandler not available`);
+			return;
+		}
+		(window as any)._nimbleActionHandlerClass = createActionHandlerClass(ActionHandler);
+	} catch (error) {
+		console.error(`[${MODULE_TITLE}] Failed to create ActionHandler:`, error);
+	}
+});
 
-		if (!api || typeof api.registerSystem !== 'function') {
-			console.error(`[${MODULE_TITLE}] TAH Core API or registerSystem function not available`);
+/**
+ * Hook #2: Create RollHandler class
+ */
+Hooks.once('tokenActionHudCoreApiReady' as any, (tahModule: any) => {
+	try {
+		const RollHandler = tahModule.api.RollHandler;
+		if (!RollHandler) {
+			console.error(`[${MODULE_TITLE}] TAH Core RollHandler not available`);
+			return;
+		}
+		(window as any)._nimbleRollHandlerClass = createRollHandlerClass(RollHandler);
+	} catch (error) {
+		console.error(`[${MODULE_TITLE}] Failed to create RollHandler:`, error);
+	}
+});
+
+/**
+ * Hook #3: Create SystemManager class and register with TAH Core
+ */
+Hooks.once('tokenActionHudCoreApiReady' as any, (tahModule: any) => {
+	console.log(`[${MODULE_TITLE}] Creating SystemManager...`);
+	try {
+		const SystemManager = tahModule.api.SystemManager;
+		if (!SystemManager) {
+			console.error(`[${MODULE_TITLE}] TAH Core SystemManager not available`);
 			return;
 		}
 
-		// Extract TAH Core base classes
-		const { SystemManager, ActionHandler, RollHandler } = api;
+		const ActionHandlerClass = (window as any)._nimbleActionHandlerClass;
+		const RollHandlerClass = (window as any)._nimbleRollHandlerClass;
 
-		if (!SystemManager || !ActionHandler || !RollHandler) {
-			console.error(`[${MODULE_TITLE}] TAH Core API classes not available`);
+		if (!ActionHandlerClass || !RollHandlerClass) {
+			console.error(`[${MODULE_TITLE}] Handler classes not created yet`);
 			return;
 		}
 
-		// Create our subclasses with the runtime base classes
-		const NimbleActionHandlerClass = createActionHandlerClass(ActionHandler);
-		const NimbleRollHandlerClass = createRollHandlerClass(RollHandler);
-		const NimbleSystemManagerClass = createSystemManagerClass(
+		NimbleSystemManagerClass = createSystemManagerClass(
 			SystemManager,
-			NimbleActionHandlerClass,
-			NimbleRollHandlerClass,
+			ActionHandlerClass,
+			RollHandlerClass,
 		);
 
-		// Register the system with TAH Core
-		api.registerSystem('nimble', NimbleSystemManagerClass);
+		console.log(`[${MODULE_TITLE}] SystemManager created successfully`);
+	} catch (error) {
+		console.error(`[${MODULE_TITLE}] Failed to create SystemManager:`, error);
+	}
+});
+
+/**
+ * Hook #4: Final registration and system ready notification
+ */
+Hooks.on('tokenActionHudCoreApiReady' as any, () => {
+	console.log(`[${MODULE_TITLE}] Completing registration...`);
+	try {
+		const module = game.modules.get(MODULE_ID) as any;
+		if (!module) {
+			console.error(`[${MODULE_TITLE}] Module not found`);
+			return;
+		}
+
+		if (!NimbleSystemManagerClass) {
+			console.error(`[${MODULE_TITLE}] SystemManager not created`);
+			return;
+		}
+
+		// Set module API for TAH Core discovery
+		module.api = {
+			requiredCoreModuleVersion: '2.0.0',
+			SystemManager: NimbleSystemManagerClass,
+		};
+
+		// Notify TAH Core that our system is ready
+		Hooks.callAll('tokenActionHudSystemReady' as any, module);
 
 		console.log(`[${MODULE_TITLE}] System registered with TAH Core`);
 	} catch (error) {
-		console.error(`[${MODULE_TITLE}] Failed to register system with TAH Core:`, error);
+		console.error(`[${MODULE_TITLE}] Failed to complete registration:`, error);
 	}
-}
+});
 
 /**
- * Initialize module settings and UI
+ * Initialize module settings and hooks
  */
 Hooks.once('ready', () => {
 	console.log(`[${MODULE_TITLE}] Initializing...`);
@@ -70,7 +124,7 @@ Hooks.once('ready', () => {
 	// Register module settings
 	registerModuleSettings();
 
-	// Register settings menu button (done here to avoid circular dep between moduleSettings ↔ settingsUI)
+	// Register settings menu button
 	const MODULE_KEY_MENU = MODULE_ID as 'core';
 	game.settings.registerMenu(
 		MODULE_KEY_MENU,
@@ -84,20 +138,6 @@ Hooks.once('ready', () => {
 			restricted: false,
 		} as unknown as Parameters<typeof game.settings.registerMenu>[2],
 	);
-
-	// Verify Token Action HUD Core is loaded and register our system
-	const tahCore = game.modules.get('token-action-hud-core');
-	if (!tahCore?.active) {
-		console.warn(
-			`[${MODULE_TITLE}] Token Action HUD Core not found or not active. HUD will not function.`,
-		);
-		return;
-	}
-
-	console.log(`[${MODULE_TITLE}] Token Action HUD Core detected (v${tahCore.version})`);
-
-	// Register with TAH Core
-	registerWithTAHCore();
 
 	// Setup hooks for real-time updates
 	setupTokenControlHook();
