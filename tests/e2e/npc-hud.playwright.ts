@@ -115,7 +115,7 @@ test.describe('NPC HUD Actions (US3)', () => {
 		}
 	});
 
-	test('NPC HUD is not shown when non-GM player selects NPC', async ({ page }) => {
+	test('NPC HUD is not shown when non-GM player selects NPC', async () => {
 		// Structural placeholder — requires non-GM user with no NPC ownership
 		test.skip(true, 'Requires a non-owner player account in the test world');
 	});

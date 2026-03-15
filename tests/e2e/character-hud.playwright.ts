@@ -108,7 +108,7 @@ test.describe('Character HUD Actions (US1)', () => {
 		await expect(hud).toBeHidden({ timeout: 3_000 });
 	});
 
-	test('HUD does not appear for a token the user does not control', async ({ page }) => {
+	test('HUD does not appear for a token the user does not control', async () => {
 		// Log in as a non-GM player who doesn't own the character
 		// This test is a structural placeholder — full implementation
 		// requires a second user account in the test world.

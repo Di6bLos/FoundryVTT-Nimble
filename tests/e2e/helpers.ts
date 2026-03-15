@@ -84,7 +84,7 @@ export async function waitForGameReady(page: Page): Promise<void> {
 	// Wait for the canvas element to be present (with longer timeout for world load)
 	try {
 		await page.waitForSelector('#board', { state: 'visible', timeout: 30_000 });
-	} catch (e) {
+	} catch (_e) {
 		// If board doesn't exist, check if game is ready via the window object
 		const gameReady = await page.evaluate(() => {
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -125,7 +125,7 @@ export async function deselectAllTokens(page: Page): Promise<void> {
 		.evaluate(() => {
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			const canvas = (window as any).canvas;
-			if (canvas && canvas.tokens) {
+			if (canvas?.tokens) {
 				canvas.tokens.releaseAll();
 			}
 		})
