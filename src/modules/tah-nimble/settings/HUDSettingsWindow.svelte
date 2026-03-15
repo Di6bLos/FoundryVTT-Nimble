@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { CHARACTER_CATEGORIES, NPC_CATEGORIES } from './hudCategories.js';
 	import { excludeAction, includeAction, resetUserSettings } from './hudActions.js';
+	import { getHUDConfiguration, saveHUDConfiguration } from './moduleSettings.js';
 
 	interface Category {
 		id: string;
@@ -45,7 +46,7 @@
 
 	async function save(): Promise<void> {
 		try {
-			// Save display options
+			// Save display options as standalone settings (for the config page)
 			await game.settings.set(
 				MODULE_KEY,
 				'groupByActionCost' as 'rollMode',
@@ -63,18 +64,14 @@
 				...localNpcCategories.filter((cat) => !cat.enabled).map((cat) => cat.id),
 			];
 
-			// Update user configuration
+			// Update user configuration via getHUDConfiguration to preserve all fields
 			const userId = game.user.id;
-			const userConfigs = (game.settings.get(MODULE_KEY, 'userConfigs' as 'rollMode') ??
-				{}) as unknown as Record<string, { categories: { disabled: string[] } }>;
-
-			if (!userConfigs[userId]) {
-				userConfigs[userId] = { categories: { disabled: [] } };
-			}
-
-			userConfigs[userId].categories.disabled = disabledIds;
-
-			await game.settings.set(MODULE_KEY, 'userConfigs' as 'rollMode', userConfigs as never);
+			// Deep-clone to avoid mutating the in-memory settings object directly
+			const config = JSON.parse(JSON.stringify(getHUDConfiguration(userId)));
+			config.categories.disabled = disabledIds;
+			config.displayOptions.groupByActionCost = localGroupByActionCost;
+			config.displayOptions.showActionCosts = localShowActionCosts;
+			await saveHUDConfiguration(userId, config);
 
 			// Handle action exclusions
 			for (const itemId of localExcludedItemIds) {
@@ -91,11 +88,11 @@
 
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			Hooks.callAll('tah-nimble:settingsChanged' as any);
-			ui.notifications?.info('Token Action HUD — Nimble 2: Settings saved.');
+			ui.notifications?.info(game.i18n.localize('TAH_NIMBLE.settings.ui.saved'));
 			await dialog.close();
 		} catch (error) {
 			console.error('Error saving HUD settings:', error);
-			ui.notifications?.error('Unable to save HUD settings.');
+			ui.notifications?.error(game.i18n.localize('TAH_NIMBLE.settings.ui.saveError'));
 		}
 	}
 
@@ -128,32 +125,39 @@
 
 <article class="nimble-sheet__body tah-nimble-settings">
 	<section class="tah-nimble-settings__section">
-		<h3 class="nimble-heading" data-heading-variant="section">Display Options</h3>
+		<h3 class="nimble-heading" data-heading-variant="section">
+			{game.i18n.localize('TAH_NIMBLE.settings.ui.displayOptions')}
+		</h3>
 		<div class="tah-nimble-settings__option">
 			<label>
-				<input type="checkbox" bind:checked={localGroupByActionCost} />
-				<span>Group actions by cost</span>
+				<input type="checkbox" name="groupByActionCost" bind:checked={localGroupByActionCost} />
+				<span>{game.i18n.localize('TAH_NIMBLE.settings.ui.groupByActionCost.label')}</span>
 			</label>
 			<p class="tah-nimble-settings__hint">
-				Organize by Action cost (1/2/3 Actions) instead of type.
+				{game.i18n.localize('TAH_NIMBLE.settings.ui.groupByActionCost.hint')}
 			</p>
 		</div>
 		<div class="tah-nimble-settings__option">
 			<label>
-				<input type="checkbox" bind:checked={localShowActionCosts} />
-				<span>Show action cost badges</span>
+				<input type="checkbox" name="showActionCosts" bind:checked={localShowActionCosts} />
+				<span>{game.i18n.localize('TAH_NIMBLE.settings.ui.showActionCosts.label')}</span>
 			</label>
-			<p class="tah-nimble-settings__hint">Display cost indicators on each action.</p>
+			<p class="tah-nimble-settings__hint">
+				{game.i18n.localize('TAH_NIMBLE.settings.ui.showActionCosts.hint')}
+			</p>
 		</div>
 	</section>
 
 	<section class="tah-nimble-settings__section">
-		<h3 class="nimble-heading" data-heading-variant="section">Character Categories</h3>
+		<h3 class="nimble-heading" data-heading-variant="section">
+			{game.i18n.localize('TAH_NIMBLE.settings.ui.characterCategories')}
+		</h3>
 		<div class="tah-nimble-settings__categories">
 			{#each localCharacterCategories as category (category.id)}
 				<label class="tah-nimble-settings__category-item">
 					<input
 						type="checkbox"
+						name="characterCategory-{category.id}"
 						checked={category.enabled}
 						onchange={(e) => {
 							const target = e.target as HTMLInputElement;
@@ -171,12 +175,15 @@
 	</section>
 
 	<section class="tah-nimble-settings__section">
-		<h3 class="nimble-heading" data-heading-variant="section">NPC Categories</h3>
+		<h3 class="nimble-heading" data-heading-variant="section">
+			{game.i18n.localize('TAH_NIMBLE.settings.ui.npcCategories')}
+		</h3>
 		<div class="tah-nimble-settings__categories">
 			{#each localNpcCategories as category (category.id)}
 				<label class="tah-nimble-settings__category-item">
 					<input
 						type="checkbox"
+						name="npcCategory-{category.id}"
 						checked={category.enabled}
 						onchange={(e) => {
 							const target = e.target as HTMLInputElement;
@@ -190,12 +197,17 @@
 	</section>
 
 	<section class="tah-nimble-settings__section">
-		<h3 class="nimble-heading" data-heading-variant="section">Action Exclusions</h3>
-		<p class="tah-nimble-settings__hint">Exclude specific item IDs from the HUD.</p>
+		<h3 class="nimble-heading" data-heading-variant="section">
+			{game.i18n.localize('TAH_NIMBLE.settings.ui.actionExclusions')}
+		</h3>
+		<p class="tah-nimble-settings__hint">
+			{game.i18n.localize('TAH_NIMBLE.settings.ui.actionExclusionsHint')}
+		</p>
 		<div class="tah-nimble-settings__exclusion-input">
 			<input
+				id="tah-nimble-exclude-input"
 				type="text"
-				placeholder="Item ID (e.g., abc123def456)"
+				placeholder={game.i18n.localize('TAH_NIMBLE.settings.ui.excludeInputPlaceholder')}
 				bind:value={newExcludeInput}
 				onkeypress={(e) => {
 					if (e.key === 'Enter') {
@@ -203,8 +215,13 @@
 					}
 				}}
 			/>
-			<button class="nimble-button" data-button-variant="basic" onclick={addExclusion}>
-				Add
+			<button
+				id="tah-nimble-add-exclusion"
+				class="nimble-button"
+				data-button-variant="basic"
+				onclick={addExclusion}
+			>
+				{game.i18n.localize('TAH_NIMBLE.settings.ui.addExclusion')}
 			</button>
 		</div>
 
@@ -218,23 +235,29 @@
 							data-button-variant="basic"
 							onclick={() => removeExclusion(itemId)}
 						>
-							Remove
+							{game.i18n.localize('TAH_NIMBLE.settings.ui.remove')}
 						</button>
 					</li>
 				{/each}
 			</ul>
 		{:else}
-			<p class="tah-nimble-settings__hint">No exclusions yet.</p>
+			<p class="tah-nimble-settings__hint">
+				{game.i18n.localize('TAH_NIMBLE.settings.ui.noExclusionsYet')}
+			</p>
 		{/if}
 	</section>
 </article>
 
 <footer class="nimble-sheet__footer tah-nimble-settings__footer">
-	<button class="nimble-button" data-button-variant="basic" onclick={reset}> Reset </button>
-	<button class="nimble-button" data-button-variant="basic" onclick={() => dialog.close()}>
-		Cancel
+	<button id="tah-nimble-reset-settings" class="nimble-button" data-button-variant="basic" onclick={reset}>
+		{game.i18n.localize('TAH_NIMBLE.settings.ui.reset')}
 	</button>
-	<button class="nimble-button" onclick={save}> Save </button>
+	<button class="nimble-button" data-button-variant="basic" onclick={() => dialog.close()}>
+		{game.i18n.localize('TAH_NIMBLE.settings.ui.cancel')}
+	</button>
+	<button class="nimble-button" onclick={save}>
+		{game.i18n.localize('TAH_NIMBLE.settings.ui.save')}
+	</button>
 </footer>
 
 <style lang="scss">

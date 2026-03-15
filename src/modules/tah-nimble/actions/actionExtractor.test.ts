@@ -134,7 +134,7 @@ describe('extractCharacterActions', () => {
 					activation: { cost: { quantity: 2 }, targets: {} },
 					tier: 3,
 					school: 'fire',
-					manaCost: 3,
+					// Note: manaCost is derived from tier in Nimble (no standalone manaCost field)
 				},
 			}),
 		]);
@@ -144,7 +144,7 @@ describe('extractCharacterActions', () => {
 		expect(actions[0].spell).toBeDefined();
 		expect(actions[0].spell?.tier).toBe(3);
 		expect(actions[0].spell?.school).toBe('fire');
-		expect(actions[0].spell?.manaCost).toBe(3);
+		expect(actions[0].spell?.manaCost).toBe(3); // manaCost === tier (3) for tiered spells
 	});
 
 	it('categorizes reaction features correctly', async () => {

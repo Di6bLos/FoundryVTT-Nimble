@@ -40,6 +40,30 @@
 			"groupByActionCost": {
 				"name": "Group by Action Cost",
 				"hint": "Group character actions by cost (1/2/3 Actions) instead of type"
+			},
+			"ui": {
+				"displayOptions": "Display Options",
+				"groupByActionCost": {
+					"label": "Group actions by cost",
+					"hint": "Organize by Action cost (1/2/3 Actions) instead of type."
+				},
+				"showActionCosts": {
+					"label": "Show action cost badges",
+					"hint": "Display cost indicators on each action."
+				},
+				"characterCategories": "Character Categories",
+				"npcCategories": "NPC Categories",
+				"actionExclusions": "Action Exclusions",
+				"actionExclusionsHint": "Exclude specific item IDs from the HUD.",
+				"excludeInputPlaceholder": "Item ID (e.g., abc123def456)",
+				"addExclusion": "Add",
+				"noExclusionsYet": "No exclusions yet.",
+				"remove": "Remove",
+				"reset": "Reset",
+				"cancel": "Cancel",
+				"save": "Save",
+				"saved": "Token Action HUD — Nimble 2: Settings saved.",
+				"saveError": "Unable to save HUD settings."
 			}
 		}
 	}

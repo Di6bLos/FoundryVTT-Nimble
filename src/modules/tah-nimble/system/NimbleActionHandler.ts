@@ -5,7 +5,7 @@
 
 import { extractCharacterActions, extractNPCActions } from '../actions/actionExtractor';
 import { getHUDConfiguration } from '../settings/moduleSettings';
-import { formatActionCost, getCostCategoryId } from '../utils/actionCost';
+import { formatActionCost, formatNPCActionName, getCostCategoryId } from '../utils/actionCost';
 import { isCharacterActor, isNPCActor } from '../utils/typeGuards';
 
 type NimbleItemSystem = {
@@ -53,7 +53,9 @@ function determineGroupId(item: Item, actor: Actor, groupByActionCost: boolean):
 		const subtype = system.subtype;
 		const attackType = activation?.targets?.attackType;
 
-		if (subtype === 'action' || subtype === 'attackSequence') {
+		if (subtype === 'attackSequence') {
+			return 'attack-sequences';
+		} else if (subtype === 'action') {
 			if (attackType === 'reach') {
 				return 'melee';
 			} else if (attackType === 'range') {
@@ -136,9 +138,21 @@ export function createActionHandlerClass(BaseActionHandler: any) {
 						const costQuantity = clampCostQuantity(cost.quantity ?? 0);
 						const costLabel = showActionCosts ? formatActionCost(costQuantity) : undefined;
 
+						// Build display name: use formatNPCActionName for melee/ranged NPC attacks
+						let displayName = item.name ?? '';
+						if (item.type === 'monsterFeature' && ['melee', 'ranged'].includes(groupId)) {
+							const rawAttackType = activation?.targets?.attackType ?? '';
+							let attackType: 'reach' | 'range' | '' = '';
+							if (rawAttackType === 'reach') attackType = 'reach';
+							else if (rawAttackType === 'range') attackType = 'range';
+							displayName = formatNPCActionName(displayName, attackType, costQuantity);
+						} else if (costLabel) {
+							displayName = `${displayName} (${costLabel})`;
+						}
+
 						return {
 							id: item.id,
-							name: item.name,
+							name: displayName,
 							encodedValue: `item|${item.id}`,
 							img: item.img,
 							info1: costLabel ? { text: costLabel } : undefined,

@@ -4,7 +4,7 @@
  */
 
 import { expect, type Page, test } from '@playwright/test';
-import { loginAsGM, waitForGameReady } from './helpers';
+import { loginAsGM, waitForGameReady } from './helpers.js';
 
 const TEST_CHAR_NAME = process.env.TEST_CHARACTER_NAME ?? 'Test Character';
 const TEST_NPC_NAME = process.env.TEST_NPC_NAME ?? 'Test NPC';
@@ -164,42 +164,45 @@ async function createSceneTokens(page: Page): Promise<void> {
 	console.log('Creating scene tokens...');
 
 	// Get the first available scene
-	await page.evaluate(async () => {
-		const game = (window as any).game;
-		const scene = game.scenes.find((s: any) => s.active);
+	await page.evaluate(
+		async ({ charName, npcName }: { charName: string; npcName: string }) => {
+			const game = (window as any).game;
+			const scene = game.scenes.find((s: any) => s.active);
 
-		if (!scene) {
-			throw new Error('No active scene found');
-		}
+			if (!scene) {
+				throw new Error('No active scene found');
+			}
 
-		const charActor = game.actors.find((a: any) => a.name === 'Test Character');
-		const npcActor = game.actors.find((a: any) => a.name === 'Test NPC');
+			const charActor = game.actors.find((a: any) => a.name === charName);
+			const npcActor = game.actors.find((a: any) => a.name === npcName);
 
-		if (!charActor || !npcActor) {
-			throw new Error('Test actors not found');
-		}
+			if (!charActor || !npcActor) {
+				throw new Error('Test actors not found');
+			}
 
-		// Create tokens
-		const charToken = await scene.createEmbeddedDocuments('Token', [
-			{
-				name: charActor.name,
-				actorId: charActor.id,
-				x: 0,
-				y: 0,
-			},
-		]);
+			// Create tokens
+			const charToken = await scene.createEmbeddedDocuments('Token', [
+				{
+					name: charActor.name,
+					actorId: charActor.id,
+					x: 0,
+					y: 0,
+				},
+			]);
 
-		const npcToken = await scene.createEmbeddedDocuments('Token', [
-			{
-				name: npcActor.name,
-				actorId: npcActor.id,
-				x: 200,
-				y: 0,
-			},
-		]);
+			const npcToken = await scene.createEmbeddedDocuments('Token', [
+				{
+					name: npcActor.name,
+					actorId: npcActor.id,
+					x: 200,
+					y: 0,
+				},
+			]);
 
-		console.log('Tokens created:', { charToken, npcToken });
-	});
+			console.log('Tokens created:', { charToken, npcToken });
+		},
+		{ charName: TEST_CHAR_NAME, npcName: TEST_NPC_NAME },
+	);
 
 	console.log('✓ Scene tokens created');
 }
@@ -235,13 +238,16 @@ test('setup: create demo world test data', async ({ page }) => {
 	await waitForGameReady(page);
 
 	// Check if actors already exist
-	const actorsExist = await page.evaluate(() => {
-		const game = (window as any).game;
-		return (
-			game.actors.find((a: any) => a.name === 'Test Character') &&
-			game.actors.find((a: any) => a.name === 'Test NPC')
-		);
-	});
+	const actorsExist = await page.evaluate(
+		({ charName, npcName }: { charName: string; npcName: string }) => {
+			const game = (window as any).game;
+			return (
+				game.actors.find((a: any) => a.name === charName) &&
+				game.actors.find((a: any) => a.name === npcName)
+			);
+		},
+		{ charName: TEST_CHAR_NAME, npcName: TEST_NPC_NAME },
+	);
 
 	if (!actorsExist) {
 		await createCharacterActor(page);
@@ -253,21 +259,24 @@ test('setup: create demo world test data', async ({ page }) => {
 	}
 
 	// Verify setup
-	const setupValid = await page.evaluate(() => {
-		const game = (window as any).game;
-		const charActor = game.actors.find((a: any) => a.name === 'Test Character');
-		const npcActor = game.actors.find((a: any) => a.name === 'Test NPC');
+	const setupValid = await page.evaluate(
+		({ charName, npcName }: { charName: string; npcName: string }) => {
+			const game = (window as any).game;
+			const charActor = game.actors.find((a: any) => a.name === charName);
+			const npcActor = game.actors.find((a: any) => a.name === npcName);
 
-		if (!charActor || !npcActor) {
-			return false;
-		}
+			if (!charActor || !npcActor) {
+				return false;
+			}
 
-		// Check items
-		const charItems = charActor.items.size;
-		const npcItems = npcActor.items.size;
+			// Check items
+			const charItems = charActor.items.size;
+			const npcItems = npcActor.items.size;
 
-		return charItems >= 2 && npcItems >= 2;
-	});
+			return charItems >= 2 && npcItems >= 2;
+		},
+		{ charName: TEST_CHAR_NAME, npcName: TEST_NPC_NAME },
+	);
 
 	expect(setupValid).toBe(true);
 	console.log('✓ Setup verification passed');
