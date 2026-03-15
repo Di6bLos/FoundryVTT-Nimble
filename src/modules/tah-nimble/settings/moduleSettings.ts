@@ -8,6 +8,9 @@ import type { HUDConfiguration } from '../types/nimble-hud';
 const MODULE_ID = 'token-action-hud-nimble';
 const MODULE_KEY = MODULE_ID as 'core';
 
+/** Guard against double-registration when TAH Core also calls registerSettings(). */
+let _settingsRegistered = false;
+
 function registerSetting(key: string, options: object): void {
 	game.settings.register(
 		MODULE_KEY,
@@ -18,9 +21,14 @@ function registerSetting(key: string, options: object): void {
 
 /**
  * Register all module settings
- * Called during module initialization
+ * Called during module initialization. Idempotent — safe to call multiple times.
  */
 export function registerModuleSettings(): void {
+	if (_settingsRegistered) {
+		return;
+	}
+	_settingsRegistered = true;
+
 	// Per-user HUD configuration setting
 	registerSetting('userConfigs', {
 		scope: 'client',

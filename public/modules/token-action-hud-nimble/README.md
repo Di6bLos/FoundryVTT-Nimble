@@ -14,7 +14,7 @@ A FoundryVTT companion module that extends [Token Action HUD Core](https://found
 ## Requirements
 
 - FoundryVTT v13+
-- Nimble 2 game system v2.0.0+
+- Nimble game system v0.7.2+
 - Token Action HUD Core v2.0.11+
 
 ## Installation

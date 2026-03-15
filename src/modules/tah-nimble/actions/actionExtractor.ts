@@ -21,7 +21,6 @@ type NimbleItemSystem = {
 	description?: { value?: string } | string;
 	tier?: number;
 	school?: string;
-	manaCost?: number;
 	tags?: string[];
 };
 
@@ -130,7 +129,9 @@ async function createAction(item: Item, actor: Actor): Promise<NimbleHUDAction |
 		const subtype = system.subtype;
 		const attackType = activation?.targets?.attackType;
 
-		if (subtype === 'action' || subtype === 'attackSequence') {
+		if (subtype === 'attackSequence') {
+			category = 'attack-sequences';
+		} else if (subtype === 'action') {
 			if (attackType === 'reach') {
 				category = 'melee';
 			} else if (attackType === 'range') {
@@ -201,7 +202,7 @@ async function createAction(item: Item, actor: Actor): Promise<NimbleHUDAction |
 		action.spell = {
 			tier: system.tier ?? 0,
 			school: system.school ?? 'universal',
-			manaCost: system.manaCost ?? 0,
+			manaCost: system.tier ?? 0, // mana cost equals spell tier in Nimble
 			tags: system.tags ?? [],
 		};
 	}
