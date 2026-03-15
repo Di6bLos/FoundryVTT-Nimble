@@ -22,6 +22,10 @@ type NimbleItemSystem = {
 	tier?: number;
 	school?: string;
 	tags?: string[];
+	objectType?: string;
+	properties?: {
+		selected?: string[];
+	};
 };
 
 type NimbleItemWithActivate = Item & {
@@ -54,7 +58,9 @@ export async function extractCharacterActions(actor: Actor): Promise<NimbleHUDAc
 		const system = getItemSystem(item);
 		const quantity = system.activation?.cost?.quantity ?? 0;
 
-		return ['spell', 'feature', 'boon'].includes(itemType) && quantity > 0;
+		if (['spell', 'feature', 'boon'].includes(itemType)) return quantity > 0;
+		if (itemType === 'object') return system.objectType === 'weapon';
+		return false;
 	});
 
 	for (const item of activatableItems) {
@@ -144,6 +150,14 @@ async function createAction(item: Item, actor: Actor): Promise<NimbleHUDAction |
 		} else if (costType === 'reaction') {
 			category = 'reactions';
 		}
+	} else if (item.type === 'object') {
+		const attackType = activation?.targets?.attackType;
+		const selectedProps = system.properties?.selected ?? [];
+		if (attackType === 'reach' || (!attackType && !selectedProps.includes('range'))) {
+			category = 'melee';
+		} else {
+			category = 'ranged';
+		}
 	} else if (costType === 'reaction') {
 		category = 'reactions';
 	} else if (['special', 'minute', 'hour'].includes(costType)) {
@@ -176,7 +190,7 @@ async function createAction(item: Item, actor: Actor): Promise<NimbleHUDAction |
 		name: displayName,
 		icon: item.img ?? 'icons/svg/item-bag.svg',
 		description,
-		type: item.type as 'spell' | 'feature' | 'monsterFeature' | 'boon',
+		type: item.type as 'spell' | 'feature' | 'monsterFeature' | 'boon' | 'object',
 		category,
 		cost: {
 			quantity,
