@@ -1,8 +1,10 @@
 /**
  * Token Follow Update Hook
- * Listens for token movement and repositions followers to maintain distance
+ * Listens for token movement and retraces steps: follower moves to leader's previous position
+ * plus 1 grid square of trailing distance. Manual follower moves break the follow link.
  */
 
+import type { FollowRelationship } from '../utils/followManager.js';
 import { FollowManager } from '../utils/followManager.js';
 
 interface TokenUpdateData {
@@ -11,64 +13,93 @@ interface TokenUpdateData {
 	[key: string]: unknown;
 }
 
+// Cache leader positions before each move so onUpdateToken can read the old coords
+const leaderPreviousPositions = new Map<string, { x: number; y: number }>();
+
 /**
- * Reposition a follower token to maintain distance from leader
+ * Computes the follower's target position: 1 grid square further back than oldLeaderPos,
+ * in the direction away from newLeaderPos. Result is snapped to the nearest grid square.
+ * Falls back to oldLeaderPos if canvas.grid is unavailable or there was no net movement.
  */
-async function repositionFollower(
-	scene: Scene,
-	leaderToken: TokenDocument,
-	followerToken: TokenDocument,
-	distance: number,
-): Promise<void> {
-	if (!canvas.ready || !canvas.grid) {
-		return;
-	}
+function calculateTrailingPosition(
+	oldLeaderPos: { x: number; y: number },
+	newLeaderPos: { x: number; y: number },
+): { x: number; y: number } {
+	if (!canvas.grid) return oldLeaderPos;
 
-	try {
-		// Calculate current distance between tokens
-		const currentDistance = canvas.grid.measureDistance(
-			{ x: leaderToken.x, y: leaderToken.y },
-			{ x: followerToken.x, y: followerToken.y },
-		);
+	const gridSize = canvas.grid.size;
+	const dx = oldLeaderPos.x - newLeaderPos.x;
+	const dy = oldLeaderPos.y - newLeaderPos.y;
+	const dist = Math.sqrt(dx * dx + dy * dy);
 
-		// If distance is already correct (within tolerance), do nothing
-		const tolerance = 0.5; // Allow half a grid square tolerance
-		if (Math.abs(currentDistance - distance) <= tolerance) {
-			return;
-		}
+	if (dist === 0) return oldLeaderPos; // No net movement
 
-		// Calculate the direction vector from leader to follower
-		const dx = followerToken.x - leaderToken.x;
-		const dy = followerToken.y - leaderToken.y;
-		const currentDist = Math.sqrt(dx * dx + dy * dy);
+	// Step 1 grid square further from the leader along the travel direction, then snap to grid
+	const scale = gridSize / dist;
+	return {
+		x: Math.round((oldLeaderPos.x + dx * scale) / gridSize) * gridSize,
+		y: Math.round((oldLeaderPos.y + dy * scale) / gridSize) * gridSize,
+	};
+}
 
-		if (currentDist === 0) {
-			// Tokens are at same position, can't calculate direction
-			return;
-		}
+/**
+ * Fires BEFORE the token document is updated — token.x/y are still the OLD coords.
+ * Caches the old position for every token that is currently a leader.
+ */
+function onPreUpdateToken(token: TokenDocument, changes: object, _options: object): void {
+	const updateData = changes as TokenUpdateData;
+	if (updateData.x === undefined && updateData.y === undefined) return;
 
-		// Normalize direction vector
-		const dirX = dx / currentDist;
-		const dirY = dy / currentDist;
+	const scene = token.parent;
+	if (!scene || !(scene instanceof Scene)) return;
 
-		// Calculate new position maintaining distance
-		// Distance is in grid squares, need to convert to pixels
-		const gridSize = canvas.grid?.size || 1;
-		const pixelDistance = distance * gridSize;
-
-		const newX = leaderToken.x + dirX * pixelDistance;
-		const newY = leaderToken.y + dirY * pixelDistance;
-
-		// Move follower token
-		await followerToken.update({ x: newX, y: newY }, { noHook: true });
-	} catch (error) {
-		console.error('[TokenFollowUpdate] Error repositioning follower:', error);
+	const relationships = FollowManager.getRelationships(scene);
+	const isLeader = relationships.some((rel) => rel.leaderId === token.id);
+	if (isLeader) {
+		leaderPreviousPositions.set(token.id!, { x: token.x, y: token.y });
 	}
 }
 
 /**
- * Handle token update events
- * Called when a token is updated (position, rotation, etc.)
+ * Recursively move all direct followers of leaderToken to a trailing position
+ * (leader's old tile + 1 grid square further back), then propagate down the chain.
+ */
+async function moveChainFollowers(
+	scene: Scene,
+	leaderToken: TokenDocument,
+	oldLeaderPos: { x: number; y: number },
+	allRelationships: FollowRelationship[],
+): Promise<void> {
+	const directFollowers = allRelationships.filter((rel) => rel.leaderId === leaderToken.id);
+	for (const rel of directFollowers) {
+		const followerToken = scene.tokens.get(rel.followerId);
+		if (!followerToken) continue;
+
+		// Capture follower's old position BEFORE moving (for chain recursion)
+		const followerOldPos = { x: followerToken.x, y: followerToken.y };
+
+		// Compute trailing position: 1 grid square further back than oldLeaderPos
+		const targetPos = calculateTrailingPosition(oldLeaderPos, {
+			x: leaderToken.x,
+			y: leaderToken.y,
+		});
+
+		try {
+			await followerToken.update({ x: targetPos.x, y: targetPos.y }, { noHook: true });
+		} catch (error) {
+			console.error(`[TokenFollowUpdate] Error moving follower ${followerToken.name}:`, error);
+			continue;
+		}
+
+		// noHook: true suppressed the hook for followerToken — recurse manually
+		await moveChainFollowers(scene, followerToken, followerOldPos, allRelationships);
+	}
+}
+
+/**
+ * Handle token update events.
+ * - If the moved token is a follower (user-initiated): break the follow link.
+ * - If the moved token is a leader: propagate movement down the chain with trailing gap.
  */
 async function onUpdateToken(
 	token: TokenDocument,
@@ -76,77 +107,49 @@ async function onUpdateToken(
 	options: object,
 ): Promise<void> {
 	const updateData = changes as TokenUpdateData;
-
-	// Only process if position changed
-	if (updateData.x === undefined && updateData.y === undefined) {
-		return;
-	}
+	if (updateData.x === undefined && updateData.y === undefined) return;
 
 	// Skip if this is an internal reposition (avoid infinite loops)
-	if ((options as { noHook?: boolean }).noHook) {
-		return;
-	}
+	if ((options as { noHook?: boolean }).noHook) return;
 
 	const scene = token.parent;
-	if (!scene || !(scene instanceof Scene)) {
-		return;
+	if (!scene || !(scene instanceof Scene)) return;
+
+	// Break follow link if a follower was manually moved
+	// Any onUpdateToken firing for a follower is user-initiated (noHook: true suppresses for programmatic moves)
+	const allRelationships = FollowManager.getRelationships(scene);
+	const myFollowerRels = allRelationships.filter((rel) => rel.followerId === token.id);
+	if (myFollowerRels.length > 0) {
+		for (const rel of myFollowerRels) {
+			await FollowManager.deleteByPair(scene, rel.leaderId, rel.followerId);
+			console.log(`[TokenFollowUpdate] Follow link broken: ${token.name} was manually moved`);
+		}
+		// Do NOT return — if this token is also a leader, fall through so its followers still update
 	}
 
+	// Read and immediately clear the cached pre-move position
+	const oldPos = leaderPreviousPositions.get(token.id!);
+	leaderPreviousPositions.delete(token.id!);
+	if (!oldPos) return; // Not a leader, or preUpdateToken didn't fire
+
+	if (!canvas.ready) return;
+
 	try {
+		// Re-fetch relationships after any follower-break above
 		const relationships = FollowManager.getRelationships(scene);
+		const hasFollowers = relationships.some((rel) => rel.leaderId === token.id);
+		if (!hasFollowers) return;
 
-		// T023: Detect if a follower token is manually moved (breaking the relationship)
-		const followerRelationships = relationships.filter((rel) => rel.followerId === token.id);
-		if (followerRelationships.length > 0) {
-			// This token is a follower and was manually moved
-			// Check if distance from leader has changed significantly
-			for (const rel of followerRelationships) {
-				const leaderToken = scene.tokens.get(rel.leaderId);
-				if (!leaderToken) {
-					// Leader doesn't exist, clean up
-					await FollowManager.deleteByPair(scene, rel.leaderId, rel.followerId);
-					continue;
-				}
-
-				// Calculate expected position if following
-				const expectedDistance = rel.distance;
-				const actualDistance =
-					canvas.grid?.measureDistance(
-						{ x: leaderToken.x, y: leaderToken.y },
-						{ x: token.x, y: token.y },
-					) ?? 0;
-
-				// If distance differs significantly from expected (more than 1 grid square tolerance),
-				// user manually moved the follower - break the relationship
-				const tolerance = 1.5;
-				if (Math.abs(actualDistance - expectedDistance) > tolerance) {
-					// Manual movement detected - break the relationship
-					await FollowManager.deleteByPair(scene, rel.leaderId, rel.followerId);
-					console.log(
-						`[TokenFollowUpdate] Manual movement detected: ${token.name} broke follow relationship`,
-					);
-				}
-			}
-		}
-
-		// Find all followers of this token (token is the leader)
-		const followersToUpdate = relationships.filter((rel) => rel.leaderId === token.id);
-
-		// Reposition each follower
-		for (const rel of followersToUpdate) {
-			const followerToken = scene.tokens.get(rel.followerId);
-			if (followerToken && followerToken.isVisible) {
-				await repositionFollower(scene, token, followerToken, rel.distance);
-			}
-		}
+		await moveChainFollowers(scene, token, oldPos, relationships);
 	} catch (error) {
 		console.error('[TokenFollowUpdate] Error in onUpdateToken:', error);
 	}
 }
 
 /**
- * Register the token follow update hook
+ * Register the token follow update hooks
  */
 export function registerTokenFollowUpdate(): void {
+	Hooks.on('preUpdateToken', onPreUpdateToken);
 	Hooks.on('updateToken', onUpdateToken);
 }

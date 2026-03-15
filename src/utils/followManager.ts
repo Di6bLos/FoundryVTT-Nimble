@@ -4,7 +4,7 @@
  * Stored in: scene.flags.nimble.followRelationships
  */
 
-interface FollowRelationship {
+export interface FollowRelationship {
 	leaderId: string;
 	followerId: string;
 	distance: number;
