@@ -141,10 +141,16 @@ check_existing_branches() {
     git fetch --all --prune 2>/dev/null || true
 
     # Get highest number from ALL branches (not just matching short name)
-    local highest_branch=$(get_highest_from_branches)
+    local highest_branch=$(get_highest_from_branches 2>/dev/null || echo "0")
 
     # Get highest number from ALL specs (not just matching short name)
-    local highest_spec=$(get_highest_from_specs "$specs_dir")
+    local highest_spec=$(get_highest_from_specs "$specs_dir" 2>/dev/null || echo "0")
+
+    # Ensure both are numeric (sanitize in case of errors)
+    highest_branch="${highest_branch//[!0-9]/0}"
+    highest_spec="${highest_spec//[!0-9]/0}"
+    highest_branch=$((10#${highest_branch:-0}))
+    highest_spec=$((10#${highest_spec:-0}))
 
     # Take the maximum of both
     local max_num=$highest_branch
@@ -266,7 +272,13 @@ if [ -z "$BRANCH_NUMBER" ]; then
 fi
 
 # Force base-10 interpretation to prevent octal conversion (e.g., 010 → 8 in octal, but should be 10 in decimal)
-FEATURE_NUM=$(printf "%03d" "$((10#$BRANCH_NUMBER))")
+# Sanitize BRANCH_NUMBER to ensure it's numeric
+BRANCH_NUMBER="${BRANCH_NUMBER//[!0-9]/}"
+if [ -z "$BRANCH_NUMBER" ]; then
+    echo "Error: Could not determine branch number. Please specify one with --number" >&2
+    exit 1
+fi
+FEATURE_NUM=$(printf "%03d" "$((10#${BRANCH_NUMBER}))")
 BRANCH_NAME="${FEATURE_NUM}-${BRANCH_SUFFIX}"
 
 # GitHub enforces a 244-byte limit on branch names

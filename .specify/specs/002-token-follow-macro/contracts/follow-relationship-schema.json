@@ -1,0 +1,48 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"title": "Follow Relationship Schema",
+	"description": "Schema for token follow relationships stored in scene flags. Defines the contract for follow relationship objects.",
+	"type": "object",
+	"properties": {
+		"leaderId": {
+			"type": "string",
+			"description": "UUID of the leader token (token that is being followed)",
+			"pattern": "^[a-zA-Z0-9_-]+$",
+			"minLength": 16
+		},
+		"followerId": {
+			"type": "string",
+			"description": "UUID of the follower token (token that maintains distance from leader)",
+			"pattern": "^[a-zA-Z0-9_-]+$",
+			"minLength": 16
+		},
+		"distance": {
+			"type": "number",
+			"description": "Grid squares between leader and follower (center-to-center), measured via canvas.grid.measureDistance()",
+			"minimum": 0,
+			"maximum": 1000,
+			"default": 1
+		},
+		"timestamp": {
+			"type": "integer",
+			"description": "Unix timestamp (milliseconds) when follow relationship was created",
+			"minimum": 0
+		}
+	},
+	"required": ["leaderId", "followerId", "distance", "timestamp"],
+	"additionalProperties": false,
+	"examples": [
+		{
+			"leaderId": "3f5a7c8d-e2b1-4f8c-9a3e-2c5d6f7a8b9c",
+			"followerId": "7b2e9a1d-4c5f-8e3a-1b7d-6c9e2f4a8b1d",
+			"distance": 3,
+			"timestamp": 1678882200000
+		},
+		{
+			"leaderId": "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
+			"followerId": "9d8c7b6a-5e4f-3d2c-1b0a-9f8e7d6c5b4a",
+			"distance": 5.5,
+			"timestamp": 1678882300000
+		}
+	]
+}
