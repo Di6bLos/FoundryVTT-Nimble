@@ -7,7 +7,7 @@
 	"packageManager": "pnpm@10.11.0",
 	"scripts": {
 		"preinstall": "npx only-allow pnpm",
-		"build": "pnpm build:compendia && vite build",
+		"build": "pnpm build:compendia && vite build && vite build --config vite.config.tah-nimble.mts",
 		"build:system": "vite build",
 		"build:tah-nimble": "vite build --config vite.config.tah-nimble.mts",
 		"build:compendia": "node ./build/buildCompendia.mjs",
@@ -23,6 +23,8 @@
 		"remote:restart": "ssh ubuntu@foundryvtt.redirectme.net 'pm2 restart foundry'",
 		"deploy:local": "pnpm foundry:stop && sleep 2 && pnpm build:compendia && rm -rf \"${FOUNDRY_DATA_DIR:-../foundrydata}/Data/systems/nimble/packs\" && cp -r public/packs \"${FOUNDRY_DATA_DIR:-../foundrydata}/Data/systems/nimble/packs\" && pnpm foundry:start && echo 'Done — FoundryVTT restarting on localhost:30000'",
 		"deploy:nimble": "bash scripts/deploy-log.sh deploy:nimble sh -c 'pnpm build:compendia && vite build && rsync -avz --delete -e ssh dist/ ubuntu@foundryvtt.redirectme.net:/home/ubuntu/foundryuserdata/Data/systems/nimble/ && pnpm remote:restart'",
+		"deploy:tah-nimble": "bash scripts/deploy-log.sh deploy:tah-nimble sh -c 'vite build --config vite.config.tah-nimble.mts && rsync -avz --delete -e ssh public/modules/token-action-hud-nimble/ ubuntu@foundryvtt.redirectme.net:/home/ubuntu/foundryuserdata/Data/modules/token-action-hud-nimble/ && pnpm remote:restart'",
+		"deploy:all": "bash scripts/deploy-log.sh deploy:all sh -c 'pnpm build:compendia && vite build && vite build --config vite.config.tah-nimble.mts && rsync -avz --delete -e ssh dist/ ubuntu@foundryvtt.redirectme.net:/home/ubuntu/foundryuserdata/Data/systems/nimble/ && rsync -avz --delete -e ssh public/modules/token-action-hud-nimble/ ubuntu@foundryvtt.redirectme.net:/home/ubuntu/foundryuserdata/Data/modules/token-action-hud-nimble/ && pnpm remote:restart'",
 		"pull": "pnpm pull:worlds && pnpm pull:modules",
 		"pull:worlds": "rsync -avz -e ssh ubuntu@foundryvtt.redirectme.net:/home/ubuntu/foundryuserdata/Data/worlds/ ../foundrydata/Data/worlds/ --exclude '*.webp' --exclude '*.png' --exclude '*.jpg' --exclude '*.jpeg' --exclude '*.gif' --exclude '*.svg' --exclude '*.mp3' --exclude '*.ogg' --exclude '*.wav' --exclude '*.mp4' --exclude '*.webm' --exclude '*.pdf'",
 		"pull:modules": "rsync -avz -e ssh ubuntu@foundryvtt.redirectme.net:/home/ubuntu/foundryuserdata/Data/modules/ ../foundrydata/Data/modules/",
