@@ -1,0 +1,198 @@
+Total messages: 196 (Errors: 5, Warnings: 2)
+Returning 134 messages for level "info"
+
+[LOG] Foundry VTT | Drawing game canvas for scene Lodge @ http://localhost:30000/scripts/foundry.mjs:94309
+[LOG] Loaded icons/svg/mystery-man.svg (1.79%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/combat.svg (3.57%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/aura.svg (5.36%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/cowled.svg (7.14%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/padlock.svg (8.93%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/up.svg (10.71%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/down.svg (12.50%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/skull.svg (14.29%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/light-off.svg (16.07%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/light.svg (17.86%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/explosion.svg (19.64%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/sound-off.svg (21.43%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/sound.svg (23.21%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/door-closed-outline.svg (25.00%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/door-open-outline.svg (26.79%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/door-secret-outline.svg (28.57%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/wall-direction.svg (30.36%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/door-locked-outline.svg (32.14%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/sleep.svg (33.93%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/daze.svg (35.71%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/unconscious.svg (37.50%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/falling.svg (39.29%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/net.svg (41.07%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/paralysis.svg (42.86%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/wing.svg (44.64%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/blind.svg (46.43%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/deaf.svg (48.21%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/silenced.svg (50.00%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/terror.svg (51.79%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/fire.svg (53.57%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/frozen.svg (55.36%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/lightning.svg (57.14%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/acid.svg (58.93%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/blood.svg (60.71%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/biohazard.svg (62.50%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/poison.svg (64.29%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/sun.svg (66.07%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/regen.svg (67.86%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/degen.svg (69.64%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/wingfoot.svg (71.43%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/mole.svg (73.21%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/upgrade.svg (75.00%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/invisible.svg (76.79%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/fire-shield.svg (78.57%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/downgrade.svg (80.36%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/target.svg (82.14%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/eye.svg (83.93%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/angel.svg (85.71%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/ice-shield.svg (87.50%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/mage-shield.svg (89.29%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/svg/holy-shield.svg (91.07%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded icons/sundries/lights/torch-black.webp (92.86%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded fa-nexus-assets/!Core_Settlements/Lightsources/Lanterns/Lantern_Metal_Brass_F2_1x1.webp (94.64%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded fa-nexus-tokens/Adversaries/Bandits/Bandit_A1_Sword_Crossbow_01.webp (96.43%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded canvas/tokens/rings-steel.json (98.21%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Loaded worlds/midgard/assets/scenes/a-tiny-rescue-valleys-rest-ground-no-grid-daytime.jpg (100.00%) @ http://localhost:30000/scripts/foundry.mjs:84287
+[LOG] Foundry VTT | Drawing the HiddenCanvasGroup canvas group @ http://localhost:30000/scripts/foundry.mjs:85136
+[LOG] Foundry VTT | Drawing the RenderedCanvasGroup canvas group @ http://localhost:30000/scripts/foundry.mjs:85136
+[LOG] Foundry VTT | Drawing the EnvironmentCanvasGroup canvas group @ http://localhost:30000/scripts/foundry.mjs:85136
+[LOG] Foundry VTT | Drawing the PrimaryCanvasGroup canvas group @ http://localhost:30000/scripts/foundry.mjs:85136
+[LOG] Foundry VTT | Drawing the WeatherEffects canvas layer @ http://localhost:30000/scripts/foundry.mjs:90021
+[LOG] Foundry VTT | Drawing the BaseEffectsLayer canvas layer @ http://localhost:30000/scripts/foundry.mjs:90021
+[LOG] Foundry VTT | Drawing the EffectsCanvasGroup canvas group @ http://localhost:30000/scripts/foundry.mjs:85136
+[LOG] Foundry VTT | Drawing the CanvasBackgroundAlterationEffects canvas layer @ http://localhost:30000/scripts/foundry.mjs:90021
+[LOG] Foundry VTT | Drawing the CanvasIlluminationEffects canvas layer @ http://localhost:30000/scripts/foundry.mjs:90021
+[LOG] Foundry VTT | Drawing the CanvasColorationEffects canvas layer @ http://localhost:30000/scripts/foundry.mjs:90021
+[LOG] Foundry VTT | Drawing the CanvasDarknessEffects canvas layer @ http://localhost:30000/scripts/foundry.mjs:90021
+[LOG] Foundry VTT | Drawing the CanvasVisibility canvas group @ http://localhost:30000/scripts/foundry.mjs:85136
+[LOG] Worker TextureCompressor of FogExtractor | Initialized Worker @ http://localhost:30000/scripts/worker.js:71
+[LOG] Foundry VTT | Drawing the InterfaceCanvasGroup canvas group @ http://localhost:30000/scripts/foundry.mjs:85136
+[LOG] Foundry VTT | Drawing the GridLayer canvas layer @ http://localhost:30000/scripts/foundry.mjs:90021
+[LOG] Foundry VTT | Drawing the RegionLayer canvas layer @ http://localhost:30000/scripts/foundry.mjs:90021
+[LOG] Foundry VTT | Drawing the DrawingsLayer canvas layer @ http://localhost:30000/scripts/foundry.mjs:90021
+[LOG] Foundry VTT | Drawing the NimbleTemplateLayer canvas layer @ http://localhost:30000/scripts/foundry.mjs:90021
+[LOG] Foundry VTT | Drawing the TilesLayer canvas layer @ http://localhost:30000/scripts/foundry.mjs:90021
+[LOG] Foundry VTT | Drawing the WallsLayer canvas layer @ http://localhost:30000/scripts/foundry.mjs:90021
+[LOG] Foundry VTT | Drawing the TokenLayer canvas layer @ http://localhost:30000/scripts/foundry.mjs:90021
+[LOG] Foundry VTT | Retrieved and compiled template templates/hud/waypoint-label.hbs @ http://localhost:30000/scripts/foundry.mjs:65844
+[LOG] Foundry VTT | Drawing the SoundsLayer canvas layer @ http://localhost:30000/scripts/foundry.mjs:90021
+[LOG] Foundry VTT | Drawing the LightingLayer canvas layer @ http://localhost:30000/scripts/foundry.mjs:90021
+[LOG] Foundry VTT | Drawing the NotesLayer canvas layer @ http://localhost:30000/scripts/foundry.mjs:90021
+[LOG] Foundry VTT | Drawing the ControlsLayer canvas layer @ http://localhost:30000/scripts/foundry.mjs:90021
+[LOG] Foundry VTT | Drawing the SequencerInterfaceLayer canvas layer @ http://localhost:30000/scripts/foundry.mjs:90021
+[LOG] Foundry VTT | Drawing the UIEffectsLayer canvas layer @ http://localhost:30000/scripts/foundry.mjs:90021
+[LOG] Foundry VTT | Drawing the OverlayCanvasGroup canvas group @ http://localhost:30000/scripts/foundry.mjs:85136
+[WARNING] Foundry VTT | Error thrown in hooked function 'bound getSceneControlButtons' for hook 'getSceneControlButtons' @ http://localhost:30000/scripts/foundry.mjs:23834
+[ERROR] Error: Error thrown in hooked function 'bound getSceneControlButtons' for hook 'getSceneControlButtons'. e.find is not a function
+[Detected 1 package: foundryvtt-simple-calendar(2.4.18)]
+    at Hooks.onError (http://localhost:30000/scripts/foundry.mjs:23854:24)
+    at 🎁Hooks.onError#0 (http://localhost:30000/modules/lib-wrapper/lib-wrapper.js:1:34530)
+    at #call (http://localhost:30000/scripts/foundry.mjs:23836:36)
+    at Hooks.callAll (http://localhost:30000/scripts/foundry.mjs:23791:17)
+    at #prepareControls (http://localhost:30000/scripts/foundry.mjs:116336:13)
+    at SceneControls._configureRenderOptions (http://localhost:30000/scripts/foundry.mjs:116241:89)
+    at #render (http://localhost:30000/scripts/foundry.mjs:27219:10)
+    at #try (http://localhost:30000/scripts/foundry.mjs:7169:23)
+    at http://localhost:30000/scripts/foundry.mjs:7142:16
+    at new Promise (<anonymous>)
+    at Semaphore.add (http://localhost:30000/scripts/foundry.mjs:7140:12)
+    at SceneControls.render (http://localhost:30000/scripts/foundry.mjs:27190:28)
+    at #initialize (http://localhost:30000/scripts/foundry.mjs:94553:23)
+    at async #draw (http://localhost:30000/scripts/foundry.mjs:94383:5)
+    at async Canvas.draw (http://localhost:30000/scripts/foundry.mjs:94245:5)
+    at async Scene.view (http://localhost:30000/scripts/foundry.mjs:46164:7)
+    at async Game.initializeCanvas (http://localhost:30000/scripts/foundry.mjs:169362:20)
+    at async Game.setupGame (http://localhost:30000/scripts/foundry.mjs:169129:5)
+    at async #initializeGameView (http://localhost:30000/scripts/foundry.mjs:170576:5)
+    at async Game.initialize (http://localhost:30000/scripts/foundry.mjs:169026:5)
+    at async window.addEventListener.once (http://localhost:30000/scripts/foundry.mjs:181096:3) @ http://localhost:30000/scripts/foundry.mjs:23854
+[LOG] [foundry-mcp-bridge] Starting MCP bridge... @ http://localhost:30000/modules/foundry-mcp-bridge/dist/main.js:146
+[LOG] Applying buffered socket event: userActivity @ http://localhost:30000/scripts/foundry.mjs:168910
+[LOG] [Token Action HUD — Nimble 2] TAH Core API ready @ http://localhost:30000/modules/token-action-hud-nimble/dist/token-action-hud-nimble.min.js:3513
+[LOG] [Token Action HUD — Nimble 2] Creating SystemManager... @ http://localhost:30000/modules/token-action-hud-nimble/dist/token-action-hud-nimble.min.js:3538
+[LOG] [Token Action HUD — Nimble 2] SystemManager created successfully @ http://localhost:30000/modules/token-action-hud-nimble/dist/token-action-hud-nimble.min.js:3554
+[LOG] [Token Action HUD — Nimble 2] Completing registration... @ http://localhost:30000/modules/token-action-hud-nimble/dist/token-action-hud-nimble.min.js:3560
+[ERROR] The installed Token Action HUD system module requires Token Action HUD Core module version 2.0.0, but version 2.0.16 is installed. Install Token Action HUD Core module version 2.0.0 to continue using Token Action HUD. Earlier versions of Token Action HUD Core are available on the module's package page on the Foundry VTT site.  @ http://localhost:30000/scripts/foundry.mjs:115131
+[LOG] [Token Action HUD — Nimble 2] System registered with TAH Core @ http://localhost:30000/modules/token-action-hud-nimble/dist/token-action-hud-nimble.min.js:3574
+[LOG] Nimble | No migration needed: world schema version 7 is up to date @ http://localhost:30000/systems/nimble/nimble-D_0p51Yx.js:29863
+[LOG] [foundry-mcp-bridge] Foundry ready, checking bridge status... @ http://localhost:30000/modules/foundry-mcp-bridge/dist/main.js:65
+[LOG] [foundry-mcp-bridge] Bridge already running or connecting @ http://localhost:30000/modules/foundry-mcp-bridge/dist/main.js:141
+[WARNING] Error: You are accessing the global "Journal" which is now namespaced under foundry.documents.collections.Journal
+Deprecated since Version 13
+Backwards-compatible support will be removed in Version 15
+    at logCompatibilityWarning (http://localhost:30000/scripts/foundry.mjs:6715:17)
+    at get (http://localhost:30000/scripts/foundry.mjs:181053:9)
+    at da.registerNoteSheets (http://localhost:30000/modules/foundryvtt-simple-calendar/index.js:1:280425)
+    at da.initialize (http://localhost:30000/modules/foundryvtt-simple-calendar/index.js:1:280324)
+    at Object.fn (http://localhost:30000/modules/foundryvtt-simple-calendar/index.js:1:286625)
+    at #call (http://localhost:30000/scripts/foundry.mjs:23832:20)
+    at Hooks.callAll (http://localhost:30000/scripts/foundry.mjs:23791:17)
+    at Game.setupGame (http://localhost:30000/scripts/foundry.mjs:169132:13)
+    at async #initializeGameView (http://localhost:30000/scripts/foundry.mjs:170576:5)
+    at async Game.initialize (http://localhost:30000/scripts/foundry.mjs:169026:5)
+    at async window.addEventListener.once (http://localhost:30000/scripts/foundry.mjs:181096:3) @ http://localhost:30000/scripts/foundry.mjs:6726
+[LOG] nimble-selector | Loading data and indexing compendiums @ http://localhost:30000/modules/nimble-selector/scripts/module.mjs:205
+[LOG] [Token Action HUD — Nimble 2] Initializing... @ http://localhost:30000/modules/token-action-hud-nimble/dist/token-action-hud-nimble.min.js:3580
+[LOG] [Token Action HUD — Nimble 2] Ready @ http://localhost:30000/modules/token-action-hud-nimble/dist/token-action-hud-nimble.min.js:3593
+[LOG] %cAutomated Animations Database has been compiled and registered color: green {aaDatabase: Object} @ http://localhost:30000/modules/autoanimations/dist/autoanimations.js:12075
+[LOG] DEBUG | Automated Animations | Compiled Select Menus {newTypeMenu: Object, newNameMenu: Object, newVariantMenu: Object, newColorMenu: Object} @ http://localhost:30000/modules/autoanimations/dist/autoanimations.js:11990
+[LOG] Foundry VTT | Retrieved and compiled template modules/smalltime/templates/smalltime.html @ http://localhost:30000/scripts/foundry.mjs:65844
+[LOG] [foundry-mcp-bridge] Enhanced creature index not found, building automatically for better UX... @ http://localhost:30000/modules/foundry-mcp-bridge/dist/main.js:108
+[INFO] Building enhanced creature index for faster searches...  @ http://localhost:30000/scripts/foundry.mjs:115131
+[LOG] [foundry-mcp-bridge] Building enhanced creature index for system: nimble @ http://localhost:30000/modules/foundry-mcp-bridge/dist/data-access.js:249
+[ERROR] [foundry-mcp-bridge] Failed to rebuild enhanced creature index: Error: Enhanced creature index not supported for system: nimble. Only D&D 5e and Pathfinder 2e are currently supported.
+    at PersistentCreatureIndex.buildEnhancedIndex (http://localhost:30000/modules/foundry-mcp-bridge/dist/data-access.js:259:19)
+    at PersistentCreatureIndex.rebuildIndex (http://localhost:30000/modules/foundry-mcp-bridge/dist/data-access.js:41:27)
+    at FoundryDataAccess.rebuildEnhancedCreatureIndex (http://localhost:30000/modules/foundry-mcp-bridge/dist/data-access.js:723:58)
+    at FoundryMCPBridge.checkAndBuildEnhancedIndex (http://localhost:30000/modules/foundry-mcp-bridge/dist/main.js:113:61)
+    at async FoundryMCPBridge.onReady (http://localhost:30000/modules/foundry-mcp-bridge/dist/main.js:80:13)
+    at async Object.fn (http://localhost:30000/modules/foundry-mcp-bridge/dist/main.js:415:9) @ http://localhost:30000/modules/foundry-mcp-bridge/dist/data-access.js:730
+[LOG] [foundry-mcp-bridge] Starting ComfyUI monitoring... @ http://localhost:30000/modules/foundry-mcp-bridge/dist/main.js:341
+[INFO] 🔗 Starting AI Map Generation service... (Models loading, please wait)  @ http://localhost:30000/scripts/foundry.mjs:115131
+[LOG] [foundry-mcp-bridge] Module ready @ http://localhost:30000/modules/foundry-mcp-bridge/dist/main.js:84
+[LOG] Foundry VTT | Constructed index of nimble.nimble-spells Compendium containing 86 entries @ http://localhost:30000/scripts/foundry.mjs:24936
+[LOG] Foundry VTT | Constructed index of nimble.nimble-items Compendium containing 77 entries @ http://localhost:30000/scripts/foundry.mjs:24936
+[LOG] [foundry-mcp-bridge] Bridge started successfully - Type: websocket, State: connected @ http://localhost:30000/modules/foundry-mcp-bridge/dist/main.js:158
+[LOG] Foundry VTT | Constructed index of nimble.nimble-class-features Compendium containing 369 entries @ http://localhost:30000/scripts/foundry.mjs:24936
+[LOG] nimble-selector | Found 1 character sheet class(es): [PlayerCharacterSheet] @ http://localhost:30000/modules/nimble-selector/scripts/module.mjs:88
+[LOG] nimble-selector | Patched 1 prototype(s) with header control @ http://localhost:30000/modules/nimble-selector/scripts/module.mjs:150
+[LOG] nimble-selector | Ready @ http://localhost:30000/modules/nimble-selector/scripts/module.mjs:227
+[LOG] [foundry-mcp-bridge] Heartbeat monitoring started (30000ms interval) @ http://localhost:30000/modules/foundry-mcp-bridge/dist/main.js:265
+[INFO] 🔗 MCP Bridge connected successfully  @ http://localhost:30000/scripts/foundry.mjs:115131
+[LOG] [foundry-mcp-bridge] GM connection established - Bridge active for user: Gamemaster @ http://localhost:30000/modules/foundry-mcp-bridge/dist/main.js:170
+[LOG] [foundry-mcp-bridge] Sent backend request: {type: check-comfyui-status, requestId: check-comfyui-status-1773546990479-925qyp5hb} @ http://localhost:30000/modules/foundry-mcp-bridge/dist/comfyui-manager.js:279
+[LOG] [foundry-mcp-bridge] ComfyUI status check #1: {status: stopped, message: Request check-comfyui-status timed out after 90000ms} @ http://localhost:30000/modules/foundry-mcp-bridge/dist/main.js:351
+[LOG] [foundry-mcp-bridge] Sent backend request: {type: check-comfyui-status, requestId: check-comfyui-status-1773547085485-4k5rycohz} @ http://localhost:30000/modules/foundry-mcp-bridge/dist/comfyui-manager.js:279
+[LOG] [foundry-mcp-bridge] ComfyUI status check #2: {status: stopped, message: Request check-comfyui-status timed out after 90000ms} @ http://localhost:30000/modules/foundry-mcp-bridge/dist/main.js:351
+[LOG] [foundry-mcp-bridge] Sent backend request: {type: check-comfyui-status, requestId: check-comfyui-status-1773547180488-10xm7tw00} @ http://localhost:30000/modules/foundry-mcp-bridge/dist/comfyui-manager.js:279
+[LOG] [foundry-mcp-bridge] ComfyUI status check #3: {status: stopped, message: Request check-comfyui-status timed out after 90000ms} @ http://localhost:30000/modules/foundry-mcp-bridge/dist/main.js:351
+[LOG] [foundry-mcp-bridge] Sent backend request: {type: check-comfyui-status, requestId: check-comfyui-status-1773547275490-6mrra9g3r} @ http://localhost:30000/modules/foundry-mcp-bridge/dist/comfyui-manager.js:279
+[LOG] [foundry-mcp-bridge] ComfyUI status check #4: {status: stopped, message: Request check-comfyui-status timed out after 90000ms} @ http://localhost:30000/modules/foundry-mcp-bridge/dist/main.js:351
+[LOG] [foundry-mcp-bridge] Sent backend request: {type: check-comfyui-status, requestId: check-comfyui-status-1773547370495-38shwjqvx} @ http://localhost:30000/modules/foundry-mcp-bridge/dist/comfyui-manager.js:279
+TypeError: Cannot read properties of undefined (reading 'find')
+[Detected 1 package: foundryvtt-simple-calendar(2.4.18)]
+    at da.createJournalDirectory (http://localhost:30000/modules/foundryvtt-simple-calendar/index.js:1:280624)
+    at tt.renderJournalDirectory (http://localhost:30000/modules/foundryvtt-simple-calendar/index.js:1:172301)
+    at #call (http://localhost:30000/scripts/foundry.mjs:23832:20)
+    at Hooks.callAll (http://localhost:30000/scripts/foundry.mjs:23791:17)
+    at #callHooks (http://localhost:30000/scripts/foundry.mjs:27972:15)
+    at #dispatchEvent (http://localhost:30000/scripts/foundry.mjs:27956:36)
+    at http://localhost:30000/scripts/foundry.mjs:27929:26
+    at async #render (http://localhost:30000/scripts/foundry.mjs:27263:5)
+    at async #try (http://localhost:30000/scripts/foundry.mjs:7169:17)
+TypeError: Cannot read properties of undefined (reading 'find')
+[Detected 1 package: foundryvtt-simple-calendar(2.4.18)]
+    at da.createJournalDirectory (http://localhost:30000/modules/foundryvtt-simple-calendar/index.js:1:280624)
+    at da.initialize (http://localhost:30000/modules/foundryvtt-simple-calendar/index.js:1:280356)
+    at Object.fn (http://localhost:30000/modules/foundryvtt-simple-calendar/index.js:1:286625)
+    at #call (http://localhost:30000/scripts/foundry.mjs:23832:20)
+    at Hooks.callAll (http://localhost:30000/scripts/foundry.mjs:23791:17)
+    at Game.setupGame (http://localhost:30000/scripts/foundry.mjs:169132:13)
+    at async #initializeGameView (http://localhost:30000/scripts/foundry.mjs:170576:5)
+    at async Game.initialize (http://localhost:30000/scripts/foundry.mjs:169026:5)
+    at async window.addEventListener.once (http://localhost:30000/scripts/foundry.mjs:181096:3)

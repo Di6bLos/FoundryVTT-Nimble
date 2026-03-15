@@ -102,7 +102,7 @@ Hooks.on('tokenActionHudCoreApiReady' as any, () => {
 
 		// Set module API for TAH Core discovery
 		module.api = {
-			requiredCoreModuleVersion: '2.0.0',
+			requiredCoreModuleVersion: '2.0',
 			SystemManager: NimbleSystemManagerClass,
 		};
 
