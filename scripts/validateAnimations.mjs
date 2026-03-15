@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
+import fs from 'node:fs';
+import path from 'node:path';
 import Ajv from 'ajv';
 import addErrors from 'ajv-errors';
-import fs from 'fs';
-import path from 'path';
 
 const schemaPath = new URL('./schemas/animation-config.schema.json', import.meta.url);
 const schema = JSON.parse(fs.readFileSync(schemaPath, 'utf-8'));
@@ -63,9 +63,7 @@ function discoverAnimationFiles(dir) {
 const filePaths =
 	process.argv.length > 2
 		? process.argv.slice(2)
-		: discoverAnimationFiles(
-				new URL('../public/auto-animations', import.meta.url).pathname,
-			);
+		: discoverAnimationFiles(new URL('../public/auto-animations', import.meta.url).pathname);
 
 let hasErrors = false;
 for (const filePath of filePaths) {

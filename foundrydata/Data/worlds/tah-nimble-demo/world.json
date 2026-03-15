@@ -1,0 +1,25 @@
+{
+	"name": "tah-nimble-demo",
+	"title": "TAH Nimble Demo World",
+	"description": "Demo world for Token Action HUD Nimble E2E testing",
+	"system": "nimble",
+	"coreVersion": "13.0.0",
+	"gameVersion": "13.0.0",
+	"last-launched": 1773479862927,
+	"migration-version": "0.7.0",
+	"nextTime": null,
+	"resetKeys": false,
+	"safeMode": false,
+	"scripts": [],
+	"modules": [],
+	"documentStats": {
+		"Actor": 2,
+		"Item": 4,
+		"Scene": 1,
+		"JournalEntry": 0,
+		"Macro": 0,
+		"Playlist": 0,
+		"RollTable": 0,
+		"Setting": 0
+	}
+}

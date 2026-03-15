@@ -21,6 +21,25 @@ All 4 errors and 3 warnings observed during test session are pre-existing and un
   Pathfinder 2e are currently supported."
 - **Meaning:** Third-party bridge module limitation, not a Nimble bug.
 
+### 5. token-action-hud-nimble — RESOLVED: version mismatch fixed (2026-03-15)
+- **Status:** module.json and index.ts were fixed in branch 001-token-action-hud. Module now
+  registers successfully. Console shows "TAH Core API ready", "SystemManager created", "Ready".
+
+### 6. token-action-hud-nimble — subgroup rendering — RESOLVED (2026-03-15)
+- **Status:** FIXED. Each top-level group now has a `_all` subgroup (e.g. `spells_all`). Actions are
+  registered against the subgroup nestId. Groups with actions show visible; empty groups get `tah-hidden`.
+- **Verified 2026-03-15 MVP test:** Character HUD shows 6 spells + 1 ability. NPC HUD shows 2 attacks.
+  All empty groups correctly hidden. Click → activate() → activation dialog → chat card path confirmed.
+
+### 7. Roll._evaluateASTAsync — Cannot read 'class' (2026-03-15, NEEDS INVESTIGATION)
+- **Source:** `foundry.mjs:30569`, `Roll._evaluateASTAsync` called from `Roll.toMessage`
+- **Fires when:** NPC monsterFeature attack is rolled via activation dialog "Roll" button
+- **Message:** `TypeError: Cannot read properties of undefined (reading 'class')`
+- **Impact:** Despite the error, the chat card IS created with correct damage output ("10 Slashing").
+  Roll still completes successfully. May be a non-fatal evaluation path for dice terms.
+- **Not TAH-related:** Fires in Foundry's dice engine, not in NimbleRollHandler or tah-nimble code.
+- **To investigate:** Check if this fires when rolling NPC attacks outside of TAH (open NPC sheet directly).
+
 ## Warnings
 
 ### 1. V1 Application framework is deprecated (x2)

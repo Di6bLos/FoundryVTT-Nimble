@@ -1,0 +1,373 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"title": "Token Action HUD — Nimble Action Schema",
+	"description": "Contract defining the action interface that Token Action HUD Nimble exposes to Token Action HUD Core",
+	"version": "1.0.0",
+	"date": "2026-03-13",
+
+	"definitions": {
+		"activationCost": {
+			"type": "object",
+			"description": "Activation cost metadata (action economy)",
+			"properties": {
+				"type": {
+					"type": "string",
+					"enum": ["action", "bonus_action", "reaction", "minute", "hour", "special", "none"],
+					"description": "Type of action cost"
+				},
+				"label": {
+					"type": "string",
+					"description": "Human-readable label for display (e.g., 'Action', 'Reaction')"
+				},
+				"quantity": {
+					"type": "integer",
+					"minimum": 1,
+					"description": "Number of actions/reactions consumed (optional)"
+				},
+				"details": {
+					"type": "string",
+					"description": "Additional details (trigger text for reactions, special conditions)"
+				}
+			},
+			"required": ["type", "label"]
+		},
+
+		"spellProperties": {
+			"type": "object",
+			"description": "Spell-specific properties",
+			"properties": {
+				"tier": {
+					"type": "integer",
+					"minimum": 0,
+					"maximum": 9,
+					"description": "Spell tier/level (0 = cantrip, 1-9 = leveled spell)"
+				},
+				"school": {
+					"type": "string",
+					"description": "School of magic (fire, healing, transmutation, etc.)"
+				},
+				"manaCost": {
+					"type": "integer",
+					"minimum": 0,
+					"description": "Mana required for activation (0 for cantrips)"
+				},
+				"tags": {
+					"type": "array",
+					"items": { "type": "string" },
+					"description": "Spell tags (ritual, concentration, etc.)"
+				}
+			}
+		},
+
+		"attackProperties": {
+			"type": "object",
+			"description": "Attack-specific properties (NPC monsterFeature)",
+			"properties": {
+				"attackType": {
+					"type": "string",
+					"enum": ["reach", "range"],
+					"description": "Melee or ranged attack"
+				},
+				"range": {
+					"type": "number",
+					"minimum": 0,
+					"description": "Range in squares (for ranged attacks)"
+				},
+				"damageFormula": {
+					"type": "string",
+					"description": "Damage roll expression (e.g., '2d6+3')"
+				}
+			},
+			"required": ["attackType"]
+		},
+
+		"nimbleHUDAction": {
+			"type": "object",
+			"description": "A single action available in the HUD",
+			"properties": {
+				"id": {
+					"type": "string",
+					"description": "Unique action ID (UUID format)"
+				},
+				"itemId": {
+					"type": "string",
+					"description": "Nimble item ID (reference to actor.items[index].id)"
+				},
+				"actorId": {
+					"type": "string",
+					"description": "Actor ID (character, NPC, etc.)"
+				},
+				"name": {
+					"type": "string",
+					"description": "Display name (e.g., 'Fireball', 'Stab')"
+				},
+				"icon": {
+					"type": "string",
+					"format": "uri",
+					"description": "Icon path (e.g., 'systems/nimble/icons/spells/fireball.webp')"
+				},
+				"description": {
+					"type": "string",
+					"description": "Short description or tooltip"
+				},
+				"type": {
+					"type": "string",
+					"enum": ["spell", "feature", "monsterFeature", "boon"],
+					"description": "Source item type"
+				},
+				"category": {
+					"type": "string",
+					"enum": ["spells", "abilities", "reactions", "utility", "melee", "ranged", "triggered"],
+					"description": "HUD category for display organization"
+				},
+				"cost": {
+					"$ref": "#/definitions/activationCost"
+				},
+				"spell": {
+					"$ref": "#/definitions/spellProperties",
+					"description": "Present if type === 'spell'"
+				},
+				"attack": {
+					"$ref": "#/definitions/attackProperties",
+					"description": "Present if category in ['melee', 'ranged']"
+				},
+				"requiresTarget": {
+					"type": "boolean",
+					"description": "True if action requires target selection"
+				},
+				"targets": {
+					"type": "object",
+					"properties": {
+						"count": {
+							"type": "integer",
+							"description": "Number of targets"
+						},
+						"type": {
+							"type": "string",
+							"description": "Target type (creature, object, point, etc.)"
+						},
+						"restriction": {
+							"type": "string",
+							"description": "Target restrictions (allies only, etc.)"
+						}
+					}
+				},
+				"effects": {
+					"type": "array",
+					"description": "Damage, healing, conditions, etc.",
+					"items": { "type": "object" }
+				},
+				"tags": {
+					"type": "array",
+					"items": { "type": "string" },
+					"description": "Searchable tags (damage:fire, control:crowd, etc.)"
+				},
+				"conditions": {
+					"type": "array",
+					"items": { "type": "string" },
+					"description": "Conditions applied on activation"
+				},
+				"canActivate": {
+					"type": "boolean",
+					"description": "False if preconditions not met (e.g., no mana)"
+				},
+				"activate": {
+					"type": "function",
+					"description": "Callable function: () => Promise<ChatMessage | null>"
+				}
+			},
+			"required": [
+				"id",
+				"itemId",
+				"actorId",
+				"name",
+				"icon",
+				"type",
+				"category",
+				"cost",
+				"canActivate",
+				"activate"
+			]
+		},
+
+		"actionCategory": {
+			"type": "object",
+			"description": "A grouping of actions in the HUD",
+			"properties": {
+				"id": {
+					"type": "string",
+					"description": "Category ID (spells, abilities, melee, etc.)"
+				},
+				"label": {
+					"type": "string",
+					"description": "Display label (Spells, Abilities, Melee Attacks, etc.)"
+				},
+				"description": {
+					"type": "string",
+					"description": "Tooltip or help text"
+				},
+				"icon": {
+					"type": "string",
+					"format": "uri",
+					"description": "Category icon path (optional)"
+				},
+				"actions": {
+					"type": "array",
+					"items": { "$ref": "#/definitions/nimbleHUDAction" },
+					"description": "Actions in this category"
+				},
+				"sortOrder": {
+					"type": "integer",
+					"minimum": 0,
+					"description": "Display order (0 = first)"
+				},
+				"collapsible": {
+					"type": "boolean",
+					"description": "Can user collapse this category?"
+				},
+				"collapsed": {
+					"type": "boolean",
+					"description": "Current collapsed state (from config)"
+				},
+				"actorType": {
+					"type": "string",
+					"enum": ["character", "npc", "both"],
+					"description": "Which actor types use this category"
+				}
+			},
+			"required": ["id", "label", "actions", "sortOrder", "collapsible", "actorType"]
+		}
+	},
+
+	"type": "object",
+	"properties": {
+		"systemId": {
+			"type": "string",
+			"const": "nimble",
+			"description": "Target system identifier"
+		},
+		"moduleId": {
+			"type": "string",
+			"const": "token-action-hud-nimble",
+			"description": "Module identifier for Token Action HUD Core registration"
+		},
+		"version": {
+			"type": "string",
+			"pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+			"description": "Semantic version of this contract (matches module version)"
+		},
+		"compatibleWithCore": {
+			"type": "string",
+			"pattern": "^[0-9.]+\\+$",
+			"description": "Minimum compatible Token Action HUD Core version (e.g., '1.4.0+')"
+		},
+		"actionGroups": {
+			"type": "array",
+			"items": { "$ref": "#/definitions/actionCategory" },
+			"description": "Array of action categories (spells, abilities, melee, etc.)"
+		},
+		"metadata": {
+			"type": "object",
+			"properties": {
+				"totalActions": {
+					"type": "integer",
+					"description": "Total number of actions across all categories"
+				},
+				"characterCategories": {
+					"type": "array",
+					"items": { "type": "string" },
+					"description": "Categories applicable to character actors"
+				},
+				"npcCategories": {
+					"type": "array",
+					"items": { "type": "string" },
+					"description": "Categories applicable to NPC actors"
+				}
+			}
+		}
+	},
+
+	"required": ["systemId", "moduleId", "version", "actionGroups"],
+
+	"examples": [
+		{
+			"systemId": "nimble",
+			"moduleId": "token-action-hud-nimble",
+			"version": "1.0.0",
+			"compatibleWithCore": "1.4.0+",
+			"actionGroups": [
+				{
+					"id": "spells",
+					"label": "Spells",
+					"description": "Magical abilities",
+					"icon": "systems/nimble/icons/categories/spells.webp",
+					"sortOrder": 0,
+					"collapsible": true,
+					"actorType": "character",
+					"actions": [
+						{
+							"id": "action-001",
+							"itemId": "item-fireball-001",
+							"actorId": "actor-wizard-001",
+							"name": "Fireball",
+							"icon": "systems/nimble/icons/spells/fireball.webp",
+							"type": "spell",
+							"category": "spells",
+							"cost": {
+								"type": "action",
+								"label": "Action"
+							},
+							"spell": {
+								"tier": 3,
+								"school": "evocation",
+								"manaCost": 3,
+								"tags": ["damage", "aoe"]
+							},
+							"requiresTarget": true,
+							"targets": {
+								"count": 1,
+								"type": "point"
+							},
+							"canActivate": true,
+							"activate": "() => Promise<ChatMessage>"
+						}
+					]
+				},
+				{
+					"id": "melee",
+					"label": "Melee Attacks",
+					"sortOrder": 0,
+					"collapsible": false,
+					"actorType": "npc",
+					"actions": [
+						{
+							"id": "action-002",
+							"itemId": "mf-stab-001",
+							"actorId": "actor-npc-bandit",
+							"name": "Stab",
+							"icon": "systems/nimble/icons/attacks/stab.webp",
+							"type": "monsterFeature",
+							"category": "melee",
+							"cost": {
+								"type": "action",
+								"label": "Action"
+							},
+							"attack": {
+								"attackType": "reach",
+								"damageFormula": "1d6+2"
+							},
+							"requiresTarget": true,
+							"canActivate": true,
+							"activate": "() => Promise<ChatMessage>"
+						}
+					]
+				}
+			],
+			"metadata": {
+				"totalActions": 2,
+				"characterCategories": ["spells", "abilities", "reactions", "utility"],
+				"npcCategories": ["melee", "ranged", "abilities", "triggered"]
+			}
+		}
+	]
+}

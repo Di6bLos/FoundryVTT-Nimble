@@ -1,0 +1,70 @@
+{
+	"TAH_NIMBLE": {
+		"module": {
+			"name": "Token Action HUD — Nimble 2"
+		},
+		"categories": {
+			"quickActions": "Quick Actions (1 Action)",
+			"standardActions": "Standard Actions (2 Actions)",
+			"fullTurnActions": "Full-Turn Actions (3 Actions)",
+			"freeActions": "Free Actions",
+			"meleeAttacks": "Melee Attacks",
+			"rangedAttacks": "Ranged Attacks",
+			"attackSequences": "Attack Sequences",
+			"abilities": "Abilities",
+			"reactions": "Reactions",
+			"triggered": "Triggered Abilities",
+			"spells": "Spells",
+			"utility": "Utility"
+		},
+		"actionCosts": {
+			"free": "Free",
+			"1": "1 Action",
+			"2": "2 Actions",
+			"3": "3 Actions"
+		},
+		"errors": {
+			"noActionsAvailable": "No actions available",
+			"invalidAction": "Invalid action",
+			"permissionDenied": "You do not have permission to execute this action"
+		},
+		"settings": {
+			"enabledCategories": {
+				"name": "Enabled Categories",
+				"hint": "Select which action categories appear in the HUD"
+			},
+			"showActionCosts": {
+				"name": "Show Action Costs",
+				"hint": "Display numeric action costs in action labels"
+			},
+			"groupByActionCost": {
+				"name": "Group by Action Cost",
+				"hint": "Group character actions by cost (1/2/3 Actions) instead of type"
+			},
+			"ui": {
+				"displayOptions": "Display Options",
+				"groupByActionCost": {
+					"label": "Group actions by cost",
+					"hint": "Organize by Action cost (1/2/3 Actions) instead of type."
+				},
+				"showActionCosts": {
+					"label": "Show action cost badges",
+					"hint": "Display cost indicators on each action."
+				},
+				"characterCategories": "Character Categories",
+				"npcCategories": "NPC Categories",
+				"actionExclusions": "Action Exclusions",
+				"actionExclusionsHint": "Exclude specific item IDs from the HUD.",
+				"excludeInputPlaceholder": "Item ID (e.g., abc123def456)",
+				"addExclusion": "Add",
+				"noExclusionsYet": "No exclusions yet.",
+				"remove": "Remove",
+				"reset": "Reset",
+				"cancel": "Cancel",
+				"save": "Save",
+				"saved": "Token Action HUD — Nimble 2: Settings saved.",
+				"saveError": "Unable to save HUD settings."
+			}
+		}
+	}
+}

@@ -31,6 +31,10 @@ logs/deploy.log
 # Playwright MCP runtime logs
 .playwright-mcp/
 
+# Playwright test artifacts (generated output, not source)
+playwright-report/
+test-results/
+
 # ----------------------------------------------------
 # Compendium Packs
 # ----------------------------------------------------

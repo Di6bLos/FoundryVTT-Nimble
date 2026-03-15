@@ -1,0 +1,46 @@
+{
+	"_id": "TestScene001",
+	"name": "Test Scene",
+	"type": "base",
+	"img": "systems/nimble/assets/artwork/map-default.webp",
+	"tokens": [
+		{
+			"_id": "token001",
+			"name": "Test Character",
+			"img": "systems/nimble/assets/artwork/character-default.webp",
+			"x": 100,
+			"y": 100,
+			"width": 100,
+			"height": 100,
+			"actor": "TestCharacter001",
+			"actorData": {},
+			"rotation": 0,
+			"elevation": 0,
+			"hidden": false,
+			"locked": false,
+			"flags": {}
+		},
+		{
+			"_id": "token002",
+			"name": "Test NPC",
+			"img": "systems/nimble/assets/artwork/npc-default.webp",
+			"x": 300,
+			"y": 100,
+			"width": 100,
+			"height": 100,
+			"actor": "TestNPC001",
+			"actorData": {},
+			"rotation": 0,
+			"elevation": 0,
+			"hidden": false,
+			"locked": false,
+			"flags": {}
+		}
+	],
+	"lighting": {
+		"darkness": 0,
+		"globalLight": true
+	},
+	"flags": {},
+	"sort": 0
+}
