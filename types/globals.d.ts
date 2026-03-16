@@ -18,6 +18,9 @@ declare interface NimbleActorFlags {
 	actorImageXOffset?: number;
 	actorImageYOffset?: number;
 	actorImageScale?: number;
+
+	// One-time setup
+	startingGearApplied?: boolean;
 }
 
 /** Nimble system flags for items */

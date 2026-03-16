@@ -13,6 +13,12 @@ export default function registerStartingGearHook(): void {
 		if (actor.type !== 'character') return;
 		if (game.user.id !== (userId as string)) return;
 
+		// Prevent duplicate application when the same user has multiple tabs open.
+		// The flag is set before items are created, so a second tab racing on the same
+		// createActor event will bail out once the first tab's update propagates.
+		if (actor.getFlag('nimble', 'startingGearApplied')) return;
+		await actor.setFlag('nimble', 'startingGearApplied', true);
+
 		const pack = game.packs.get(STARTING_GEAR_PACK_ID);
 		if (!pack) {
 			console.warn('Nimble | Starting gear: pack not found -', STARTING_GEAR_PACK_ID);
