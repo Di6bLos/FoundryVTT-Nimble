@@ -18,7 +18,7 @@ export interface NimbleHUDAction {
 	description?: string; // Short tooltip or item description
 
 	// Classification
-	type: 'spell' | 'feature' | 'monsterFeature' | 'boon'; // Source item type
+	type: 'spell' | 'feature' | 'monsterFeature' | 'boon' | 'object'; // Source item type
 	category:
 		| 'spells'
 		| 'abilities'

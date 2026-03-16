@@ -181,6 +181,8 @@ function createTypeBasedCategories(
 	const categories: ActionCategory[] = [];
 
 	const typeCategories = [
+		{ id: 'melee', label: 'Melee', filter: (a: NimbleHUDAction) => a.category === 'melee' },
+		{ id: 'ranged', label: 'Ranged', filter: (a: NimbleHUDAction) => a.category === 'ranged' },
 		{ id: 'spells', label: 'Spells', filter: (a: NimbleHUDAction) => a.category === 'spells' },
 		{
 			id: 'abilities',
